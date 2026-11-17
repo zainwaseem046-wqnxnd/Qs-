@@ -1,0 +1,162 @@
+@import "tailwindcss";
+
+/*
+ * QS Intelligence design tokens.
+ * Two themes: "light" (white) and "dark" (navy). Components only use semantic tokens, never raw colours,
+ * so both themes stay consistent. Theme resolution: explicit data-theme wins, otherwise OS preference.
+ */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+:root {
+  --bg: #f6f8fb;
+  --surface: #ffffff;
+  --surface-2: #f1f4f9;
+  --surface-sunken: #e9eef5;
+  --border: #dbe2ec;
+  --border-strong: #c3cddb;
+  --fg: #0d1b2e;
+  --fg-muted: #4f5f75;
+  --fg-subtle: #6f7d91;
+  --accent: #1f5fd1;
+  --accent-hover: #194fb0;
+  --accent-soft: #e7effc;
+  --accent-fg: #ffffff;
+  --success: #12795a;
+  --success-soft: #e3f5ee;
+  --warning: #9a5b00;
+  --warning-soft: #fdf1dc;
+  --danger: #b4232f;
+  --danger-soft: #fbe7e9;
+  --info-soft: #e7effc;
+  --ring: #3b7cf0;
+  --nav-bg: #0b1a30;
+  --nav-fg: #c9d4e5;
+  --nav-fg-strong: #ffffff;
+  --nav-active: #16305a;
+  --shadow: 0 1px 2px rgb(13 27 46 / 0.06), 0 1px 3px rgb(13 27 46 / 0.08);
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #07111f;
+    --surface: #0d1b2e;
+    --surface-2: #12233a;
+    --surface-sunken: #0a1627;
+    --border: #1e324d;
+    --border-strong: #2b4566;
+    --fg: #e8eef7;
+    --fg-muted: #a5b3c7;
+    --fg-subtle: #8191a8;
+    --accent: #4d8cf5;
+    --accent-hover: #6a9ff7;
+    --accent-soft: #14305a;
+    --accent-fg: #06101e;
+    --success: #3ec79a;
+    --success-soft: #0f3329;
+    --warning: #f0b453;
+    --warning-soft: #3a2a0f;
+    --danger: #f2727c;
+    --danger-soft: #3d151b;
+    --info-soft: #14305a;
+    --ring: #6a9ff7;
+    --nav-bg: #050d18;
+    --nav-fg: #a5b3c7;
+    --nav-fg-strong: #ffffff;
+    --nav-active: #12294a;
+    --shadow: 0 1px 2px rgb(0 0 0 / 0.4);
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: #07111f;
+  --surface: #0d1b2e;
+  --surface-2: #12233a;
+  --surface-sunken: #0a1627;
+  --border: #1e324d;
+  --border-strong: #2b4566;
+  --fg: #e8eef7;
+  --fg-muted: #a5b3c7;
+  --fg-subtle: #8191a8;
+  --accent: #4d8cf5;
+  --accent-hover: #6a9ff7;
+  --accent-soft: #14305a;
+  --accent-fg: #06101e;
+  --success: #3ec79a;
+  --success-soft: #0f3329;
+  --warning: #f0b453;
+  --warning-soft: #3a2a0f;
+  --danger: #f2727c;
+  --danger-soft: #3d151b;
+  --info-soft: #14305a;
+  --ring: #6a9ff7;
+  --nav-bg: #050d18;
+  --nav-fg: #a5b3c7;
+  --nav-fg-strong: #ffffff;
+  --nav-active: #12294a;
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.4);
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-sunken: var(--surface-sunken);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-fg: var(--fg);
+  --color-muted: var(--fg-muted);
+  --color-subtle: var(--fg-subtle);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-fg: var(--accent-fg);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-ring: var(--ring);
+  --color-nav: var(--nav-bg);
+  --color-nav-fg: var(--nav-fg);
+  --color-nav-strong: var(--nav-fg-strong);
+  --color-nav-active: var(--nav-active);
+  --shadow-card: var(--shadow);
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+html,
+body {
+  background: var(--bg);
+  color: var(--fg);
+}
+
+body {
+  font-family: var(--font-sans);
+  font-feature-settings: "cv11", "ss01";
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Tabular figures for every financial number. */
+.num {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

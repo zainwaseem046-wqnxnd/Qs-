@@ -87,7 +87,7 @@ def _sign_in(db: Session, request: Request, response: Response, user: User) -> L
 
 @router.post("/register", response_model=LoginResult, status_code=201)
 def register(body: RegisterRequest, request: Request, response: Response, db: DB) -> LoginResult:
-    check_rate_limit("register", client_ip(request) or "unknown", 5)
+    check_rate_limit("register", client_ip(request) or "unknown", get_settings().register_rate_limit_per_minute)
     result = service.register_organization(
         db, full_name=body.full_name, email=body.email, password=body.password,
         organization_name=body.organization_name, home_state=body.home_state, meta=_meta(request),

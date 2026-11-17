@@ -5,7 +5,6 @@ from typing import Annotated
 from pydantic import BaseModel, ConfigDict, StringConstraints
 
 
-
 class ApiModel(BaseModel):
     model_config = ConfigDict(from_attributes=True, str_strip_whitespace=True)
 

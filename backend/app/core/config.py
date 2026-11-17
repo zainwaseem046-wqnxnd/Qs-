@@ -56,6 +56,7 @@ class Settings(BaseSettings):
 
     rate_limit_enabled: bool = True
     login_rate_limit_per_minute: int = 10
+    register_rate_limit_per_minute: int = 5
 
     @model_validator(mode="after")
     def _refuse_insecure_production(self) -> Settings:
