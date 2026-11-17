@@ -1,0 +1,104 @@
+"""Permission catalog and system role definitions.
+
+This module is the single source of truth. Migrations seed the database from it, and a test asserts
+that the database catalog matches it exactly (so a new permission cannot ship without a migration).
+"""
+
+from __future__ import annotations
+
+from enum import StrEnum
+
+
+class P(StrEnum):
+    TENANT_MANAGE = "tenant.manage"
+    MEMBERS_VIEW = "members.view"
+    MEMBERS_MANAGE = "members.manage"
+    ROLES_MANAGE = "roles.manage"
+    AUDIT_VIEW = "audit.view"
+    DASHBOARD_VIEW = "dashboard.view"
+    PROJECTS_VIEW_ALL = "projects.view_all"
+    PROJECTS_CREATE = "projects.create"
+    PROJECTS_EDIT = "projects.edit"
+    PROJECTS_ARCHIVE = "projects.archive"
+    PROJECTS_MEMBERS_MANAGE = "projects.members.manage"
+    PROJECTS_FINANCIALS_VIEW = "projects.financials.view"
+    COMPANIES_VIEW = "companies.view"
+    COMPANIES_MANAGE = "companies.manage"
+    DOCUMENTS_VIEW = "documents.view"
+    DOCUMENTS_UPLOAD = "documents.upload"
+    DOCUMENTS_DELETE = "documents.delete"
+
+
+PERMISSION_CATALOG: dict[str, tuple[str, str]] = {
+    P.TENANT_MANAGE: ("Organization", "Manage organization settings"),
+    P.MEMBERS_VIEW: ("Organization", "View organization members"),
+    P.MEMBERS_MANAGE: ("Organization", "Invite, suspend and change roles of members"),
+    P.ROLES_MANAGE: ("Organization", "Create and edit custom roles"),
+    P.AUDIT_VIEW: ("Organization", "View the organization audit log"),
+    P.DASHBOARD_VIEW: ("Dashboard", "View the executive dashboard"),
+    P.PROJECTS_VIEW_ALL: ("Projects", "View all projects (not only assigned projects)"),
+    P.PROJECTS_CREATE: ("Projects", "Create projects"),
+    P.PROJECTS_EDIT: ("Projects", "Edit project details, parties and phases"),
+    P.PROJECTS_ARCHIVE: ("Projects", "Archive and restore projects"),
+    P.PROJECTS_MEMBERS_MANAGE: ("Projects", "Manage project team membership"),
+    P.PROJECTS_FINANCIALS_VIEW: ("Projects", "View contract values and commercial figures"),
+    P.COMPANIES_VIEW: ("Directory", "View companies and contacts"),
+    P.COMPANIES_MANAGE: ("Directory", "Create and edit companies and contacts"),
+    P.DOCUMENTS_VIEW: ("Documents", "View and download documents"),
+    P.DOCUMENTS_UPLOAD: ("Documents", "Upload documents and new versions"),
+    P.DOCUMENTS_DELETE: ("Documents", "Delete documents"),
+}
+
+ALL = set(PERMISSION_CATALOG)
+
+SYSTEM_ROLES: dict[str, dict[str, object]] = {
+    "owner": {
+        "name": "Owner",
+        "description": "Full control of the organization, including billing and security settings.",
+        "permissions": ALL,
+    },
+    "administrator": {
+        "name": "Administrator",
+        "description": "Manages members, roles and all projects.",
+        "permissions": ALL,
+    },
+    "executive": {
+        "name": "Executive",
+        "description": "Portfolio-wide read access to projects, financials and the audit log.",
+        "permissions": {
+            P.DASHBOARD_VIEW, P.PROJECTS_VIEW_ALL, P.PROJECTS_FINANCIALS_VIEW, P.COMPANIES_VIEW,
+            P.DOCUMENTS_VIEW, P.MEMBERS_VIEW, P.AUDIT_VIEW,
+        },
+    },
+    "commercial_manager": {
+        "name": "Commercial Manager",
+        "description": "Manages commercial performance across all projects.",
+        "permissions": {
+            P.DASHBOARD_VIEW, P.PROJECTS_VIEW_ALL, P.PROJECTS_CREATE, P.PROJECTS_EDIT,
+            P.PROJECTS_FINANCIALS_VIEW, P.PROJECTS_MEMBERS_MANAGE, P.COMPANIES_VIEW, P.COMPANIES_MANAGE,
+            P.DOCUMENTS_VIEW, P.DOCUMENTS_UPLOAD, P.MEMBERS_VIEW,
+        },
+    },
+    "project_manager": {
+        "name": "Project Manager",
+        "description": "Runs assigned projects: details, team, parties and documents.",
+        "permissions": {
+            P.DASHBOARD_VIEW, P.PROJECTS_CREATE, P.PROJECTS_EDIT, P.PROJECTS_FINANCIALS_VIEW,
+            P.PROJECTS_MEMBERS_MANAGE, P.COMPANIES_VIEW, P.COMPANIES_MANAGE, P.DOCUMENTS_VIEW,
+            P.DOCUMENTS_UPLOAD, P.MEMBERS_VIEW,
+        },
+    },
+    "field_engineer": {
+        "name": "Field Engineer",
+        "description": "Field staff on assigned projects: view and upload documents.",
+        "permissions": {P.DASHBOARD_VIEW, P.COMPANIES_VIEW, P.DOCUMENTS_VIEW, P.DOCUMENTS_UPLOAD},
+    },
+    "viewer": {
+        "name": "Viewer",
+        "description": "Read-only access to assigned projects.",
+        "permissions": {P.DASHBOARD_VIEW, P.COMPANIES_VIEW, P.DOCUMENTS_VIEW},
+    },
+}
+
+# Roles that only an owner may grant (privilege-escalation guard).
+OWNER_ONLY_ROLES = {"owner"}
