@@ -2,6 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { api } from "./api";
+import { terms } from "./region";
 import type { Vocabulary } from "./types";
 
 export function useVocabulary() {
@@ -21,11 +22,12 @@ export function formatDate(value: string | null | undefined): string {
   if (!value) return "—";
   // Dates (YYYY-MM-DD) are calendar dates: format without timezone conversion.
   const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
-  if (m) return `${m[2]}/${m[3]}/${m[1]}`;
+  const t = terms();
+  if (m) return t.locale === "en-GB" ? `${m[3]}/${m[2]}/${m[1]}` : `${m[2]}/${m[3]}/${m[1]}`;
   const d = new Date(value);
   return Number.isNaN(d.getTime())
     ? "—"
-    : d.toLocaleDateString("en-US", { month: "2-digit", day: "2-digit", year: "numeric" });
+    : d.toLocaleDateString(t.locale, { month: "2-digit", day: "2-digit", year: "numeric" });
 }
 
 export function formatDateTime(value: string | null | undefined): string {
@@ -33,7 +35,7 @@ export function formatDateTime(value: string | null | undefined): string {
   const d = new Date(value);
   return Number.isNaN(d.getTime())
     ? "—"
-    : d.toLocaleString("en-US", { month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit" });
+    : d.toLocaleString(terms().locale, { month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit" });
 }
 
 export function formatBytes(bytes: number): string {

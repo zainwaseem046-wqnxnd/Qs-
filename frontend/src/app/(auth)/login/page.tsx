@@ -99,6 +99,9 @@ function LoginForm() {
       <Field label="Password" error={form.formState.errors.password?.message} required>
         {(p) => <Input {...p} {...form.register("password")} type="password" autoComplete="current-password" />}
       </Field>
+      <div className="-mt-2 text-right">
+        <Link href="/forgot-password" className="text-sm text-accent hover:underline">Forgot password?</Link>
+      </div>
       <Button type="submit" className="w-full" loading={form.formState.isSubmitting}>
         Sign in
       </Button>

@@ -1,6 +1,6 @@
 # Database Schema
 
-PostgreSQL 16. Migrations: `backend/alembic/versions`. Current head: **0001** (Phase 1 foundation).
+PostgreSQL 16. Migrations: `backend/alembic/versions`. Current head: **0002** (US + UK markets, password reset).
 
 ## 1. Conventions
 
@@ -58,14 +58,15 @@ erDiagram
 
 | Table | Purpose | RLS rule |
 |---|---|---|
-| `tenants` | Customer organisation | visible if current tenant or user has active membership; insert/update only current tenant; no delete grant |
+| `tenants` | Customer organisation; `country_code` (US/GB), `data_region` (us/uk), currency, measurement system | visible if current tenant or user has active membership; insert/update only current tenant; no delete grant |
 | `users` | Global identity | own row, or members of current tenant; pre-auth lookups via `SECURITY DEFINER` functions |
 | `auth_sessions` | Rotating refresh tokens (SHA-256 hashed), family-based reuse detection | own sessions only |
+| `password_reset_tokens` | Single-use reset tokens (hashed), 60-minute expiry (rev. 0002) | own tokens only; lookup by hash via `auth_find_password_reset_by_token_hash` |
 | `permissions` | Global permission catalog (seeded) | no RLS; runtime role has `SELECT` only |
 | `roles`, `role_permissions` | System roles (`tenant_id IS NULL`) + tenant custom roles | system roles readable by all; writes only to current tenant's roles |
 | `tenant_memberships` | User ↔ tenant with role and status | current tenant, or the user's own memberships (to list orgs) |
 | `invitations` | One-time invite tokens (hashed), 7-day expiry | tenant isolation |
-| `addresses` | US-first postal addresses (`country_code` for expansion) | tenant isolation |
+| `addresses` | US (state + ZIP) or UK (county + postcode, normalised) addresses; `country_code` per address | tenant isolation |
 | `companies`, `contacts` | Directory of owners, consultants, subs, suppliers | tenant isolation |
 | `projects` | Project record, contract basics, US public-works flags | tenant isolation (+ app-level team visibility) |
 | `project_members` | Project team with project role | tenant isolation |
@@ -122,4 +123,4 @@ tests that own it (ADR-008). Money columns follow the conventions above. All are
 * Security SQL for a revision lives in `alembic_helpers/<revision>_*.py` and is frozen once shipped.
 * Seed data (permissions, system roles) is frozen inside the migration that introduced it; a test asserts the
   database catalog equals `app/domains/tenancy/permissions.py`.
-* Revision 0001 is not yet deployed anywhere; once it is, it must never be edited.
+* Revisions 0001 and 0002 are frozen (pushed); further changes require new revisions.

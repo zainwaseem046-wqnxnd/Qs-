@@ -11,17 +11,19 @@ from app.api.deps import (
     CurrentUser,
     client_ip,
 )
+from app.core import email
 from app.core.config import get_settings
 from app.core.db import set_rls_context
 from app.core.errors import NotAuthenticated
 from app.core.ratelimit import check_rate_limit
 from app.core.security import generate_token
 from app.domains.audit.service import AuditActor
-from app.domains.identity import service
+from app.domains.identity import emails, service
 from app.domains.identity.models import User
 from app.domains.identity.schemas import (
     AcceptInvitationRequest,
     ChangePasswordRequest,
+    ForgotPasswordRequest,
     InvitationPreview,
     LoginRequest,
     LoginResult,
@@ -32,6 +34,7 @@ from app.domains.identity.schemas import (
     MfaVerifyRequest,
     PasswordConfirmRequest,
     RegisterRequest,
+    ResetPasswordRequest,
     SessionOut,
     UpdateProfileRequest,
     UserOut,
@@ -91,6 +94,7 @@ def register(body: RegisterRequest, request: Request, response: Response, db: DB
     result = service.register_organization(
         db, full_name=body.full_name, email=body.email, password=body.password,
         organization_name=body.organization_name, home_state=body.home_state, meta=_meta(request),
+        country_code=body.country_code,
     )
     return _sign_in(db, request, response, result.user)
 
@@ -145,6 +149,30 @@ def logout(request: Request, response: Response, db: DB) -> Response:
     db.commit()
     response.status_code = 204
     _clear_auth_cookies(response)
+    return response
+
+
+@router.post("/password/forgot", status_code=202)
+def forgot_password(body: ForgotPasswordRequest, request: Request, db: DB) -> dict[str, str]:
+    check_rate_limit("forgot-ip", client_ip(request) or "unknown", 10)
+    check_rate_limit("forgot-email", body.email.lower(), 3)
+    result = service.request_password_reset(db, body.email, _meta(request))
+    db.commit()
+    if result is not None:
+        user, token = result
+        email.send(emails.password_reset(user.email, user.full_name, token))
+    # Identical response whether or not the account exists.
+    return {"status": "If an account exists for that email, a reset link has been sent."}
+
+
+@router.post("/password/reset", status_code=204)
+def reset_password(body: ResetPasswordRequest, request: Request, response: Response, db: DB) -> Response:
+    check_rate_limit("reset-ip", client_ip(request) or "unknown", 10)
+    user = service.reset_password(db, body.token, body.new_password, _meta(request))
+    db.commit()
+    email.send(emails.password_changed(user.email, user.full_name))
+    _clear_auth_cookies(response)
+    response.status_code = 204
     return response
 
 

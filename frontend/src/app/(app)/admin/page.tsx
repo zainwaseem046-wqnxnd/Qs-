@@ -31,14 +31,18 @@ function OrganizationSettings() {
   const [state, setState] = useState(t?.home_state ?? "");
   const [currency, setCurrency] = useState(t?.default_currency ?? "USD");
   const [tz, setTz] = useState(t?.timezone ?? "America/New_York");
+  const [units, setUnits] = useState(t?.measurement_system ?? "us_customary");
+  const isUS = t?.country_code !== "GB";
   const [error, setError] = useState<string | null>(null);
   const save = useMutation({
-    mutationFn: () => api<Tenant>("/tenant", { method: "PATCH", body: { name: name.trim(), home_state: state || null, default_currency: currency, timezone: tz } }),
+    mutationFn: () => api<Tenant>("/tenant", { method: "PATCH", body: { name: name.trim(), ...(isUS ? { home_state: state || null } : {}), default_currency: currency, timezone: tz, measurement_system: units } }),
     onSuccess: async () => { await qc.invalidateQueries({ queryKey: ["tenant"] }); notify("Organization settings saved"); setError(null); },
     onError: (err) => setError(msg(err)),
   });
   const editable = can(P.TENANT_MANAGE);
-  const zones = ["America/New_York", "America/Chicago", "America/Denver", "America/Phoenix", "America/Los_Angeles", "America/Anchorage", "Pacific/Honolulu", "America/Puerto_Rico"];
+  const zones = isUS
+    ? ["America/New_York", "America/Chicago", "America/Denver", "America/Phoenix", "America/Los_Angeles", "America/Anchorage", "Pacific/Honolulu", "America/Puerto_Rico"]
+    : ["Europe/London"];
   return (
     <Card>
       <CardHeader title="Organization" description={`Identifier: ${t?.slug ?? ""}`} />
@@ -46,10 +50,11 @@ function OrganizationSettings() {
         <form className="grid max-w-2xl grid-cols-1 gap-4 sm:grid-cols-2" onSubmit={(e) => { e.preventDefault(); if (name.trim().length < 2) return setError("Enter the organization name"); save.mutate(); }}>
           {error && <Alert tone="danger" className="sm:col-span-2">{error}</Alert>}
           <Field label="Organization name" required className="sm:col-span-2">{(p) => <Input {...p} value={name} onChange={(e) => setName(e.target.value)} disabled={!editable} />}</Field>
-          <Field label="Home state">{(p) => <Select {...p} value={state} onChange={(e) => setState(e.target.value)} disabled={!editable}><Options map={vocab?.us_states} placeholder="—" /></Select>}</Field>
+          <Field label="Country" hint={`Data hosted in the ${t?.data_region === "uk" ? "UK" : "US"} region`}>{(p) => <Input {...p} value={vocab?.countries?.[t?.country_code ?? "US"] ?? t?.country_code ?? ""} disabled />}</Field>
+          {isUS && <Field label="Home state">{(p) => <Select {...p} value={state} onChange={(e) => setState(e.target.value)} disabled={!editable}><Options map={vocab?.us_states} placeholder="—" /></Select>}</Field>}
           <Field label="Default currency">{(p) => <Select {...p} value={currency} onChange={(e) => setCurrency(e.target.value)} disabled={!editable}>{(vocab?.currencies ?? ["USD"]).map((c) => <option key={c}>{c}</option>)}</Select>}</Field>
           <Field label="Time zone">{(p) => <Select {...p} value={tz} onChange={(e) => setTz(e.target.value)} disabled={!editable}>{zones.map((z) => <option key={z}>{z}</option>)}</Select>}</Field>
-          <Field label="Measurement system" hint="Imperial (US customary) units">{(p) => <Input {...p} value="US customary" disabled />}</Field>
+          <Field label="Measurement system">{(p) => <Select {...p} value={units} onChange={(e) => setUnits(e.target.value)} disabled={!editable}><Options map={vocab?.measurement_systems} /></Select>}</Field>
           {editable && <div className="sm:col-span-2"><Button type="submit" loading={save.isPending}>Save settings</Button></div>}
         </form>
       </CardBody>
@@ -157,7 +162,11 @@ function Invitations() {
         footer={created ? <Button onClick={() => setOpen(false)}>Done</Button> : <><Button variant="secondary" onClick={() => setOpen(false)}>Cancel</Button><Button loading={create.isPending} onClick={() => { setError(null); if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email.trim())) return setError("Enter a valid email address"); if (!roleId) return setError("Choose a role"); create.mutate(); }}>Create invitation</Button></>}>
         {created ? (
           <div className="space-y-3">
-            <Alert tone="info" title="Email delivery is not configured yet">Copy this one-time link and send it to {created.email} securely. It is shown only once.</Alert>
+            {created.email_sent ? (
+              <Alert tone="success" title={`Invitation emailed to ${created.email}`}>If it doesn’t arrive, share this one-time link securely instead. It is shown only once.</Alert>
+            ) : (
+              <Alert tone="warning" title="The invitation email could not be sent">Copy this one-time link and send it to {created.email} securely. It is shown only once.</Alert>
+            )}
             <div className="flex gap-2">
               <Input readOnly value={created.accept_url ?? ""} aria-label="Invitation link" onFocus={(e) => e.currentTarget.select()} />
               <Button variant="secondary" onClick={async () => { await navigator.clipboard.writeText(created.accept_url ?? ""); setCopied(true); }}>{copied ? <Check className="size-4" /> : <Copy className="size-4" />}{copied ? "Copied" : "Copy"}</Button>

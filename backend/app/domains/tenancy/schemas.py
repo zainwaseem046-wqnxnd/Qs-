@@ -19,6 +19,8 @@ class TenantOut(ApiModel):
     measurement_system: str
     home_state: str | None
     timezone: str
+    country_code: str
+    data_region: str
 
 
 class RoleRef(ApiModel):
@@ -38,6 +40,7 @@ class TenantUpdate(InputModel):
     default_currency: str | None = None
     home_state: str | None = None
     timezone: str | None = Field(default=None, max_length=64)
+    measurement_system: Literal["us_customary", "metric"] | None = None
 
     @field_validator("default_currency")
     @classmethod
@@ -132,5 +135,6 @@ class InvitationOut(ApiModel):
 
 
 class InvitationCreated(InvitationOut):
-    # Shown exactly once. Email delivery is not configured in Phase 1; the inviter shares this link.
+    # Shown exactly once to the inviter as a fallback in case the email does not arrive.
     accept_url: str
+    email_sent: bool

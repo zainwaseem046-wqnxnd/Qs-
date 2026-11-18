@@ -12,6 +12,7 @@ import { api, ApiError } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
 import { P, useVocabulary } from "@/lib/hooks";
 import { parseMoneyInput } from "@/lib/money";
+import { terms } from "@/lib/region";
 import type { Company, Page, Project } from "@/lib/types";
 
 const optionalDate = z.string().regex(/^(\d{4}-\d{2}-\d{2})?$/, "Use a valid date");
@@ -29,7 +30,7 @@ const schema = z
     line1: z.string().max(200).optional(),
     city: z.string().max(120).optional(),
     state_code: z.string().optional(),
-    postal_code: z.string().regex(/^(\d{5}(-\d{4})?)?$/, "Use a 5-digit or ZIP+4 code").optional(),
+    postal_code: z.string().optional(),
     county: z.string().max(120).optional(),
     start_date: optionalDate,
     planned_completion_date: optionalDate,
@@ -47,11 +48,17 @@ const schema = z
   .refine((v) => !v.start_date || !v.planned_completion_date || v.planned_completion_date >= v.start_date, {
     path: ["planned_completion_date"],
     message: "Must be on or after the start date",
+  })
+  .superRefine((v, ctx) => {
+    const t = terms();
+    if (v.postal_code && !t.postalPattern.test(v.postal_code.trim())) {
+      ctx.addIssue({ code: "custom", path: ["postal_code"], message: t.postalError });
+    }
   });
 
 export type ProjectFormValues = z.infer<typeof schema>;
 
-function toValues(p?: Project, homeState?: string | null): ProjectFormValues {
+function toValues(p?: Project, homeState?: string | null, currency?: string): ProjectFormValues {
   return {
     number: p?.number ?? "",
     name: p?.name ?? "",
@@ -71,7 +78,7 @@ function toValues(p?: Project, homeState?: string | null): ProjectFormValues {
     planned_completion_date: p?.planned_completion_date ?? "",
     actual_completion_date: p?.actual_completion_date ?? "",
     original_contract_value: p?.original_contract_value ?? "",
-    currency: p?.currency ?? "USD",
+    currency: p?.currency ?? currency ?? "USD",
     retainage_percent: p?.retainage_percent ?? "",
     is_public_works: p?.is_public_works ?? false,
     prevailing_wage: p?.prevailing_wage ?? false,
@@ -94,7 +101,7 @@ function toPayload(v: ProjectFormValues, opts: { financials: boolean; edit: bool
     our_role: v.our_role,
     client_company_id: n(v.client_company_id),
     site_address: hasAddress
-      ? { line1: n(v.line1), city: n(v.city), state_code: n(v.state_code), postal_code: n(v.postal_code), county: n(v.county) }
+      ? { line1: n(v.line1), city: n(v.city), state_code: terms().usesStates ? n(v.state_code) : null, postal_code: n(v.postal_code), county: n(v.county) }
       : null,
     start_date: n(v.start_date),
     planned_completion_date: n(v.planned_completion_date),
@@ -136,7 +143,8 @@ export function ProjectForm({
     enabled: can(P.COMPANIES_VIEW),
   });
   const [error, setError] = useState<string | null>(null);
-  const form = useForm<ProjectFormValues>({ resolver: zodResolver(schema), defaultValues: toValues(project, tenant?.tenant.home_state) });
+  const form = useForm<ProjectFormValues>({ resolver: zodResolver(schema), defaultValues: toValues(project, tenant?.tenant.home_state, tenant?.tenant.default_currency) });
+  const t = terms(tenant?.tenant.country_code);
   const e = form.formState.errors;
   const reg = form.register;
 
@@ -223,14 +231,16 @@ export function ProjectForm({
           <Field label="City" error={e.city?.message} className="sm:col-span-2">
             {(p) => <Input {...p} {...reg("city")} />}
           </Field>
-          <Field label="State" error={e.state_code?.message} className="sm:col-span-2">
-            {(p) => <Select {...p} {...reg("state_code")}><Options map={vocab?.us_states} placeholder="Select…" /></Select>}
-          </Field>
-          <Field label="ZIP code" error={e.postal_code?.message} className="sm:col-span-1">
-            {(p) => <Input {...p} {...reg("postal_code")} inputMode="numeric" />}
-          </Field>
-          <Field label="County" error={e.county?.message} className="sm:col-span-1">
+          {t.usesStates && (
+            <Field label="State" error={e.state_code?.message} className="sm:col-span-2">
+              {(p) => <Select {...p} {...reg("state_code")}><Options map={vocab?.us_states} placeholder="Select…" /></Select>}
+            </Field>
+          )}
+          <Field label="County" error={e.county?.message} className={t.usesStates ? "sm:col-span-1" : "sm:col-span-2"}>
             {(p) => <Input {...p} {...reg("county")} />}
+          </Field>
+          <Field label={t.postalLabel} error={e.postal_code?.message} className={t.usesStates ? "sm:col-span-1" : "sm:col-span-2"}>
+            {(p) => <Input {...p} {...reg("postal_code")} placeholder={t.postalPlaceholder} autoCapitalize="characters" />}
           </Field>
         </div>
       </section>
@@ -259,7 +269,7 @@ export function ProjectForm({
               <Field label="Original contract value" hint="As awarded. Revisions come from approved change orders." error={e.original_contract_value?.message} className="sm:col-span-2">
                 {(p) => <Input {...p} {...reg("original_contract_value")} inputMode="decimal" placeholder="12,500,000.00" className="num" />}
               </Field>
-              <Field label="Retainage %" error={e.retainage_percent?.message}>
+              <Field label={`${t.retainage} %`} error={e.retainage_percent?.message}>
                 {(p) => <Input {...p} {...reg("retainage_percent")} inputMode="decimal" placeholder="10.00" className="num" />}
               </Field>
             </>
@@ -277,7 +287,7 @@ export function ProjectForm({
         </div>
         <div className="grid gap-3 sm:grid-cols-2">
           <Checkbox label="Public works project" hint="Enables public-works compliance workflows (Phase 5)" {...reg("is_public_works")} />
-          <Checkbox label="Prevailing wage applies" hint="Davis-Bacon or state prevailing wage" {...reg("prevailing_wage")} />
+          {t.usesStates && <Checkbox label="Prevailing wage applies" hint="Davis-Bacon or state prevailing wage" {...reg("prevailing_wage")} />}
         </div>
       </section>
 

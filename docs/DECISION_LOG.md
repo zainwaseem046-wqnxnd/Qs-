@@ -83,6 +83,37 @@ includes them. Project creators are added to the team automatically. Out-of-scop
 **Decision:** with no malware scanner integrated, versions are stored as `not_scanned` and the UI states it;
 uploads are still constrained by allow-lists and magic-byte checks.
 
+### ADR-017 Two markets: United States and United Kingdom
+**Context:** product owner decision (2026-11-18). **Decision:** organizations have a `country_code`
+(`US` | `GB`) that sets currency (USD/GBP), measurement system (US customary/metric, changeable), time zone,
+date format (MM/DD/YYYY vs DD/MM/YYYY), terminology (retainage vs retention) and address rules (state + ZIP
+vs county + postcode). Addresses default to the organization's country but may be explicitly the other
+country. US-only concepts (states, Davis-Bacon prevailing wage) are hidden for UK organizations.
+UK-specific commercial standards (NRM, JCT/NEC, VAT, CIS) are scheduled into Phase 2+ (OD-12).
+
+### ADR-018 Regional data residency by deployment
+**Decision:** each region runs a separate stack (database, storage, secrets): US in AWS us-east-2, UK in
+AWS eu-west-2 (London) for UK GDPR alignment. Organizations record `data_region` at creation (the
+deployment's `QS_DEPLOYMENT_REGION`) and a deployment refuses to serve another region's organization
+(`403 tenant_wrong_region`). Users sign up on their region's site. **Consequences:** no cross-region data
+flows; a user working for organizations in both regions has one account per region. A global "region
+picker" landing page is a later convenience.
+
+### ADR-019 Transactional email via SMTP, sender clearviewqs@gmail.com
+**Decision:** email is sent through a backend abstraction (`console` in development, `memory` in tests,
+`smtp` in staging/production — enforced at startup). Initial sender: clearviewqs@gmail.com over Gmail SMTP
+(STARTTLS, App Password held in the secret manager). Emails are sent after commit; failures are logged and
+surfaced (e.g. `email_sent: false`) without rolling back the action. Used for invitations, password reset
+and password-changed notices. **Consequences:** consumer Gmail has a ~500 recipients/day limit and weaker
+deliverability; move to a custom domain (Workspace or SES with SPF/DKIM/DMARC) before onboarding customers
+(OD-11). Supersedes the "link shown only to the inviter" approach of ADR-013 (the link remains as fallback).
+
+### ADR-020 Two-factor authentication is optional
+**Decision (product owner):** MFA is not mandatory and the app does not prompt users to enable it. TOTP MFA
+remains available in Profile & security for users who want it. **Consequences:** account security relies on
+strong passwords, rate limiting, refresh-token reuse detection and email-based recovery; per-organization
+enforcement can be added later without schema changes if customers require it.
+
 ### ADR-016 Dashboard never estimates unavailable metrics
 **Decision:** commercial metrics needing Phase 2 data are listed as unavailable with the reason, instead of
 being approximated from contract values.

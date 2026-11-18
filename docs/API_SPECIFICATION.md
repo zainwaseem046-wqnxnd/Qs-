@@ -29,11 +29,11 @@ cd backend && .venv/bin/python -c "import json; from app.main import create_app;
 | HTTP | Codes |
 |---|---|
 | 401 | `not_authenticated`, `token_invalid`, `invalid_credentials`, `invalid_code`, `refresh_invalid`, `refresh_superseded`, `refresh_reused`, `mfa_token_invalid` |
-| 403 | `permission_denied`, `csrf_failed`, `tenant_required`, `tenant_forbidden`, `tenant_invalid` |
+| 403 | `permission_denied`, `csrf_failed`, `tenant_required`, `tenant_forbidden`, `tenant_invalid`, `tenant_wrong_region` |
 | 404 | `not_found`, `invitation_invalid` |
 | 409 | `conflict`, `email_taken`, `duplicate_number`, `version_conflict`, `project_archived` |
 | 413 | `payload_too_large` |
-| 422 | `validation_failed`, `invalid_password`, `file_type_not_allowed`, `file_content_mismatch`, `file_content_rejected`, `file_empty` |
+| 422 | `validation_failed`, `invalid_password`, `reset_token_invalid`, `file_type_not_allowed`, `file_content_mismatch`, `file_content_rejected`, `file_empty` |
 | 429 | `rate_limited` |
 
 ## Authentication flow
@@ -60,6 +60,8 @@ cd backend && .venv/bin/python -c "import json; from app.main import create_app;
 | auth | `POST` | `/api/v1/auth/mfa/setup` | Mfa Setup |
 | auth | `POST` | `/api/v1/auth/mfa/verify` | Mfa Verify |
 | auth | `POST` | `/api/v1/auth/password` | Change Password |
+| auth | `POST` | `/api/v1/auth/password/forgot` | Forgot Password |
+| auth | `POST` | `/api/v1/auth/password/reset` | Reset Password |
 | auth | `POST` | `/api/v1/auth/refresh` | Refresh |
 | auth | `POST` | `/api/v1/auth/register` | Register |
 | dashboard | `GET` | `/api/v1/dashboard/summary` | Summary |

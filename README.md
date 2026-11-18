@@ -7,6 +7,8 @@ owners, civil contractors and specialty trades. It connects estimating, procurem
 applications, cost control, forecasting and field operations — with an AI Commercial Director that drafts and
 recommends, while authorised people approve.
 
+> **Markets:** United States and United Kingdom (USD/GBP, imperial/metric, in-region hosting).
+>
 > **Status: Phase 1 (Foundation) complete.** Identity, multi-tenancy with database-enforced isolation, RBAC,
 > MFA, projects, company directory, document management, audit trail, design system and the first executive
 > dashboard are built and tested. Commercial modules (estimating, budgets, commitments, change orders,
@@ -65,9 +67,9 @@ docker compose -f infra/docker-compose.yml up --build
 ## Tests
 
 ```bash
-cd backend  && .venv/bin/pytest -p no:warnings          # 76 tests: auth, MFA, RLS, RBAC, money, projects…
-cd frontend && npm run typecheck && npm test              # 18 unit/component tests
-cd frontend && npx playwright test                        # 3 e2e tests (needs API on :8000 and web on :3000)
+cd backend  && .venv/bin/pytest -p no:warnings          # 97 tests: auth, RLS, RBAC, money, US/UK, email…
+cd frontend && npm run typecheck && npm test              # 21 unit/component tests
+cd frontend && npx playwright test                        # 6 e2e tests (needs API on :8000 and web on :3000)
 ```
 
 ## Documentation

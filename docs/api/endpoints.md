@@ -12,6 +12,8 @@
 | auth | `POST` | `/api/v1/auth/mfa/setup` | Mfa Setup |
 | auth | `POST` | `/api/v1/auth/mfa/verify` | Mfa Verify |
 | auth | `POST` | `/api/v1/auth/password` | Change Password |
+| auth | `POST` | `/api/v1/auth/password/forgot` | Forgot Password |
+| auth | `POST` | `/api/v1/auth/password/reset` | Reset Password |
 | auth | `POST` | `/api/v1/auth/refresh` | Refresh |
 | auth | `POST` | `/api/v1/auth/register` | Register |
 | dashboard | `GET` | `/api/v1/dashboard/summary` | Summary |

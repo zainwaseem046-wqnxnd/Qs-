@@ -16,9 +16,12 @@
 | 1 | CI workflow | ✅ Written | `.github/workflows/ci.yml` — not yet run on GitHub |
 | 1 | Docker / compose | ⚠️ Written, unverified | no Docker daemon in build environment |
 | 1 | Documentation set | ✅ Done | `docs/` |
+| 1.1 | US + UK markets, regional data residency guard (migration 0002) | ✅ Done | `test_regions_email.py`, e2e UK spec |
+| 1.1 | Email (SMTP) — invitations, password reset, password-changed notice | ✅ Done (console/memory tested; live Gmail send not yet tested — needs App Password) | `test_regions_email.py` |
+| 1.1 | MFA optional, no prompts | ✅ Done | ADR-020 |
 | 2 | Commercial core | ⏳ Not started | see BACKLOG.md |
 
-## Latest test results (Phase 1 close)
-* Backend: 76 passed (pytest, PostgreSQL 16, runtime role `qs_app` with RLS).
-* Frontend: TypeScript strict — no errors; Vitest 18 passed; production build succeeded.
-* E2E: 3 passed (Chromium desktop + Pixel 7 emulation).
+## Latest test results (milestone 1.1)
+* Backend: 97 passed (pytest, PostgreSQL 16, runtime role `qs_app` with RLS).
+* Frontend: TypeScript strict — no errors; Vitest 21 passed; production build succeeded.
+* E2E: 6 passed (Chromium desktop + Pixel 7 emulation), stable across consecutive runs.

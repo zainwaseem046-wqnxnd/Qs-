@@ -18,11 +18,17 @@ ADDRESS_FIELDS = ["line1", "line2", "city", "state_code", "postal_code", "county
 CONTACT_FIELDS = ["first_name", "last_name", "title", "email", "phone", "mobile", "notes"]
 
 
-def apply_address(db: Session, tenant_id: uuid.UUID, current: Address | None, data: AddressIn | None) -> Address | None:
-    """Create, update or clear an owned address. Returns the address to link (or None)."""
+def apply_address(
+    db: Session, ctx: TenantContext, current: Address | None, data: AddressIn | None, field_prefix: str
+) -> Address | None:
+    """Create, update or clear an owned address. Returns the address to link (or None).
+
+    Country rules (US state/ZIP, UK postcode) are applied using the address country, defaulting to the
+    organization's country."""
     if data is None or data.is_empty():
         return None
-    address = current or Address(id=uuid.uuid4(), tenant_id=tenant_id)
+    data = data.normalised_for(ctx.tenant.country_code, field_prefix)
+    address = current or Address(id=uuid.uuid4(), tenant_id=ctx.tenant_id)
     for field in ADDRESS_FIELDS:
         setattr(address, field, getattr(data, field))
     if current is None:
@@ -60,7 +66,7 @@ def get_company(db: Session, company_id: uuid.UUID) -> Company:
 
 def create_company(db: Session, ctx: TenantContext, data: dict[str, object], address: AddressIn | None) -> Company:
     company = Company(id=uuid.uuid4(), tenant_id=ctx.tenant_id, **{k: data[k] for k in COMPANY_FIELDS if k in data})
-    company.address = apply_address(db, ctx.tenant_id, None, address)
+    company.address = apply_address(db, ctx, None, address, "address")
     db.add(company)
     db.flush()
     audit.record(db, ctx.actor(), action="company.created", entity_type="company", entity_id=company.id,
@@ -80,7 +86,7 @@ def update_company(
     for f in fields:
         setattr(company, f, data[f])
     if address_provided:
-        company.address = apply_address(db, ctx.tenant_id, company.address, address)
+        company.address = apply_address(db, ctx, company.address, address, "address")
     company.version += 1
     db.flush()
     changes = audit.diff(before, audit.snapshot(company, fields))

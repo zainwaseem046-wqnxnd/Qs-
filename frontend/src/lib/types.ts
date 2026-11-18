@@ -44,6 +44,8 @@ export interface Tenant {
   measurement_system: string;
   home_state: string | null;
   timezone: string;
+  country_code: string;
+  data_region: string;
 }
 
 export interface RoleRef {
@@ -256,6 +258,8 @@ export interface Vocabulary {
   document_categories: Record<string, string>;
   disciplines: Record<string, string>;
   currencies: string[];
+  countries: Record<string, string>;
+  measurement_systems: Record<string, string>;
 }
 
 export interface Member {
@@ -294,4 +298,5 @@ export interface Invitation {
   created_at: string;
   status: string;
   accept_url?: string;
+  email_sent?: boolean;
 }

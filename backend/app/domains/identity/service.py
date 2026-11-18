@@ -17,6 +17,7 @@ from sqlalchemy.orm import Session
 from app.core.config import get_settings
 from app.core.db import set_rls_context
 from app.core.errors import Conflict, NotAuthenticated, NotFound, ValidationFailed
+from app.core.regions import profile
 from app.core.security import (
     constant_time_equals,
     create_jwt,
@@ -31,7 +32,7 @@ from app.core.security import (
 )
 from app.domains.audit import service as audit
 from app.domains.audit.service import AuditActor
-from app.domains.identity.models import AuthSession, User
+from app.domains.identity.models import AuthSession, PasswordResetToken, User
 from app.domains.tenancy.models import Invitation, Role, Tenant, TenantMembership
 
 MFA_ISSUER = "QS Intelligence USA"
@@ -100,6 +101,7 @@ def register_organization(
     organization_name: str,
     home_state: str | None,
     meta: AuditActor,
+    country_code: str = "US",
 ) -> RegistrationResult:
     if find_user_by_email(db, email) is not None:
         raise Conflict("An account with this email already exists. Sign in instead.", code="email_taken")
@@ -111,8 +113,12 @@ def register_organization(
     db.add(user)
     db.flush()
 
+    country = profile(country_code)
     tenant = Tenant(
-        id=tenant_id, name=organization_name, slug=unique_tenant_slug(db, organization_name), home_state=home_state
+        id=tenant_id, name=organization_name, slug=unique_tenant_slug(db, organization_name),
+        home_state=home_state if country.code == "US" else None, country_code=country.code,
+        data_region=get_settings().deployment_region, default_currency=country.currency,
+        measurement_system=country.measurement_system, timezone=country.timezone,
     )
     db.add(tenant)
     db.flush()
@@ -394,3 +400,54 @@ def accept_invitation(
                  action="member.joined", entity_type="membership", entity_id=user.id,
                  summary=f"{user.full_name} accepted an invitation as {found.role.name}")
     return user, created
+
+
+# --- password reset -------------------------------------------------------------------------------
+def _find_reset(db: Session, token: str) -> PasswordResetToken | None:
+    stmt = select(PasswordResetToken).from_statement(
+        text("SELECT * FROM auth_find_password_reset_by_token_hash(:h)")
+    )
+    return db.scalars(stmt, {"h": hash_token(token)}).first()
+
+
+def request_password_reset(db: Session, email: str, meta: AuditActor) -> tuple[User, str] | None:
+    """Create a reset token if the account exists. Callers respond identically either way (no enumeration)."""
+    user = find_user_by_email(db, email)
+    if user is None or not user.is_active:
+        return None
+    set_rls_context(db, user_id=user.id)
+    now = _now()
+    db.execute(
+        update(PasswordResetToken)
+        .where(PasswordResetToken.user_id == user.id, PasswordResetToken.used_at.is_(None))
+        .values(used_at=now)  # only the newest link works
+    )
+    token = generate_token()
+    db.add(PasswordResetToken(
+        user_id=user.id, token_hash=hash_token(token), requested_ip=meta.ip_address,
+        expires_at=now + timedelta(seconds=get_settings().password_reset_ttl_seconds),
+    ))
+    audit.record(db, AuditActor(user.id, None, meta.ip_address, meta.user_agent, meta.request_id),
+                 action="auth.password_reset_requested", entity_type="user", entity_id=user.id,
+                 summary="Password reset requested", tenant_id=None)
+    db.flush()
+    return user, token
+
+
+def reset_password(db: Session, token: str, new_password: str, meta: AuditActor) -> User:
+    reset = _find_reset(db, token)
+    if reset is None or reset.used_at is not None or reset.expires_at <= _now():
+        raise ValidationFailed("This reset link is invalid or has expired. Request a new one.",
+                               code="reset_token_invalid")
+    set_rls_context(db, user_id=reset.user_id)
+    user = db.get(User, reset.user_id)
+    if user is None or not user.is_active:
+        raise ValidationFailed("This reset link is invalid or has expired. Request a new one.",
+                               code="reset_token_invalid")
+    reset.used_at = _now()
+    user.password_hash = hash_password(new_password)
+    revoke_all_sessions(db, user.id)
+    audit.record(db, AuditActor(user.id, None, meta.ip_address, meta.user_agent, meta.request_id),
+                 action="auth.password_reset", entity_type="user", entity_id=user.id,
+                 summary="Password reset via email link; all sessions revoked", tenant_id=None)
+    return user

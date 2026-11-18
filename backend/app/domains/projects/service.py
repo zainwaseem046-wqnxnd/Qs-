@@ -116,9 +116,10 @@ def create_project(db: Session, ctx: TenantContext, data: dict[str, Any], site_a
     _validate_client(db, data.get("client_company_id"))
     if _number_taken(db, data["number"]):
         raise Conflict(f"Project number {data['number']} is already in use", code="duplicate_number")
+    data["currency"] = data.get("currency") or ctx.tenant.default_currency
     values = {k: v for k, v in data.items() if k in PROJECT_FIELDS and not (k in NON_NULLABLE and v is None)}
     project = Project(id=uuid.uuid4(), tenant_id=ctx.tenant_id, created_by_id=ctx.user_id, **values)
-    project.site_address = apply_address(db, ctx.tenant_id, None, site_address)
+    project.site_address = apply_address(db, ctx, None, site_address, "site_address")
     db.add(project)
     try:
         db.flush()
@@ -163,7 +164,7 @@ def update_project(
     if start and planned and planned < start:
         raise ValidationFailed("Planned completion date must be on or after the start date")
     if address_provided:
-        project.site_address = apply_address(db, ctx.tenant_id, project.site_address, site_address)
+        project.site_address = apply_address(db, ctx, project.site_address, site_address, "site_address")
     project.version += 1
     db.flush()
     changes = audit.diff(before, audit.snapshot(project, fields))

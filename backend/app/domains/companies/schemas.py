@@ -2,39 +2,51 @@ from __future__ import annotations
 
 import uuid
 from datetime import datetime
+from typing import Literal
 
 from pydantic import EmailStr, Field, field_validator
 
+from app.core.errors import ValidationFailed
+from app.core.regions import normalise_postal_code, validate_region
 from app.core.schemas import ApiModel, InputModel
-from app.domains.projects.constants import COMPANY_TYPES, US_STATES
+from app.domains.projects.constants import COMPANY_TYPES
 
 
 class AddressIn(InputModel):
+    """Postal address. Country-specific rules (US state + ZIP, UK postcode) are applied by
+    ``normalised_for`` using the address country, which defaults to the organization's country."""
+
     line1: str | None = Field(default=None, max_length=200)
     line2: str | None = Field(default=None, max_length=200)
     city: str | None = Field(default=None, max_length=120)
-    state_code: str | None = None
-    postal_code: str | None = Field(default=None, pattern=r"^\d{5}(-\d{4})?$")
+    state_code: str | None = Field(default=None, max_length=2)
+    postal_code: str | None = Field(default=None, max_length=10)
     county: str | None = Field(default=None, max_length=120)
-    country_code: str = Field(default="US", pattern=r"^[A-Z]{2}$")
+    country_code: Literal["US", "GB"] | None = None
 
     @field_validator("*", mode="before")
     @classmethod
     def _blank_to_none(cls, v: object) -> object:
         return None if isinstance(v, str) and v.strip() == "" else v
 
-    @field_validator("state_code")
-    @classmethod
-    def _state(cls, v: str | None) -> str | None:
-        if v is None:
-            return v
-        v = v.upper()
-        if v not in US_STATES:
-            raise ValueError("Unknown US state or territory code")
-        return v
-
     def is_empty(self) -> bool:
         return not any([self.line1, self.line2, self.city, self.state_code, self.postal_code, self.county])
+
+    def normalised_for(self, default_country: str, field_prefix: str) -> AddressIn:
+        country = self.country_code or default_country
+        errors = []
+        state = postal = None
+        try:
+            state = validate_region(country, self.state_code)
+        except ValueError as exc:
+            errors.append({"field": f"{field_prefix}.state_code", "message": str(exc)})
+        try:
+            postal = normalise_postal_code(country, self.postal_code)
+        except ValueError as exc:
+            errors.append({"field": f"{field_prefix}.postal_code", "message": str(exc)})
+        if errors:
+            raise ValidationFailed("Invalid address", details=errors)
+        return self.model_copy(update={"country_code": country, "state_code": state, "postal_code": postal})
 
 
 class AddressOut(ApiModel):

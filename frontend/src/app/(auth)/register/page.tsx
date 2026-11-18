@@ -24,6 +24,7 @@ const schema = z.object({
   email: z.email("Enter a valid email address"),
   password: passwordRule,
   organization_name: z.string().trim().min(2, "Enter your company name").max(200),
+  country_code: z.enum(["US", "GB"]),
   home_state: z.string().optional(),
 });
 type Values = z.infer<typeof schema>;
@@ -32,8 +33,9 @@ export default function RegisterPage() {
   const { setSession } = useAuth();
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
-  const form = useForm<Values>({ resolver: zodResolver(schema), defaultValues: { home_state: "" } });
+  const form = useForm<Values>({ resolver: zodResolver(schema), defaultValues: { home_state: "", country_code: "US" } });
   const errors = form.formState.errors;
+  const country = form.watch("country_code");
 
   const onSubmit = form.handleSubmit(async (values) => {
     setError(null);
@@ -41,7 +43,7 @@ export default function RegisterPage() {
       const result = await api<LoginResult>("/auth/register", {
         method: "POST",
         tenant: false,
-        body: { ...values, home_state: values.home_state || null },
+        body: { ...values, home_state: values.country_code === "US" ? values.home_state || null : null },
       });
       if (result.session) {
         setSession(result.session);
@@ -65,6 +67,15 @@ export default function RegisterPage() {
       <Field label="Company name" error={errors.organization_name?.message} required>
         {(p) => <Input {...p} {...form.register("organization_name")} autoComplete="organization" autoFocus />}
       </Field>
+      <Field label="Country" hint="Sets currency, units, date format and address rules" error={errors.country_code?.message} required>
+        {(p) => (
+          <Select {...p} {...form.register("country_code")}>
+            <option value="US">United States (USD, imperial units)</option>
+            <option value="GB">United Kingdom (GBP, metric units)</option>
+          </Select>
+        )}
+      </Field>
+      {country === "US" && (
       <Field label="Home state" hint="Used as the default for new projects" error={errors.home_state?.message}>
         {(p) => (
           <Select {...p} {...form.register("home_state")}>
@@ -77,6 +88,7 @@ export default function RegisterPage() {
           </Select>
         )}
       </Field>
+      )}
       <Field label="Your full name" error={errors.full_name?.message} required>
         {(p) => <Input {...p} {...form.register("full_name")} autoComplete="name" />}
       </Field>

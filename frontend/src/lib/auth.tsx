@@ -3,6 +3,7 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import { api, ApiError, getTenantId, setTenantId } from "./api";
+import { setRegion } from "./region";
 import type { CurrentTenant, SessionInfo } from "./types";
 
 interface AuthState {
@@ -81,6 +82,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       queryClient.clear();
     }
   }, [queryClient]);
+
+  // Region conventions (dates, labels) follow the active organization. Set during render so children
+  // formatting in the same render already use the right locale.
+  setRegion(tenantQuery.data?.tenant.country_code);
 
   const value = useMemo<AuthState>(() => {
     const perms = new Set(tenantQuery.data?.permissions ?? []);

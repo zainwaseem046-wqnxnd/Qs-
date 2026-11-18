@@ -28,6 +28,12 @@ action.
 4. **US-native**: CSI classifications (customer-licensed), AIA G702/G703-compatible pay app workflows,
    retainage, lien waivers, Davis-Bacon/WH-347, state-by-state rules — versioned and sourced.
 
+### Markets
+**United States and United Kingdom** (product owner decision, 2026-11-18). Organizations choose their country
+at sign-up; it drives currency (USD/GBP), units (imperial/metric), date format, terminology (retainage vs
+retention) and address rules. Data is hosted in-region (US or UK). UK-specific commercial standards (NRM,
+JCT/NEC, VAT, CIS) are on the Phase 2+ roadmap.
+
 ## 3. Customers and personas
 
 | Segment | Persona | Top jobs to be done |
@@ -56,7 +62,9 @@ summarised in §6.
 | F-3 | Sessions are secure and revocable | 15-min access tokens; refresh rotation with reuse detection; logout and password change revoke sessions | ✅ tested |
 | F-4 | Users can belong to several organisations and switch between them | Organisation switcher lists active memberships; data never mixes | ✅ tested (API + UI e2e) |
 | F-5 | Admins invite people with a role | One-time, expiring links; existing accounts must prove their password; revocation works | ✅ tested |
-| F-6 | Profile and security self-service | Change name, password; enable/disable MFA with QR code | ✅ built; API tested |
+| F-6 | Profile and security self-service | Change name, password; optional MFA with QR code | ✅ built; API tested |
+| F-7 | US or UK organization | Country chosen at sign-up sets currency, units, time zone, date format, address rules | ✅ tested (API + e2e) |
+| F-8 | Email: invitations, password reset | Invitation emailed; reset link single-use, 60 min, no account enumeration; password-changed notice | ✅ tested |
 
 ### 5.2 Roles and permissions
 | ID | Requirement | Acceptance criteria | Status |

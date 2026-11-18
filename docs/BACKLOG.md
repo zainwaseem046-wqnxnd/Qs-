@@ -5,8 +5,11 @@ Priority: P0 (blocks next phase) · P1 (this phase) · P2 (soon) · P3 (later). 
 ## Phase 2 carry-overs (platform)
 | ID | Item | Priority |
 |---|---|---|
-| B-1 | Transactional email provider (invitations, password reset, email verification) | P0 |
-| B-2 | Password reset flow (depends on B-1) | P0 |
+| B-1 | ~~Transactional email (invitations, password reset)~~ — done (SMTP, ADR-019) | ✅ |
+| B-2 | ~~Password reset flow~~ — done | ✅ |
+| B-1a | Custom sending domain with SPF/DKIM/DMARC (OD-11) | P1 |
+| B-16 | Regional deployment configs (US us-east-2, UK eu-west-2) in Terraform | P1 |
+| B-17 | Region picker landing page (us./uk. sites) | P2 |
 | B-3 | Background worker (Redis queue) with tenant-scoped job context | P0 |
 | B-4 | Malware scanning of uploads (ClamAV worker or S3 Malware Protection); block download of infected files | P1 |
 | B-5 | Structured JSON logging + request IDs propagated to logs | P1 |
@@ -15,7 +18,7 @@ Priority: P0 (blocks next phase) · P1 (this phase) · P2 (soon) · P3 (later). 
 | B-8 | Exercise Dockerfiles and compose stack in CI | P1 |
 | B-9 | Terraform: staging VPC, RDS, ElastiCache, S3, ECS, WAF | P1 |
 | B-10 | Strict CSP with nonces for the web app | P2 |
-| B-11 | MFA recovery codes; admin "require MFA for this organization" | P1 |
+| B-11 | MFA recovery codes (MFA stays optional — ADR-020) | P3 |
 | B-12 | Axe accessibility checks in Playwright | P2 |
 | B-13 | Signed, short-lived S3 download URLs for large files | P2 |
 | B-14 | Audit log export (CSV) and hash chaining | P2 |
@@ -24,7 +27,8 @@ Priority: P0 (blocks next phase) · P1 (this phase) · P2 (soon) · P3 (later). 
 ## Phase 2 product
 | ID | Item | Priority |
 |---|---|---|
-| C-1 | Classifications + cost codes (import customer-licensed MasterFormat/UniFormat) | P0 |
+| C-1 | Cost codes in **each customer's own format**: configurable segments/levels, CSV import (ADR-009, OD-4) | P0 |
+| C-10 | UK commercial vocabulary: delivery routes (traditional, D&B, two-stage, management contracting), JCT/NEC contract types, retention, VAT, CIS | P0 |
 | C-2 | Estimating: estimates, versions, lines, assemblies, markups, alternates, build-up view | P0 |
 | C-3 | Budgets from approved estimates; transfers; revised budget | P0 |
 | C-4 | Prime contracts + commitments (subcontracts/POs) | P0 |

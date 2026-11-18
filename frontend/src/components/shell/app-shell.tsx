@@ -1,7 +1,7 @@
 "use client";
 
 import * as Menu from "@radix-ui/react-dropdown-menu";
-import { Building, ChevronsUpDown, LogOut, Menu as MenuIcon, ShieldCheck, UserRound, X } from "lucide-react";
+import { Building, ChevronsUpDown, LogOut, Menu as MenuIcon, UserRound, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState, type ReactNode } from "react";
@@ -149,7 +149,6 @@ function UserMenu() {
 
 export function AppShell({ children }: { children: ReactNode }) {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const { session } = useAuth();
   const pathname = usePathname();
   useEffect(() => setMobileOpen(false), [pathname]);
   return (
@@ -178,11 +177,6 @@ export function AppShell({ children }: { children: ReactNode }) {
           </button>
           <TenantSwitcher />
           <div className="flex-1" />
-          {session && !session.user.mfa_enabled && (
-            <Link href="/account" className="hidden items-center gap-1.5 rounded-md bg-warning-soft px-2.5 py-1 text-xs font-medium text-warning sm:inline-flex">
-              <ShieldCheck className="size-3.5" /> Enable two-factor authentication
-            </Link>
-          )}
           <ThemeToggle />
           <UserMenu />
         </header>

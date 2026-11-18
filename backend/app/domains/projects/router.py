@@ -7,6 +7,7 @@ from fastapi import APIRouter, Depends, Query, Response
 
 from app.api.deps import DB, Ctx, TenantContext, require
 from app.core.money import SUPPORTED_CURRENCIES
+from app.core.regions import COUNTRIES, MEASUREMENT_SYSTEMS
 from app.core.schemas import Page
 from app.domains.audit.schemas import AuditEventOut, to_out
 from app.domains.audit.service import list_events
@@ -42,6 +43,7 @@ def vocabulary(ctx: Ctx) -> VocabularyOut:
         party_roles=C.PARTY_ROLES, phase_statuses=C.PHASE_STATUSES, us_states=C.US_STATES,
         company_types=C.COMPANY_TYPES, document_categories=DOCUMENT_CATEGORIES, disciplines=DISCIPLINES,
         currencies=sorted(SUPPORTED_CURRENCIES),
+        countries={c.code: c.name for c in COUNTRIES.values()}, measurement_systems=MEASUREMENT_SYSTEMS,
     )
 
 

@@ -22,6 +22,7 @@ import { api, ApiError } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
 import { formatDate, label, P, useVocabulary } from "@/lib/hooks";
 import { formatMoney, formatPercent } from "@/lib/money";
+import { terms } from "@/lib/region";
 import type { AuditEvent, Company, Member, Page, Project, ProjectMember, ProjectParty, ProjectPhase } from "@/lib/types";
 
 function useInvalidate(projectId: string) {
@@ -58,7 +59,7 @@ function Overview({ project, onEdit }: { project: Project; onEdit: () => void })
               { label: "Site", value: address },
               { label: "County", value: a?.county ?? "—" },
               { label: "Public works", value: project.is_public_works ? "Yes" : "No" },
-              { label: "Prevailing wage", value: project.prevailing_wage ? "Yes" : "No" },
+              ...(terms().usesStates ? [{ label: "Prevailing wage", value: project.prevailing_wage ? "Yes" : "No" }] : []),
               { label: "Reporting period ends", value: project.reporting_period_end_day === 31 ? "Month end" : `Day ${project.reporting_period_end_day}` },
               { label: "Currency", value: project.currency },
             ]}
@@ -74,7 +75,7 @@ function Overview({ project, onEdit }: { project: Project; onEdit: () => void })
               columns={1}
               items={[
                 { label: "Original contract value", value: project.financials_visible ? <span className="num whitespace-nowrap text-lg font-semibold">{formatMoney(project.original_contract_value, project.currency)}</span> : restricted },
-                { label: "Retainage", value: project.financials_visible ? formatPercent(project.retainage_percent) : restricted },
+                { label: terms().retainage, value: project.financials_visible ? formatPercent(project.retainage_percent) : restricted },
               ]}
             />
             <p className="mt-4 text-xs text-subtle">Revised contract value, budgets and forecasts are calculated from change orders and cost records in Phase 2.</p>

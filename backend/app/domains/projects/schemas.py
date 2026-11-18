@@ -88,7 +88,7 @@ class ProjectCreate(_ProjectFields):
     delivery_method: str
     contract_type: str
     our_role: str = "general_contractor"
-    currency: CurrencyCode = "USD"
+    currency: CurrencyCode | None = Field(default=None, description="Defaults to the organization currency")
 
     @field_validator("status", "sector", "delivery_method", "contract_type", "our_role")
     @classmethod
@@ -259,3 +259,5 @@ class VocabularyOut(ApiModel):
     document_categories: dict[str, str]
     disciplines: dict[str, str]
     currencies: list[str]
+    countries: dict[str, str]
+    measurement_systems: dict[str, str]

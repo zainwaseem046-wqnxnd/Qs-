@@ -25,7 +25,12 @@ class Tenant(UUIDPrimaryKey, Timestamps, Base):
     """A customer organisation (contractor, owner, developer...). The unit of data isolation."""
 
     __tablename__ = "tenants"
-    __table_args__ = (CheckConstraint("slug ~ '^[a-z0-9][a-z0-9-]{1,62}$'", name="slug_format"),)
+    __table_args__ = (
+        CheckConstraint("slug ~ '^[a-z0-9][a-z0-9-]{1,62}$'", name="slug_format"),
+        CheckConstraint("country_code IN ('US', 'GB')", name="country_code_supported"),
+        CheckConstraint("data_region IN ('us', 'uk')", name="data_region_supported"),
+        CheckConstraint("measurement_system IN ('us_customary', 'metric')", name="measurement_system_supported"),
+    )
 
     name: Mapped[str] = mapped_column(String(200), nullable=False)
     slug: Mapped[str] = mapped_column(String(63), nullable=False, unique=True)
@@ -35,6 +40,9 @@ class Tenant(UUIDPrimaryKey, Timestamps, Base):
         String(20), nullable=False, default="us_customary", server_default="us_customary"
     )
     home_state: Mapped[str | None] = mapped_column(String(2))
+    # Business country (drives defaults and address rules) and the regional deployment holding the data.
+    country_code: Mapped[str] = mapped_column(String(2), nullable=False, default="US", server_default="US")
+    data_region: Mapped[str] = mapped_column(String(2), nullable=False, default="us", server_default="us")
     timezone: Mapped[str] = mapped_column(
         String(64), nullable=False, default="America/New_York", server_default="America/New_York"
     )

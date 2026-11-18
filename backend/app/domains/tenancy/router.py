@@ -7,7 +7,9 @@ from fastapi import APIRouter, Depends, Response
 from sqlalchemy import select
 
 from app.api.deps import DB, Ctx, TenantContext, require
+from app.core import email
 from app.core.config import get_settings
+from app.domains.identity import emails
 from app.domains.tenancy import service
 from app.domains.tenancy.models import Permission
 from app.domains.tenancy.permissions import P
@@ -141,10 +143,11 @@ def create_invitation(
     inv, token = service.create_invitation(db, ctx, str(body.email), body.role_id)
     role = service.get_role(db, inv.role_id)
     db.commit()
+    sent = email.send(emails.invitation(inv.email, ctx.user.full_name, ctx.tenant.name, role.name, token))
     return InvitationCreated(
         id=inv.id, email=inv.email, role=RoleRef.model_validate(role), expires_at=inv.expires_at,
         created_at=inv.created_at, status="pending",
-        accept_url=f"{get_settings().public_app_url.rstrip('/')}/invite/{token}",
+        accept_url=f"{get_settings().public_app_url.rstrip('/')}/invite/{token}", email_sent=sent,
     )
 
 

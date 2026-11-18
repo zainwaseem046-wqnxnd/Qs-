@@ -18,6 +18,8 @@ os.environ.setdefault("QS_DATABASE_URL", "postgresql+psycopg://qs_app:qs_app_dev
 os.environ.setdefault("QS_MIGRATION_DATABASE_URL", "postgresql+psycopg://qs_owner:qs_owner_dev@localhost:5432/qs_test")
 os.environ.setdefault("QS_STORAGE_LOCAL_PATH", tempfile.mkdtemp(prefix="qs-test-storage-"))
 os.environ.setdefault("QS_MAX_UPLOAD_BYTES", str(2 * 1024 * 1024))
+os.environ.setdefault("QS_EMAIL_BACKEND", "memory")
+os.environ.setdefault("QS_EMAIL_FROM_ADDRESS", "no-reply@example.com")
 
 import pytest
 from alembic.config import Config

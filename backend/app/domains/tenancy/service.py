@@ -27,6 +27,8 @@ def _now() -> datetime:
 # --- settings ---------------------------------------------------------------------------------------
 def update_tenant(db: Session, ctx: TenantContext, changes: dict[str, object]) -> None:
     tenant = ctx.tenant
+    if changes.get("home_state") and tenant.country_code != "US":
+        raise ValidationFailed("Home state applies to US organizations only")
     fields = list(changes)
     before = audit.snapshot(tenant, fields)
     for key, value in changes.items():

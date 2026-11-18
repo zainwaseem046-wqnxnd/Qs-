@@ -5,7 +5,9 @@ import { Button } from "@/components/ui/button";
 import { Alert } from "@/components/ui/feedback";
 import { Field, Input, Options, Select, Textarea } from "@/components/ui/form";
 import { api, ApiError } from "@/lib/api";
+import { useAuth } from "@/lib/auth";
 import { useVocabulary } from "@/lib/hooks";
+import { terms } from "@/lib/region";
 import type { Company } from "@/lib/types";
 
 interface Values {
@@ -42,6 +44,7 @@ function initial(c?: Company): Values {
 
 export function CompanyForm({ company, onSaved, onCancel }: { company?: Company; onSaved: (c: Company) => void; onCancel: () => void }) {
   const vocab = useVocabulary().data;
+  const t = terms(useAuth().tenant?.tenant.country_code);
   const [v, setV] = useState<Values>(initial(company));
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [error, setError] = useState<string | null>(null);
@@ -53,7 +56,7 @@ export function CompanyForm({ company, onSaved, onCancel }: { company?: Company;
     const errs: Record<string, string> = {};
     if (!v.name.trim()) errs.name = "Enter the company name";
     if (v.email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v.email)) errs.email = "Enter a valid email";
-    if (v.postal_code && !/^\d{5}(-\d{4})?$/.test(v.postal_code)) errs.postal_code = "Use a 5-digit or ZIP+4 code";
+    if (v.postal_code && !t.postalPattern.test(v.postal_code.trim())) errs.postal_code = t.postalError;
     setErrors(errs);
     if (Object.keys(errs).length) return;
     const hasAddress = [v.line1, v.city, v.state_code, v.postal_code].some((x) => x.trim());
@@ -66,7 +69,7 @@ export function CompanyForm({ company, onSaved, onCancel }: { company?: Company;
       phone: v.phone,
       email: v.email,
       notes: v.notes,
-      address: hasAddress ? { line1: v.line1, city: v.city, state_code: v.state_code, postal_code: v.postal_code } : null,
+      address: hasAddress ? { line1: v.line1, city: v.city, state_code: t.usesStates ? v.state_code : null, postal_code: v.postal_code } : null,
     };
     setBusy(true);
     setError(null);
@@ -99,8 +102,8 @@ export function CompanyForm({ company, onSaved, onCancel }: { company?: Company;
         <Field label="Street address" className="sm:col-span-2">{(p) => <Input {...p} value={v.line1} onChange={set("line1")} />}</Field>
         <Field label="City">{(p) => <Input {...p} value={v.city} onChange={set("city")} />}</Field>
         <div className="grid grid-cols-2 gap-4">
-          <Field label="State" error={errors.state_code}>{(p) => <Select {...p} value={v.state_code} onChange={set("state_code")}><Options map={vocab?.us_states} placeholder="—" /></Select>}</Field>
-          <Field label="ZIP" error={errors.postal_code}>{(p) => <Input {...p} value={v.postal_code} onChange={set("postal_code")} inputMode="numeric" />}</Field>
+          {t.usesStates && <Field label="State" error={errors.state_code}>{(p) => <Select {...p} value={v.state_code} onChange={set("state_code")}><Options map={vocab?.us_states} placeholder="—" /></Select>}</Field>}
+          <Field label={t.postalLabel} error={errors.postal_code} className={t.usesStates ? undefined : "col-span-2"}>{(p) => <Input {...p} value={v.postal_code} onChange={set("postal_code")} placeholder={t.postalPlaceholder} />}</Field>
         </div>
         <Field label="Notes" className="sm:col-span-2">{(p) => <Textarea {...p} value={v.notes} onChange={set("notes")} rows={3} />}</Field>
       </div>

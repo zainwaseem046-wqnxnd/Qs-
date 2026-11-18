@@ -30,13 +30,16 @@ below is marked **Implemented** (with its test), **Planned**, or **Infrastructur
 * Refresh tokens: 256-bit random, stored as SHA-256 hashes, rotated on every use; replaying a rotated token
   outside a 30 s concurrency grace window revokes the entire session family (tested).
 * Password change revokes all sessions. Logout revokes the session family.
-* MFA: RFC 6238 TOTP, secrets encrypted at rest (Fernet), step-based replay protection, password
-  re-confirmation to enrol or disable (tested).
+* MFA: RFC 6238 TOTP, **optional by product decision (ADR-020)**; secrets encrypted at rest (Fernet),
+  step-based replay protection, password re-confirmation to enrol or disable (tested).
+* Password reset: emailed single-use links (256-bit token, SHA-256 at rest, 60-minute expiry, only the newest
+  link valid), identical responses whether or not the account exists, per-email and per-IP rate limits, all
+  sessions revoked on reset, "password changed" notification email (tested).
 * Rate limits (Redis, in-process fallback): login per email and per IP, registration per IP, MFA and
   invitation endpoints. Edge rate limiting via WAF is **Infrastructure**.
 * Login failures produce identical responses for unknown email vs wrong password (tested).
-* **Planned**: SSO (OIDC/SAML via an `external_identities` table, per-tenant enforcement), WebAuthn/passkeys,
-  recovery codes, email verification (needs an email provider), breached-password screening (k-anonymity API).
+* **Planned**: SSO (OIDC/SAML via an `external_identities` table), WebAuthn/passkeys, MFA recovery codes,
+  breached-password screening (k-anonymity API).
 
 ### Sessions & browser — Implemented
 * Cookies: `HttpOnly`, `SameSite=Lax`, `Secure` (enforced outside development); refresh cookie scoped to
@@ -56,6 +59,17 @@ below is marked **Implemented** (with its test), **Planned**, or **Infrastructur
   dashboard totals, sort order and the audit log (tested).
 * Database: RLS on every tenant table, runtime role without BYPASSRLS or DDL rights, fail-closed context,
   composite tenant FKs (tested at the SQL level, not only through the API).
+
+### Data residency — Implemented (application) / Infrastructure (hosting)
+* US and UK organizations are stored in separate regional deployments (ADR-018). Each organization records
+  its `data_region`; a deployment refuses requests for another region's organization (tested).
+* UK deployment targets UK GDPR / Data Protection Act 2018 obligations (privacy notice, DPA with customers,
+  ICO registration, international transfer assessment for sub-processors such as model providers) — to be
+  completed before UK launch.
+
+### Email — Implemented
+* SMTP over STARTTLS with certificate verification; credentials only from the secret manager; HTML bodies
+  escape all user-provided values (tested); production startup fails without SMTP configured.
 
 ### Data protection
 * In transit: TLS 1.2+ at the load balancer — **Infrastructure**.

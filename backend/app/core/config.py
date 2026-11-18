@@ -22,7 +22,11 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", env_prefix="QS_", extra="ignore")
 
     environment: Literal["development", "test", "staging", "production"] = "development"
-    app_name: str = "QS Intelligence USA"
+    app_name: str = "QS Intelligence"
+
+    # Each regional deployment (US, UK) runs its own stack and database. Organizations are created in, and
+    # only served by, the region of the deployment they signed up on (see docs/DECISION_LOG.md ADR-017).
+    deployment_region: Literal["us", "uk"] = "us"
 
     # Runtime connection: a NON-owner role that is subject to Row-Level Security.
     database_url: str = "postgresql+psycopg://qs_app:qs_app_dev@localhost:5432/qs_dev"
@@ -54,6 +58,18 @@ class Settings(BaseSettings):
     s3_region: str = "us-east-1"
     max_upload_bytes: int = 100 * 1024 * 1024
 
+    # Email. "console" logs messages (development), "memory" captures them (tests), "smtp" sends them.
+    # SMTP credentials (e.g. a Gmail app password) are secrets: set QS_SMTP_PASSWORD in the environment only.
+    email_backend: Literal["console", "memory", "smtp"] = "console"
+    email_from_address: str = "no-reply@localhost"
+    email_from_name: str = "QS Intelligence"
+    smtp_host: str = "smtp.gmail.com"
+    smtp_port: int = 587
+    smtp_username: str | None = None
+    smtp_password: str | None = None
+    smtp_timeout_seconds: int = 10
+    password_reset_ttl_seconds: int = 60 * 60
+
     rate_limit_enabled: bool = True
     login_rate_limit_per_minute: int = 10
     register_rate_limit_per_minute: int = 5
@@ -67,6 +83,8 @@ class Settings(BaseSettings):
                 raise ValueError("QS_FIELD_ENCRYPTION_KEY must be set outside development")
             if not self.cookie_secure:
                 raise ValueError("QS_COOKIE_SECURE must be true outside development")
+            if self.email_backend != "smtp" or not self.smtp_password:
+                raise ValueError("QS_EMAIL_BACKEND=smtp with QS_SMTP_PASSWORD is required outside development")
         return self
 
 

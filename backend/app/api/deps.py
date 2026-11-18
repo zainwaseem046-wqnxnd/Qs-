@@ -19,6 +19,7 @@ from fastapi import Depends, Header, Request
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
+from app.core.config import get_settings
 from app.core.db import get_db, set_rls_context
 from app.core.errors import NotAuthenticated, PermissionDenied
 from app.core.security import constant_time_equals, decode_jwt
@@ -156,6 +157,12 @@ def get_tenant_context(
     role = db.get(Role, membership.role_id)
     if tenant is None or role is None or tenant.status != "active":
         raise PermissionDenied("You do not have access to this organization", code="tenant_forbidden")
+    if tenant.data_region != get_settings().deployment_region:
+        # Guardrail: a regional deployment never serves another region's organization (data residency).
+        raise PermissionDenied(
+            f"This organization is hosted in the {tenant.data_region.upper()} region. Sign in at that region's site.",
+            code="tenant_wrong_region",
+        )
     return TenantContext(
         user=uctx.user,
         tenant=tenant,

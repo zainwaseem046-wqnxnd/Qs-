@@ -2,8 +2,9 @@ from __future__ import annotations
 
 import uuid
 from datetime import datetime
+from typing import Literal
 
-from pydantic import EmailStr, Field, field_validator
+from pydantic import EmailStr, Field, field_validator, model_validator
 
 from app.core.schemas import ApiModel, InputModel
 from app.core.security import PASSWORD_MAX_LENGTH, validate_password_strength
@@ -15,7 +16,8 @@ class RegisterRequest(InputModel):
     email: EmailStr
     password: str = Field(max_length=PASSWORD_MAX_LENGTH)
     organization_name: str = Field(min_length=2, max_length=200)
-    home_state: str | None = Field(default=None, description="Two-letter US state code")
+    country_code: Literal["US", "GB"] = "US"
+    home_state: str | None = Field(default=None, description="Two-letter US state code (US organizations only)")
 
     @field_validator("password")
     @classmethod
@@ -31,6 +33,12 @@ class RegisterRequest(InputModel):
         if v not in US_STATES:
             raise ValueError("Unknown US state code")
         return v
+
+    @model_validator(mode="after")
+    def _state_only_for_us(self) -> RegisterRequest:
+        if self.country_code != "US" and self.home_state:
+            raise ValueError("Home state applies to US organizations only")
+        return self
 
 
 class LoginRequest(InputModel):
@@ -120,3 +128,17 @@ class InvitationPreview(ApiModel):
     role_name: str
     expires_at: datetime
     account_exists: bool
+
+
+class ForgotPasswordRequest(InputModel):
+    email: EmailStr
+
+
+class ResetPasswordRequest(InputModel):
+    token: str = Field(min_length=20, max_length=200)
+    new_password: str = Field(max_length=PASSWORD_MAX_LENGTH)
+
+    @field_validator("new_password")
+    @classmethod
+    def _pw(cls, v: str) -> str:
+        return validate_password_strength(v)

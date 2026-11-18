@@ -18,7 +18,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
             with every number traceable to its source.
           </p>
         </div>
-        <p className="text-xs text-nav-fg/60">Tenant-isolated · Audit-logged · Built for U.S. contractors, owners and specialty trades</p>
+        <p className="text-xs text-nav-fg/60">Tenant-isolated · Audit-logged · Built for US and UK contractors, quantity surveyors and owners</p>
       </section>
       <section className="flex flex-col">
         <div className="flex justify-end p-4">
