@@ -37,9 +37,11 @@ vocab_router = APIRouter(tags=["reference"])
 
 @vocab_router.get("/vocabulary", response_model=VocabularyOut)
 def vocabulary(ctx: Ctx) -> VocabularyOut:
+    country_vocab = C.vocab_for(ctx.tenant.country_code)
     return VocabularyOut(
-        project_statuses=C.PROJECT_STATUSES, sectors=C.SECTORS, delivery_methods=C.DELIVERY_METHODS,
-        contract_types=C.CONTRACT_TYPES, our_roles=C.OUR_ROLES, project_member_roles=C.PROJECT_MEMBER_ROLES,
+        project_statuses=C.PROJECT_STATUSES, sectors=C.SECTORS,
+        delivery_methods=country_vocab["delivery_methods"], contract_types=country_vocab["contract_types"],
+        our_roles=country_vocab["our_roles"], project_member_roles=C.PROJECT_MEMBER_ROLES,
         party_roles=C.PARTY_ROLES, phase_statuses=C.PHASE_STATUSES, us_states=C.US_STATES,
         company_types=C.COMPANY_TYPES, document_categories=DOCUMENT_CATEGORIES, disciplines=DISCIPLINES,
         currencies=sorted(SUPPORTED_CURRENCIES),

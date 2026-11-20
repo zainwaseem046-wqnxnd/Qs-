@@ -52,18 +52,18 @@ def test_registration_rejects_state_for_uk_and_unknown_country(client: TestClien
 
 def test_uk_project_defaults_to_gbp_and_validates_postcode(client: TestClient) -> None:
     uk = register_uk(client)
-    p = make_project(uk, original_contract_value="4250000.00",
+    p = make_project(uk, original_contract_value="4250000.00", delivery_method="design_and_build", contract_type="jct_db",
                      site_address={"line1": "1 Canada Square", "city": "London", "county": "Greater London",
                                    "postal_code": "e14  5ab"})
-    assert p["currency"] == "GBP"
+    assert p["currency"] == "GBP" and p["our_role"] == "main_contractor"
     assert p["site_address"]["postal_code"] == "E14 5AB" and p["site_address"]["country_code"] == "GB"
     bad = uk.post("/api/v1/projects", json={"number": "UK-2", "name": "Bad Postcode", "sector": "commercial",
-                                            "delivery_method": "design_build", "contract_type": "lump_sum",
+                                            "delivery_method": "traditional", "contract_type": "jct_sbc",
                                             "site_address": {"postal_code": "12345"}})
     assert bad.status_code == 422
     assert bad.json()["error"]["details"][0]["field"] == "site_address.postal_code"
     state = uk.post("/api/v1/projects", json={"number": "UK-3", "name": "Has State", "sector": "commercial",
-                                              "delivery_method": "design_build", "contract_type": "lump_sum",
+                                              "delivery_method": "traditional", "contract_type": "jct_sbc",
                                               "site_address": {"state_code": "TX"}})
     assert state.status_code == 422
 
@@ -192,3 +192,18 @@ def test_production_requires_smtp(monkeypatch) -> None:  # type: ignore[no-untyp
     with pytest.raises(ValueError, match="SMTP"):
         Settings(environment="production", jwt_secret="x" * 40, cookie_secure=True,
                  field_encryption_key="ZmFrZS1rZXktZm9yLXRlc3RzLW9ubHktMDEyMzQ1Njc4OWE=", email_backend="console")
+
+
+def test_uk_and_us_contract_vocabularies_are_country_specific(client: TestClient, owner) -> None:  # type: ignore[no-untyped-def]
+    uk = register_uk(client)
+    v = uk.get("/api/v1/vocabulary").json()
+    assert "nec4_ecc_c" in v["contract_types"] and "gmp" not in v["contract_types"]
+    assert "two_stage_tender" in v["delivery_methods"] and "quantity_surveyor" in v["our_roles"]
+    us_terms = uk.post("/api/v1/projects", json={"number": "UK-9", "name": "US Terms", "sector": "commercial",
+                                                 "delivery_method": "cm_at_risk", "contract_type": "gmp"})
+    assert us_terms.status_code == 422
+    nec = make_project(uk, delivery_method="two_stage_tender", contract_type="nec4_ecc_c", our_role="quantity_surveyor")
+    assert nec["contract_type"] == "nec4_ecc_c"
+    assert owner.post("/api/v1/projects", json={"number": "US-9", "name": "UK Terms", "sector": "commercial",
+                                                "delivery_method": "traditional", "contract_type": "jct_sbc"}).status_code == 422
+    assert "gmp" in owner.get("/api/v1/vocabulary").json()["contract_types"]

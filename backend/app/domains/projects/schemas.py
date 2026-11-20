@@ -11,9 +11,9 @@ from app.core.money import CurrencyCode, MoneyAmount
 from app.core.schemas import ApiModel, InputModel
 from app.domains.companies.schemas import AddressIn, AddressOut, CompanyRef
 from app.domains.projects.constants import (
-    CONTRACT_TYPES,
-    DELIVERY_METHODS,
-    OUR_ROLES,
+    ALL_CONTRACT_TYPES,
+    ALL_DELIVERY_METHODS,
+    ALL_OUR_ROLES,
     PARTY_ROLES,
     PHASE_STATUSES,
     PROJECT_MEMBER_ROLES,
@@ -39,9 +39,9 @@ def _in(vocab: dict[str, str], label: str):  # type: ignore[no-untyped-def]
 
 _status = _in(PROJECT_STATUSES, "status")
 _sector = _in(SECTORS, "sector")
-_delivery = _in(DELIVERY_METHODS, "delivery method")
-_contract = _in(CONTRACT_TYPES, "contract type")
-_our_role = _in(OUR_ROLES, "company role")
+_delivery = _in(ALL_DELIVERY_METHODS, "delivery method")
+_contract = _in(ALL_CONTRACT_TYPES, "contract type")
+_our_role = _in(ALL_OUR_ROLES, "company role")
 _VOCAB_CHECKS = {
     "status": _status, "sector": _sector, "delivery_method": _delivery,
     "contract_type": _contract, "our_role": _our_role,
@@ -87,7 +87,7 @@ class ProjectCreate(_ProjectFields):
     sector: str
     delivery_method: str
     contract_type: str
-    our_role: str = "general_contractor"
+    our_role: str | None = Field(default=None, description="Defaults to the country's main contractor role")
     currency: CurrencyCode | None = Field(default=None, description="Defaults to the organization currency")
 
     @field_validator("status", "sector", "delivery_method", "contract_type", "our_role")

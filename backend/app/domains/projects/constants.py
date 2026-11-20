@@ -1,4 +1,5 @@
-"""Controlled vocabularies for projects (US construction terminology)."""
+"""Controlled vocabularies for projects. Delivery methods, contract types and company roles are
+country-specific (United States vs United Kingdom); see ``vocab_for``."""
 
 from __future__ import annotations
 
@@ -50,12 +51,54 @@ CONTRACT_TYPES = {
 
 OUR_ROLES = {
     "general_contractor": "General Contractor",
+    "cost_consultant": "Cost Consultant / Estimator",
     "construction_manager": "Construction Manager",
     "design_builder": "Design-Builder",
     "subcontractor": "Subcontractor",
     "specialty_contractor": "Specialty Trade Contractor",
     "owner": "Owner / Developer",
     "owners_representative": "Owner's Representative",
+}
+
+# --- United Kingdom -----------------------------------------------------------------------------------
+# Contract names are factual references to published standard forms; no contract text is included.
+UK_DELIVERY_METHODS = {
+    "traditional": "Traditional (design then single-stage tender)",
+    "two_stage_tender": "Two-stage tender",
+    "design_and_build": "Design and Build",
+    "management_contracting": "Management Contracting",
+    "construction_management": "Construction Management",
+    "framework_partnering": "Framework / Partnering",
+    "other": "Other",
+}
+
+UK_CONTRACT_TYPES = {
+    "jct_sbc": "JCT Standard Building Contract (SBC)",
+    "jct_db": "JCT Design and Build Contract (DB)",
+    "jct_ic": "JCT Intermediate Building Contract (IC)",
+    "jct_icd": "JCT Intermediate Building Contract with contractor's design (ICD)",
+    "jct_mw": "JCT Minor Works Building Contract (MW)",
+    "jct_mp": "JCT Major Project Construction Contract (MP)",
+    "jct_mc": "JCT Management Building Contract (MC)",
+    "nec4_ecc_a": "NEC4 ECC Option A — Priced contract with activity schedule",
+    "nec4_ecc_b": "NEC4 ECC Option B — Priced contract with bill of quantities",
+    "nec4_ecc_c": "NEC4 ECC Option C — Target contract with activity schedule",
+    "nec4_ecc_d": "NEC4 ECC Option D — Target contract with bill of quantities",
+    "nec4_ecc_e": "NEC4 ECC Option E — Cost reimbursable contract",
+    "nec4_ecc_f": "NEC4 ECC Option F — Management contract",
+    "nec4_ecsc": "NEC4 Engineering and Construction Short Contract",
+    "bespoke": "Bespoke / heavily amended form",
+    "other": "Other",
+}
+
+UK_OUR_ROLES = {
+    "main_contractor": "Main Contractor",
+    "quantity_surveyor": "Quantity Surveyor / Cost Consultant",
+    "employers_agent": "Employer's Agent",
+    "subcontractor": "Subcontractor",
+    "specialist_contractor": "Specialist Contractor",
+    "client": "Client / Developer",
+    "project_manager_consultant": "Project Manager (Consultant)",
 }
 
 PROJECT_MEMBER_ROLES = {
@@ -121,3 +164,18 @@ COMPANY_TYPES = {
     "surety": "Surety / Insurance",
     "other": "Other",
 }
+
+
+VOCAB_BY_COUNTRY: dict[str, dict[str, dict[str, str]]] = {
+    "US": {"delivery_methods": DELIVERY_METHODS, "contract_types": CONTRACT_TYPES, "our_roles": OUR_ROLES},
+    "GB": {"delivery_methods": UK_DELIVERY_METHODS, "contract_types": UK_CONTRACT_TYPES, "our_roles": UK_OUR_ROLES},
+}
+# Union of all countries, used for request-shape validation; the service enforces the country-specific list.
+ALL_DELIVERY_METHODS = {**DELIVERY_METHODS, **UK_DELIVERY_METHODS}
+ALL_CONTRACT_TYPES = {**CONTRACT_TYPES, **UK_CONTRACT_TYPES}
+ALL_OUR_ROLES = {**OUR_ROLES, **UK_OUR_ROLES}
+DEFAULT_OUR_ROLE = {"US": "general_contractor", "GB": "main_contractor"}
+
+
+def vocab_for(country_code: str) -> dict[str, dict[str, str]]:
+    return VOCAB_BY_COUNTRY.get(country_code, VOCAB_BY_COUNTRY["US"])

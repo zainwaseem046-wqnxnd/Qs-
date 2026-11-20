@@ -27,6 +27,13 @@ class P(StrEnum):
     DOCUMENTS_VIEW = "documents.view"
     DOCUMENTS_UPLOAD = "documents.upload"
     DOCUMENTS_DELETE = "documents.delete"
+    COST_CODES_MANAGE = "cost_codes.manage"
+    ESTIMATES_VIEW = "estimates.view"
+    ESTIMATES_EDIT = "estimates.edit"
+    ESTIMATES_APPROVE = "estimates.approve"
+    BUDGETS_VIEW = "budgets.view"
+    BUDGETS_EDIT = "budgets.edit"
+    BUDGETS_APPROVE = "budgets.approve"
 
 
 PERMISSION_CATALOG: dict[str, tuple[str, str]] = {
@@ -47,6 +54,13 @@ PERMISSION_CATALOG: dict[str, tuple[str, str]] = {
     P.DOCUMENTS_VIEW: ("Documents", "View and download documents"),
     P.DOCUMENTS_UPLOAD: ("Documents", "Upload documents and new versions"),
     P.DOCUMENTS_DELETE: ("Documents", "Delete documents"),
+    P.COST_CODES_MANAGE: ("Commercial", "Create and import cost code structures"),
+    P.ESTIMATES_VIEW: ("Commercial", "View estimates"),
+    P.ESTIMATES_EDIT: ("Commercial", "Create and edit draft estimates"),
+    P.ESTIMATES_APPROVE: ("Commercial", "Approve issued estimates"),
+    P.BUDGETS_VIEW: ("Commercial", "View project budgets"),
+    P.BUDGETS_EDIT: ("Commercial", "Create and edit draft budgets"),
+    P.BUDGETS_APPROVE: ("Commercial", "Approve original budgets"),
 }
 
 ALL = set(PERMISSION_CATALOG)
@@ -67,7 +81,7 @@ SYSTEM_ROLES: dict[str, dict[str, object]] = {
         "description": "Portfolio-wide read access to projects, financials and the audit log.",
         "permissions": {
             P.DASHBOARD_VIEW, P.PROJECTS_VIEW_ALL, P.PROJECTS_FINANCIALS_VIEW, P.COMPANIES_VIEW,
-            P.DOCUMENTS_VIEW, P.MEMBERS_VIEW, P.AUDIT_VIEW,
+            P.DOCUMENTS_VIEW, P.MEMBERS_VIEW, P.AUDIT_VIEW, P.ESTIMATES_VIEW, P.BUDGETS_VIEW,
         },
     },
     "commercial_manager": {
@@ -76,7 +90,8 @@ SYSTEM_ROLES: dict[str, dict[str, object]] = {
         "permissions": {
             P.DASHBOARD_VIEW, P.PROJECTS_VIEW_ALL, P.PROJECTS_CREATE, P.PROJECTS_EDIT,
             P.PROJECTS_FINANCIALS_VIEW, P.PROJECTS_MEMBERS_MANAGE, P.COMPANIES_VIEW, P.COMPANIES_MANAGE,
-            P.DOCUMENTS_VIEW, P.DOCUMENTS_UPLOAD, P.MEMBERS_VIEW,
+            P.DOCUMENTS_VIEW, P.DOCUMENTS_UPLOAD, P.MEMBERS_VIEW, P.COST_CODES_MANAGE, P.ESTIMATES_VIEW,
+            P.ESTIMATES_EDIT, P.ESTIMATES_APPROVE, P.BUDGETS_VIEW, P.BUDGETS_EDIT, P.BUDGETS_APPROVE,
         },
     },
     "project_manager": {
@@ -85,7 +100,7 @@ SYSTEM_ROLES: dict[str, dict[str, object]] = {
         "permissions": {
             P.DASHBOARD_VIEW, P.PROJECTS_CREATE, P.PROJECTS_EDIT, P.PROJECTS_FINANCIALS_VIEW,
             P.PROJECTS_MEMBERS_MANAGE, P.COMPANIES_VIEW, P.COMPANIES_MANAGE, P.DOCUMENTS_VIEW,
-            P.DOCUMENTS_UPLOAD, P.MEMBERS_VIEW,
+            P.DOCUMENTS_UPLOAD, P.MEMBERS_VIEW, P.ESTIMATES_VIEW, P.ESTIMATES_EDIT, P.BUDGETS_VIEW, P.BUDGETS_EDIT,
         },
     },
     "field_engineer": {

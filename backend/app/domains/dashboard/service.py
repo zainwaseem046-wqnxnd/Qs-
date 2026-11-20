@@ -19,6 +19,7 @@ from sqlalchemy.orm import Session
 
 from app.api.deps import TenantContext
 from app.domains.audit.models import AuditEvent
+from app.domains.budgets.models import Budget
 from app.domains.projects.constants import LIVE_STATUSES
 from app.domains.projects.models import Project
 from app.domains.projects.service import visible_project_ids
@@ -40,6 +41,7 @@ class DashboardData:
     by_sector: dict[str, int]
     live_contract_value: list[CurrencyTotal] | None
     pursuit_value: list[CurrencyTotal] | None
+    original_budget: list[CurrencyTotal] | None
     upcoming_completions: list[Project]
     recent_projects: list[Project]
     recent_events: list[AuditEvent]
@@ -48,7 +50,7 @@ class DashboardData:
 
 
 UNAVAILABLE_PHASE_2 = [
-    "Original budget", "Revised budget", "Actual cost", "Committed cost", "Forecast final cost",
+    "Revised budget", "Actual cost", "Committed cost", "Forecast final cost",
     "Forecast revenue", "Forecast gross profit", "Forecast gross margin", "Pending changes",
     "Outstanding payments", "Cash flow",
 ]
@@ -70,6 +72,30 @@ def _currency_totals(db: Session, ctx: TenantContext, statuses: tuple[str, ...])
             func.count().filter(Project.original_contract_value.is_(None)),
         )
         .where(*_scope(ctx), Project.status.in_(statuses))
+        .group_by(Project.currency)
+        .order_by(Project.currency)
+    ).all()
+    return [CurrencyTotal(c, Decimal(a), int(n), int(missing)) for c, a, n, missing in rows]
+
+
+def _budget_totals(db: Session, ctx: TenantContext) -> list[CurrencyTotal]:
+    """Approved original budgets of live projects, by currency. projects_without_value counts live projects
+    (in that currency) that do not yet have an approved original budget."""
+    approved = (
+        select(Budget.project_id, Budget.currency, Budget.total)
+        .where(Budget.status == "approved", Budget.kind == "original")
+        .subquery()
+    )
+    rows = db.execute(
+        select(
+            Project.currency,
+            func.coalesce(func.sum(approved.c.total), 0),
+            func.count(approved.c.project_id),
+            func.count().filter(approved.c.project_id.is_(None)),
+        )
+        .select_from(Project)
+        .outerjoin(approved, approved.c.project_id == Project.id)
+        .where(*_scope(ctx), Project.status.in_(LIVE_STATUSES))
         .group_by(Project.currency)
         .order_by(Project.currency)
     ).all()
@@ -105,6 +131,7 @@ def build(db: Session, ctx: TenantContext) -> DashboardData:
         by_sector={k: int(v) for k, v in by_sector.items()},
         live_contract_value=_currency_totals(db, ctx, LIVE_STATUSES) if financials else None,
         pursuit_value=_currency_totals(db, ctx, ("pursuit",)) if financials else None,
+        original_budget=_budget_totals(db, ctx) if ctx.has(P.BUDGETS_VIEW) else None,
         upcoming_completions=list(upcoming),
         recent_projects=list(recent),
         recent_events=list(events),

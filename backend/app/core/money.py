@@ -115,3 +115,35 @@ MoneyAmount = Annotated[
     PlainSerializer(lambda v: format(v, "f"), return_type=str, when_used="json"),
 ]
 CurrencyCode = Annotated[str, BeforeValidator(_validate_currency)]
+
+
+def _fixed(places: Decimal, label: str, minimum: Decimal | None = None, maximum: Decimal | None = None):  # type: ignore[no-untyped-def]
+    """Validator factory for non-money decimals (quantities, unit rates, percentages)."""
+
+    def check(value: Any) -> Decimal:
+        result = to_decimal(value)
+        if result != result.quantize(places):
+            raise MoneyError(f"{label} may have at most {abs(places.as_tuple().exponent)} decimal places")
+        if minimum is not None and result < minimum:
+            raise MoneyError(f"{label} must be at least {minimum}")
+        if maximum is not None and result > maximum:
+            raise MoneyError(f"{label} must be at most {maximum}")
+        return result.quantize(places)
+
+    return check
+
+
+_SERIALIZE = PlainSerializer(lambda v: format(v, "f"), return_type=str, when_used="json")
+Quantity = Annotated[
+    Decimal, BeforeValidator(_fixed(QUANTITY_PLACES, "Quantity", Decimal(0), Decimal("999999999999999"))), _SERIALIZE
+]
+UnitRate = Annotated[
+    Decimal, BeforeValidator(_fixed(RATE_PLACES, "Rate", Decimal(0), Decimal("9999999999999"))), _SERIALIZE
+]
+Percent = Annotated[
+    Decimal, BeforeValidator(_fixed(PERCENT_PLACES, "Percentage", Decimal(0), Decimal(100))), _SERIALIZE
+]
+MarkupPercent = Annotated[
+    Decimal, BeforeValidator(_fixed(Decimal("0.0001"), "Percentage", Decimal(0), Decimal(1000))), _SERIALIZE
+]
+DecimalOut = Annotated[Decimal, _SERIALIZE]

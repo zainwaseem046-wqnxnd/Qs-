@@ -22,6 +22,7 @@ from app.domains.companies.models import Address, Company
 from app.domains.companies.schemas import AddressIn
 from app.domains.companies.service import address_snapshot, apply_address
 from app.domains.identity.models import User
+from app.domains.projects.constants import DEFAULT_OUR_ROLE, vocab_for
 from app.domains.projects.models import Project, ProjectMember, ProjectParty, ProjectPhase
 from app.domains.tenancy.models import TenantMembership
 from app.domains.tenancy.permissions import P
@@ -102,6 +103,19 @@ def _validate_client(db: Session, company_id: uuid.UUID | None) -> None:
                                                                        "message": "Company not found"}])
 
 
+def _check_country_vocab(ctx: TenantContext, data: dict[str, Any]) -> None:
+    """Delivery method, contract type and our role must come from the organization's country list."""
+    vocab = vocab_for(ctx.tenant.country_code)
+    errors = []
+    for field, key in (("delivery_method", "delivery_methods"), ("contract_type", "contract_types"),
+                       ("our_role", "our_roles")):
+        value = data.get(field)
+        if value is not None and value not in vocab[key]:
+            errors.append({"field": field, "message": f"Not available for {ctx.tenant.country_code} organizations"})
+    if errors:
+        raise ValidationFailed("Invalid input", details=errors)
+
+
 def _number_taken(db: Session, number: str, exclude: uuid.UUID | None = None) -> bool:
     stmt = select(Project.id).where(func.lower(Project.number) == number.lower())
     if exclude:
@@ -113,6 +127,8 @@ def create_project(db: Session, ctx: TenantContext, data: dict[str, Any], site_a
     if not ctx.has(P.PROJECTS_FINANCIALS_VIEW):
         for field in FINANCIAL_FIELDS:
             data.pop(field, None)
+    data["our_role"] = data.get("our_role") or DEFAULT_OUR_ROLE.get(ctx.tenant.country_code, "general_contractor")
+    _check_country_vocab(ctx, data)
     _validate_client(db, data.get("client_company_id"))
     if _number_taken(db, data["number"]):
         raise Conflict(f"Project number {data['number']} is already in use", code="duplicate_number")
@@ -150,6 +166,7 @@ def update_project(
     for key in NON_NULLABLE:
         if key in data and data[key] is None:
             data.pop(key)
+    _check_country_vocab(ctx, data)
     if "client_company_id" in data:
         _validate_client(db, data["client_company_id"])
     if data.get("number") and _number_taken(db, data["number"], exclude=project.id):

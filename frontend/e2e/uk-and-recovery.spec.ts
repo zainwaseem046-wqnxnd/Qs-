@@ -18,8 +18,8 @@ test("a UK organization works in GBP, metric units, UK dates and postcodes", asy
   await page.getByLabel("Project number").fill("UK-001");
   await page.getByLabel("Project name").fill("Canary Wharf Office Fit-Out");
   await page.getByLabel("Sector").selectOption("commercial");
-  await page.getByLabel("Delivery method").selectOption("design_build");
-  await page.getByLabel("Contract type").selectOption("lump_sum");
+  await page.getByLabel("Delivery method").selectOption("two_stage_tender");
+  await page.getByLabel("Contract type").selectOption("nec4_ecc_c");
   await page.getByLabel("City").fill("London");
   await page.getByLabel("Postcode").fill("12345");
   await page.getByRole("button", { name: "Create project" }).click();
