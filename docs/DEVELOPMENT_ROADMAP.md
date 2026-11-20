@@ -6,7 +6,7 @@ committed until team size is known (see OUTSTANDING_DECISIONS.md, OD-1).
 | Phase | Theme | Status |
 |---|---|---|
 | 1 | Foundation | ✅ Complete (this milestone) |
-| 2 | Commercial core | Next |
+| 2 | Commercial core | In progress — milestone 2.1 complete |
 | 3 | Procurement & payments | Planned |
 | 4 | AI intelligence | Planned |
 | 5 | Advanced construction | Planned |
@@ -22,12 +22,10 @@ append-only audit trail · design system (light/dark) · executive dashboard v1 
 Milestones, each shippable:
 1. **Platform hardening carry-overs:** transactional email (invitations, verification), background worker,
    malware scanning, structured logging, linter, Terraform skeleton for staging.
-2. **Cost codes & classifications:** per-tenant code structures; import from customer-licensed
-   MasterFormat/UniFormat files.
-3. **Estimating:** estimates, versions, lines with labour/material/equipment/subcontract build-up, assemblies,
-   waste, markups, contingency, allowances, alternates; calculation transparency per line; exact-arithmetic
-   test suite.
-4. **Budgets:** original budget from approved estimate; budget transfers; revised budget.
+2. ✅ **Cost codes** in each customer's own format, CSV import (milestone 2.1).
+3. ✅ **Estimating:** versions, full build-up, allowances/provisional sums, alternates, markups, comparison
+   (milestone 2.1). Remaining: assemblies, historical rate comparison (needs the cost database).
+4. ✅ **Original budget** from approved estimate (milestone 2.1). Remaining: budget transfers, revised budget.
 5. **Contracts & commitments:** prime contracts, subcontracts/POs (commitment lines), retainage terms.
 6. **Change orders:** potential → priced → submitted → approved/rejected; approvals post to contract value,
    budget and commitments.

@@ -14,6 +14,9 @@ export interface RegionTerms {
   usesStates: boolean;
   retainage: string;
   dateHint: string;
+  labour: string;
+  equipment: string;
+  markupPresets: { name: string; percent: string; basis: "direct_cost" | "cumulative"; include_in_budget: boolean }[];
 }
 
 const TERMS: Record<CountryCode, RegionTerms> = {
@@ -26,6 +29,14 @@ const TERMS: Record<CountryCode, RegionTerms> = {
     usesStates: true,
     retainage: "Retainage",
     dateHint: "MM/DD/YYYY",
+    labour: "Labor",
+    equipment: "Equipment",
+    markupPresets: [
+      { name: "General conditions", percent: "8", basis: "direct_cost", include_in_budget: true },
+      { name: "Contingency", percent: "5", basis: "cumulative", include_in_budget: true },
+      { name: "Insurance & bonds", percent: "1.5", basis: "cumulative", include_in_budget: true },
+      { name: "Fee", percent: "4", basis: "cumulative", include_in_budget: false },
+    ],
   },
   GB: {
     locale: "en-GB",
@@ -36,6 +47,13 @@ const TERMS: Record<CountryCode, RegionTerms> = {
     usesStates: false,
     retainage: "Retention",
     dateHint: "DD/MM/YYYY",
+    labour: "Labour",
+    equipment: "Plant",
+    markupPresets: [
+      { name: "Main contractor's preliminaries", percent: "12", basis: "direct_cost", include_in_budget: true },
+      { name: "Risk allowance", percent: "5", basis: "cumulative", include_in_budget: true },
+      { name: "Overheads and profit", percent: "6", basis: "cumulative", include_in_budget: false },
+    ],
   },
 };
 

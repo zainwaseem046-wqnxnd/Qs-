@@ -10,6 +10,7 @@ Decisions that materially affect architecture, compliance or the business and ne
 | OD-3 | Email | **Send from clearviewqs@gmail.com** via Gmail SMTP for now | ADR-019 |
 | OD-4 | Cost-code classification | **Customers use their own formats.** Per-tenant, user-defined code structures; no CSI content shipped | ADR-009 (confirmed), Phase 2 design |
 | OD-9 | Two-factor authentication | **Not mandatory.** Remains available as an option in account settings; no prompts | ADR-020 |
+| OD-12 | UK standards first | **Yes:** NRM-ready cost code structures and JCT/NEC contract types from the start | ADR-023 |
 
 ## Still open
 
@@ -17,7 +18,9 @@ Decisions that materially affect architecture, compliance or the business and ne
 |---|---|---|---|---|
 | OD-1 | Team size and delivery timeline | — | Required before committing phase dates | Phase 2 planning |
 | OD-11 | Custom sending domain before launch (e.g. notifications@yourdomain) | Google Workspace / Amazon SES with SPF, DKIM, DMARC | Move off a consumer Gmail sender before onboarding paying customers (deliverability + ~500/day limit) | Before beta |
-| OD-12 | UK contract and measurement standards to support first | NRM1/NRM2, JCT, NEC4, VAT, CIS, retention | NRM2-friendly estimating structure and JCT/NEC contract types in Phase 2 | Phase 2 |
+| OD-13 | Product name for the UK market ("QS Intelligence **USA**" shows to UK customers) | Keep / "QS Intelligence" / region suffix per deployment | "QS Intelligence" as the brand, with region shown in the app | Before UK beta |
+| OD-14 | Ship RICS NRM content under licence? | Customers import their own (current) / license NRM from RICS | Keep customer-provided until demand justifies a RICS licence | Before UK GA |
+| OD-15 | Segregation of duties on approvals (estimator cannot approve own estimate) | Off (current) / per-organization setting | Per-organization setting in a later milestone | Phase 2 |
 | OD-5 | AIA / ConsensusDocs | Data-compatible workflows only vs. licensed form rendering partnership | Data-compatible only until a licence is in place | Phase 3 |
 | OD-6 | Default AI provider terms | Zero-retention API terms, regional processing | Claude API with zero data retention; per-tenant opt-in to AI features | Phase 4 |
 | OD-7 | Pricing & packaging (per-seat vs per-project vs revenue band) | — | Affects entitlement model in tenancy domain | Before GA |

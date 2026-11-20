@@ -114,6 +114,23 @@ summarised in §6.
   in Phase 6).
 * Availability target at GA: 99.9 % monthly.
 
+## 5b. Phase 2.1 requirements (Cost codes, estimating, budgets) — delivered
+
+| ID | Requirement | Acceptance criteria | Status |
+|---|---|---|---|
+| CC-1 | Cost codes in each customer's own format | Named structures with 1–6 named levels; templates pre-fill level names only (NRM1/NRM2/MasterFormat/UniFormat-style, trade packages) | ✅ tested |
+| CC-2 | CSV import | `code,title,parent_code,unit`; parents in any order; all-or-nothing with row-numbered errors; depth limits | ✅ tested (API + e2e) |
+| CC-3 | Safe maintenance | Codes used by estimates/budgets or with children cannot be deleted (deactivate instead) | ✅ tested |
+| ES-1 | Estimates and cost plans per project | Types: conceptual, cost plan, detailed, pre-tender, tender; price base date; cost code structure | ✅ tested |
+| ES-2 | Full line build-up | Labour hrs/unit × rate, material × (1 + waste), plant/equipment, subcontract, other; component totals shown | ✅ golden-value tests |
+| ES-3 | Allowances, provisional/PC sums, alternates, exclusions | Alternates priced separately; exclusions informational | ✅ tested |
+| ES-4 | Markups | Ordered %; direct-cost or running-total basis; flag for budget inclusion | ✅ tested |
+| ES-5 | Versions | Draft → issued (locked, totals snapshot) → approved; new version copies; compare versions by cost code | ✅ tested incl. DB-level freeze |
+| BU-1 | Original budget from approved estimate | Lines per cost code + unassigned + budgeted markups; total reconciles to estimate minus non-budgeted markups | ✅ tested |
+| BU-2 | Budget approval | One approved original per project; approved budgets locked (DB trigger) | ✅ tested |
+| UK-1 | UK commercial vocabulary | Traditional/two-stage/D&B/management routes; JCT and NEC4 contracts; UK roles incl. QS | ✅ tested |
+| DB-1 | Dashboard | Approved original budget totals by currency | ✅ tested |
+
 ## 6. Later phases (summary)
 
 * **Phase 2 — Commercial core:** cost codes (customer-licensed classifications), estimating with full line

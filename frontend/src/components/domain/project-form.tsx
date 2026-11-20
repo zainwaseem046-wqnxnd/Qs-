@@ -58,7 +58,7 @@ const schema = z
 
 export type ProjectFormValues = z.infer<typeof schema>;
 
-function toValues(p?: Project, homeState?: string | null, currency?: string): ProjectFormValues {
+function toValues(p?: Project, homeState?: string | null, currency?: string, country?: string): ProjectFormValues {
   return {
     number: p?.number ?? "",
     name: p?.name ?? "",
@@ -67,7 +67,7 @@ function toValues(p?: Project, homeState?: string | null, currency?: string): Pr
     project_type: p?.project_type ?? "",
     delivery_method: p?.delivery_method ?? "",
     contract_type: p?.contract_type ?? "",
-    our_role: p?.our_role ?? "general_contractor",
+    our_role: p?.our_role ?? (country === "GB" ? "main_contractor" : "general_contractor"),
     client_company_id: p?.client_company?.id ?? "",
     line1: p?.site_address?.line1 ?? "",
     city: p?.site_address?.city ?? "",
@@ -143,7 +143,7 @@ export function ProjectForm({
     enabled: can(P.COMPANIES_VIEW),
   });
   const [error, setError] = useState<string | null>(null);
-  const form = useForm<ProjectFormValues>({ resolver: zodResolver(schema), defaultValues: toValues(project, tenant?.tenant.home_state, tenant?.tenant.default_currency) });
+  const form = useForm<ProjectFormValues>({ resolver: zodResolver(schema), defaultValues: toValues(project, tenant?.tenant.home_state, tenant?.tenant.default_currency, tenant?.tenant.country_code) });
   const t = terms(tenant?.tenant.country_code);
   const e = form.formState.errors;
   const reg = form.register;

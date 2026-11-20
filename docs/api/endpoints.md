@@ -16,6 +16,25 @@
 | auth | `POST` | `/api/v1/auth/password/reset` | Reset Password |
 | auth | `POST` | `/api/v1/auth/refresh` | Refresh |
 | auth | `POST` | `/api/v1/auth/register` | Register |
+| budgets | `DELETE` | `/api/v1/budgets/{budget_id}` | Delete Budget |
+| budgets | `DELETE` | `/api/v1/budgets/{budget_id}/lines/{line_id}` | Delete Line |
+| budgets | `GET` | `/api/v1/budgets/{budget_id}` | Get Budget |
+| budgets | `GET` | `/api/v1/projects/{project_id}/budgets` | List Budgets |
+| budgets | `POST` | `/api/v1/budgets/{budget_id}/approve` | Approve |
+| budgets | `POST` | `/api/v1/budgets/{budget_id}/lines` | Add Line |
+| budgets | `POST` | `/api/v1/projects/{project_id}/budgets` | Create Budget |
+| budgets | `POST` | `/api/v1/projects/{project_id}/budgets/from-estimate` | Create From Estimate |
+| budgets | `PUT` | `/api/v1/budgets/{budget_id}/lines/{line_id}` | Update Line |
+| cost codes | `DELETE` | `/api/v1/cost-code-sets/{set_id}/codes/{code_id}` | Delete Code |
+| cost codes | `GET` | `/api/v1/cost-code-sets` | List Sets |
+| cost codes | `GET` | `/api/v1/cost-code-sets/templates` | Templates |
+| cost codes | `GET` | `/api/v1/cost-code-sets/{set_id}` | Get Set |
+| cost codes | `GET` | `/api/v1/cost-code-sets/{set_id}/codes` | List Codes |
+| cost codes | `PATCH` | `/api/v1/cost-code-sets/{set_id}` | Update Set |
+| cost codes | `PATCH` | `/api/v1/cost-code-sets/{set_id}/codes/{code_id}` | Update Code |
+| cost codes | `POST` | `/api/v1/cost-code-sets` | Create Set |
+| cost codes | `POST` | `/api/v1/cost-code-sets/{set_id}/codes` | Create Code |
+| cost codes | `POST` | `/api/v1/cost-code-sets/{set_id}/import` | Import Codes |
 | dashboard | `GET` | `/api/v1/dashboard/summary` | Summary |
 | directory | `DELETE` | `/api/v1/companies/{company_id}/contacts/{contact_id}` | Delete Contact |
 | directory | `GET` | `/api/v1/companies` | List Companies |
@@ -32,6 +51,22 @@
 | documents | `PATCH` | `/api/v1/documents/{document_id}` | Update Document |
 | documents | `POST` | `/api/v1/documents` | Upload Document |
 | documents | `POST` | `/api/v1/documents/{document_id}/versions` | Upload Version |
+| estimating | `DELETE` | `/api/v1/estimates/{estimate_id}/versions/{number}/lines/{line_id}` | Delete Line |
+| estimating | `GET` | `/api/v1/estimates` | List Estimates |
+| estimating | `GET` | `/api/v1/estimates/{estimate_id}` | Get Estimate |
+| estimating | `GET` | `/api/v1/estimates/{estimate_id}/compare` | Compare |
+| estimating | `GET` | `/api/v1/estimates/{estimate_id}/versions/{number}` | Get Version |
+| estimating | `GET` | `/api/v1/estimating/reference` | Reference |
+| estimating | `PATCH` | `/api/v1/estimates/{estimate_id}` | Rename |
+| estimating | `PATCH` | `/api/v1/estimates/{estimate_id}/versions/{number}` | Update Version |
+| estimating | `POST` | `/api/v1/estimates/{estimate_id}/versions` | Create Version |
+| estimating | `POST` | `/api/v1/estimates/{estimate_id}/versions/{number}/approve` | Approve |
+| estimating | `POST` | `/api/v1/estimates/{estimate_id}/versions/{number}/issue` | Issue |
+| estimating | `POST` | `/api/v1/estimates/{estimate_id}/versions/{number}/lines` | Add Line |
+| estimating | `POST` | `/api/v1/estimating/calculate-line` | Calculate |
+| estimating | `POST` | `/api/v1/projects/{project_id}/estimates` | Create Estimate |
+| estimating | `PUT` | `/api/v1/estimates/{estimate_id}/versions/{number}/lines/{line_id}` | Update Line |
+| estimating | `PUT` | `/api/v1/estimates/{estimate_id}/versions/{number}/markups` | Set Markups |
 | organization | `DELETE` | `/api/v1/tenant/invitations/{invitation_id}` | Revoke Invitation |
 | organization | `DELETE` | `/api/v1/tenant/members/{membership_id}` | Remove Member |
 | organization | `DELETE` | `/api/v1/tenant/roles/{role_id}` | Delete Role |

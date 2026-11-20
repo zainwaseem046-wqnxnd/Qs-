@@ -68,4 +68,22 @@ export const P = {
   DOCUMENTS_VIEW: "documents.view",
   DOCUMENTS_UPLOAD: "documents.upload",
   DOCUMENTS_DELETE: "documents.delete",
+  COST_CODES_MANAGE: "cost_codes.manage",
+  ESTIMATES_VIEW: "estimates.view",
+  ESTIMATES_EDIT: "estimates.edit",
+  ESTIMATES_APPROVE: "estimates.approve",
+  BUDGETS_VIEW: "budgets.view",
+  BUDGETS_EDIT: "budgets.edit",
+  BUDGETS_APPROVE: "budgets.approve",
 } as const;
+
+/** Format a non-money decimal string (quantity, rate) without float conversion: trims trailing zeros. */
+export function formatDecimal(value: string | null | undefined, minPlaces = 0): string {
+  if (!value) return "—";
+  const [i = "0", f = ""] = value.split(".");
+  let frac = f.replace(/0+$/, "");
+  if (frac.length < minPlaces) frac = frac.padEnd(minPlaces, "0");
+  const neg = i.startsWith("-");
+  const grouped = i.replace("-", "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  return `${neg ? "-" : ""}${grouped}${frac ? `.${frac}` : ""}`;
+}

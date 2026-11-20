@@ -27,10 +27,14 @@ Priority: P0 (blocks next phase) · P1 (this phase) · P2 (soon) · P3 (later). 
 ## Phase 2 product
 | ID | Item | Priority |
 |---|---|---|
-| C-1 | Cost codes in **each customer's own format**: configurable segments/levels, CSV import (ADR-009, OD-4) | P0 |
-| C-10 | UK commercial vocabulary: delivery routes (traditional, D&B, two-stage, management contracting), JCT/NEC contract types, retention, VAT, CIS | P0 |
-| C-2 | Estimating: estimates, versions, lines, assemblies, markups, alternates, build-up view | P0 |
-| C-3 | Budgets from approved estimates; transfers; revised budget | P0 |
+| C-1 | ~~Cost codes in each customer's own format~~ — done (2.1) | ✅ |
+| C-2a | Estimating: assemblies (reusable priced build-ups) | P1 |
+| C-2b | Estimate import/export (CSV/XLSX) and printable cost plan report | P1 |
+| C-2c | Line reordering and bulk edit | P2 |
+| C-3a | Budget transfers and revised budget | P0 |
+| C-10 | ~~UK delivery routes, JCT/NEC contract types~~ — done (2.1); remaining: VAT and CIS handling | P1 |
+| C-2 | ~~Estimating core~~ — done (2.1) | ✅ |
+| C-3 | ~~Original budget from approved estimate~~ — done (2.1) | ✅ |
 | C-4 | Prime contracts + commitments (subcontracts/POs) | P0 |
 | C-5 | Change order lifecycle with posting to contract/budget/commitments | P0 |
 | C-6 | Immutable cost transaction ledger + CSV import | P0 |

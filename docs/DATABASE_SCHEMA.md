@@ -1,6 +1,6 @@
 # Database Schema
 
-PostgreSQL 16. Migrations: `backend/alembic/versions`. Current head: **0002** (US + UK markets, password reset).
+PostgreSQL 16. Migrations: `backend/alembic/versions`. Current head: **0003** (cost codes, estimates, budgets).
 
 ## 1. Conventions
 
@@ -74,6 +74,14 @@ erDiagram
 | `project_phases` | Ordered phases with dates and status | tenant isolation |
 | `documents` | Logical document with metadata | tenant isolation (+ project visibility in app) |
 | `document_versions` | Immutable file versions (hash, size, storage key) | tenant isolation; trigger blocks content changes |
+| `cost_code_sets` | Customer-defined coding structure: name, `level_names[]`, template key (rev. 0003) | tenant isolation |
+| `cost_codes` | Codes with parent/level, unit, active flag; unique per set | tenant isolation; tenant-consistent self-reference |
+| `estimates` | Estimate/cost plan per project: type, cost code set, currency | tenant isolation |
+| `estimate_versions` | draft/issued/approved; price base date; totals snapshot on issue | tenant isolation; **trigger freezes issued/approved** (only issued→approved allowed) |
+| `estimate_lines` | Quantity (19,4), unit, labour hrs/unit (19,4), rates (19,6), waste % (5,2), line type, scope (base/alternate/excluded) | tenant isolation; trigger blocks changes unless parent version is draft |
+| `estimate_markups` | Ordered % markups (9,4) on direct cost or running total; `include_in_budget` | tenant isolation; same trigger |
+| `budgets` | Original budget per project: draft/approved, source estimate version, total snapshot; one approved original per project | tenant isolation; **trigger freezes approved budgets** |
+| `budget_lines` | Cost code, description, amount (19,2) | tenant isolation; trigger blocks changes unless parent budget is draft |
 | `audit_events` | Append-only audit log | read: current tenant; insert: current tenant or tenant-less security events; trigger blocks UPDATE/DELETE/TRUNCATE for every role |
 
 ### Database roles
@@ -102,9 +110,7 @@ tests that own it (ADR-008). Money columns follow the conventions above. All are
 
 | Phase | Entities | Key design notes |
 |---|---|---|
-| 2 | `classifications`, `cost_codes` | Hierarchical; classification system per tenant (MasterFormat/UniFormat/OmniClass **imported under customer licence**, not shipped) |
-| 2 | `estimates`, `estimate_versions`, `estimate_lines`, `assemblies` | Versions immutable once issued; line build-up stores qty × rate components and markups explicitly |
-| 2 | `budgets`, `budget_lines` | Original budget locked at approval; revisions via approved change orders / budget transfers |
+| 2 | `assemblies`, `budget_transfers` | Reusable priced assemblies; budget revisions after approval |
 | 2 | `contracts`, `contract_parties`, `contract_clauses` | Prime contracts; clause library for customer-provided documents |
 | 2 | `commitments`, `commitment_lines` | Subcontracts and POs; committed cost source |
 | 2 | `change_orders`, `change_order_lines` | Lifecycle states: potential → pricing → submitted → approved/rejected; approved COs post to contract, budget and forecast |
@@ -123,4 +129,4 @@ tests that own it (ADR-008). Money columns follow the conventions above. All are
 * Security SQL for a revision lives in `alembic_helpers/<revision>_*.py` and is frozen once shipped.
 * Seed data (permissions, system roles) is frozen inside the migration that introduced it; a test asserts the
   database catalog equals `app/domains/tenancy/permissions.py`.
-* Revisions 0001 and 0002 are frozen (pushed); further changes require new revisions.
+* Revisions 0001–0003 are frozen once pushed; further changes require new revisions.

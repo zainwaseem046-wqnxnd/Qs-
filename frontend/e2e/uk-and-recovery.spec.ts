@@ -35,6 +35,7 @@ test("a UK organization works in GBP, metric units, UK dates and postcodes", asy
   await expect(page.getByText("London · E14 5AB")).toBeVisible();
   await expect(page.getByText("01/03/2027")).toBeVisible();
   await expect(page.getByText("Retention", { exact: true })).toBeVisible();
+  await expect(page.getByText("Main Contractor")).toBeVisible();
 });
 
 test("forgot password never reveals whether an account exists", async ({ page }) => {

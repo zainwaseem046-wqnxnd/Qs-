@@ -236,6 +236,7 @@ export interface DashboardSummary {
   by_sector: Record<string, number>;
   live_contract_value: CurrencyTotal[] | null;
   pursuit_value: CurrencyTotal[] | null;
+  original_budget: CurrencyTotal[] | null;
   upcoming_completions: ProjectListItem[];
   recent_projects: ProjectListItem[];
   recent_activity: AuditEvent[];
@@ -299,4 +300,166 @@ export interface Invitation {
   status: string;
   accept_url?: string;
   email_sent?: boolean;
+}
+
+// --- Phase 2.1: cost codes, estimates, budgets ---------------------------------------------------------
+export interface CostCodeSet {
+  id: string;
+  name: string;
+  description: string | null;
+  template_key: string;
+  level_names: string[];
+  is_active: boolean;
+  version: number;
+  code_count: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface CostCode {
+  id: string;
+  set_id: string;
+  parent_id: string | null;
+  code: string;
+  title: string;
+  level: number;
+  unit: string | null;
+  is_active: boolean;
+}
+
+export interface CostCodeRef {
+  id: string;
+  code: string;
+  title: string;
+}
+
+export interface CostCodeTemplate {
+  key: string;
+  name: string;
+  level_names: string[];
+}
+
+export interface LineCalc {
+  labour_unit: string;
+  material_unit: string;
+  equipment_unit: string;
+  subcontract_unit: string;
+  other_unit: string;
+  unit_cost: string;
+  labour_total: string;
+  material_total: string;
+  equipment_total: string;
+  subcontract_total: string;
+  other_total: string;
+  total: string;
+  labour_hours: string;
+}
+
+export interface EstimateLine {
+  id: string;
+  sequence: number;
+  cost_code: CostCodeRef | null;
+  line_type: string;
+  inclusion: "base" | "alternate" | "excluded";
+  alternate_label: string | null;
+  description: string;
+  quantity: string;
+  unit: string;
+  labour_hours_per_unit: string;
+  labour_rate: string;
+  material_rate: string;
+  material_waste_percent: string;
+  equipment_rate: string;
+  subcontract_rate: string;
+  other_rate: string;
+  notes: string | null;
+  calc: LineCalc;
+}
+
+export interface Markup {
+  name: string;
+  percent: string;
+  basis: "direct_cost" | "cumulative";
+  include_in_budget: boolean;
+  base_amount: string;
+  amount: string;
+}
+
+export interface VersionSummary {
+  id: string;
+  version_number: number;
+  status: "draft" | "issued" | "approved";
+  label: string | null;
+  total: string | null;
+  issued_at: string | null;
+  approved_at: string | null;
+  created_at: string;
+}
+
+export interface EstimateVersion extends VersionSummary {
+  notes: string | null;
+  price_base_date: string | null;
+  is_editable: boolean;
+  lines: EstimateLine[];
+  markups: Markup[];
+  totals: {
+    direct_cost: string;
+    markup_total: string;
+    total: string;
+    alternates: { label: string; amount: string }[];
+    excluded_total: string;
+    labour_hours: string;
+    components: Record<string, string>;
+  };
+}
+
+export interface Estimate {
+  id: string;
+  project_id: string;
+  project_number: string;
+  project_name: string;
+  name: string;
+  estimate_type: string;
+  cost_code_set_id: string | null;
+  currency: string;
+  current_version_number: number;
+  versions: VersionSummary[];
+  can_edit: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface EstimateCompare {
+  from_version: number;
+  to_version: number;
+  rows: { cost_code: string | null; title: string; from_amount: string; to_amount: string; change: string }[];
+  from_total: string;
+  to_total: string;
+  change: string;
+}
+
+export interface BudgetLine {
+  id: string;
+  sequence: number;
+  cost_code: CostCodeRef | null;
+  description: string;
+  amount: string;
+  notes: string | null;
+}
+
+export interface Budget {
+  id: string;
+  project_id: string;
+  name: string;
+  kind: string;
+  status: "draft" | "approved";
+  currency: string;
+  cost_code_set_id: string | null;
+  source_estimate_version_id: string | null;
+  source_description: string | null;
+  total: string;
+  approved_at: string | null;
+  created_at: string;
+  is_editable: boolean;
+  lines: BudgetLine[];
 }

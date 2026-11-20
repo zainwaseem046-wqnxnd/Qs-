@@ -26,6 +26,9 @@
 | `test_projects.py` | creation with address/client, 10 validation cases (incl. float money, >2 decimals), duplicate numbers, optimistic locking + audit diff, archive read-only, search/filter/sort/paginate, team/parties/phases |
 | `test_companies.py` | CRUD, contacts, versioning, search, inactive filter |
 | `test_documents.py` | upload/version/download round trip with SHA-256, disallowed/spoofed/empty/oversized files, filename sanitisation, soft delete + permission, project-scoped visibility, metadata audit |
+| `test_estimating_calc.py` | golden-value build-ups (US and UK examples), 6-dp unit rounding, half-up extension, sequential/cumulative markups, alternates/exclusions, 5,000-line exact sum |
+| `test_commercial_core.py` | cost code templates, CSV import (ordering, all-or-nothing, depth, duplicates), in-use protection, permissions/isolation; estimate totals, validation (floats, decimals, waste range, foreign codes), issue/lock/new version/compare, **SQL-level freeze of issued versions and approved budgets**, approval permissions, visibility; budget from estimate reconciliation, approval, one-per-project rule, dashboard totals |
+| `test_regions_email.py` | US/UK defaults, postcodes, region guard, country-specific contract vocabularies, invitation/reset emails |
 | `test_dashboard_audit.py` | exact decimal sums grouped by currency, visibility/archive scoping, upcoming completions, audit append-only even for the schema owner, document version immutability, audit filters |
 
 ### End-to-end

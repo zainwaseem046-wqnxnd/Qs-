@@ -19,9 +19,13 @@
 | 1.1 | US + UK markets, regional data residency guard (migration 0002) | ✅ Done | `test_regions_email.py`, e2e UK spec |
 | 1.1 | Email (SMTP) — invitations, password reset, password-changed notice | ✅ Done (console/memory tested; live Gmail send not yet tested — needs App Password) | `test_regions_email.py` |
 | 1.1 | MFA optional, no prompts | ✅ Done | ADR-020 |
-| 2 | Commercial core | ⏳ Not started | see BACKLOG.md |
+| 2.1 | Own-format cost codes + CSV import | ✅ Done | `test_commercial_core.py`, e2e `estimating.spec.ts` |
+| 2.1 | Estimating (versions, build-up, markups, alternates, compare) | ✅ Done | `test_estimating_calc.py` (golden values), `test_commercial_core.py` |
+| 2.1 | Original budget from approved estimate; approval lock | ✅ Done | `test_commercial_core.py` incl. SQL-level freeze |
+| 2.1 | UK procurement routes, JCT/NEC contracts, UK roles | ✅ Done | `test_regions_email.py` |
+| 2 | Remaining Phase 2: contracts, commitments, change orders, cost ledger, forecasting | ⏳ Next | see BACKLOG.md |
 
-## Latest test results (milestone 1.1)
-* Backend: 97 passed (pytest, PostgreSQL 16, runtime role `qs_app` with RLS).
-* Frontend: TypeScript strict — no errors; Vitest 21 passed; production build succeeded.
-* E2E: 6 passed (Chromium desktop + Pixel 7 emulation), stable across consecutive runs.
+## Latest test results (milestone 2.1)
+* Backend: 122 passed (pytest, PostgreSQL 16, runtime role `qs_app` with RLS).
+* Frontend: TypeScript strict — no errors; Vitest 23 passed; production build succeeded.
+* E2E: 7 passed (Chromium desktop + Pixel 7 emulation), stable across consecutive runs.

@@ -114,6 +114,29 @@ remains available in Profile & security for users who want it. **Consequences:**
 strong passwords, rate limiting, refresh-token reuse detection and email-based recovery; per-organization
 enforcement can be added later without schema changes if customers require it.
 
+### ADR-021 Estimating calculation rules
+**Decision:** a pure, unit-tested engine (`app/domains/estimating/calc.py`). Unit components are rounded to
+6 dp; each component is extended (quantity × unit rate) and rounded **once** to cents/pence (ROUND_HALF_UP); the
+line total is the sum of the rounded components, so every displayed build-up adds up exactly. Markups apply in
+sequence on either the direct cost or the running total. Alternates are priced and reported but never added to
+the total; excluded lines are informational. The UI shows previews from a stateless server endpoint
+(`POST /estimating/calculate-line`) rather than calculating in the browser.
+
+### ADR-022 Estimate versions and budget creation
+**Decision:** versions move draft → issued → approved. Issuing snapshots totals; issued and approved versions are
+frozen by database triggers. Only one draft exists at a time; a new version copies the latest. The original
+budget is created from an **approved** version: one line per cost code (base scope), an "Unassigned" line for
+uncoded items, and a line per markup flagged "in budget" (profit/fee normally are not). At most one approved
+original budget per project (partial unique index); approved budgets are frozen by trigger and change later only
+through transfers and change orders.
+
+### ADR-023 UK commercial vocabulary and NRM
+**Decision (product owner: "yes" to NRM structure and JCT/NEC from the start):** UK organizations get UK
+procurement routes, JCT (SBC, DB, IC, ICD, MW, MP, MC) and NEC4 (ECC options A–F, ECSC) contract types and UK
+roles, validated per country. NRM1/NRM2 are RICS publications: we ship **level-name templates only**
+("Group element › Element › Sub-element › Component", "Work section › Item"); customers import their own
+licensed codes. Same approach for US MasterFormat/UniFormat (ADR-009).
+
 ### ADR-016 Dashboard never estimates unavailable metrics
 **Decision:** commercial metrics needing Phase 2 data are listed as unavailable with the reason, instead of
 being approximated from contract values.

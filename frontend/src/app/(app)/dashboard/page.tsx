@@ -36,6 +36,12 @@ function missingNote(totals: CurrencyTotal[] | null) {
   return `${projects} project${projects === 1 ? "" : "s"}${missing ? ` · ${missing} without a contract value` : ""}`;
 }
 
+function budgetNote(totals: CurrencyTotal[]) {
+  const withBudget = totals.reduce((n, t) => n + t.project_count, 0);
+  const without = totals.reduce((n, t) => n + t.projects_without_value, 0);
+  return `${withBudget} live project${withBudget === 1 ? "" : "s"} budgeted${without ? ` · ${without} without an approved budget` : ""}`;
+}
+
 /** Single-series magnitude: one hue, direct count labels, no legend. */
 function StatusBars({ byStatus, labels }: { byStatus: Record<string, number>; labels?: Record<string, string> }) {
   const entries = Object.entries(labels ?? {}).map(([key, text]) => [key, text, byStatus[key] ?? 0] as const).filter(([, , n]) => n > 0);
@@ -96,10 +102,13 @@ export default function DashboardPage() {
         </Card>
       ) : (
         <div className="space-y-6">
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-5">
             <Stat label="Projects in portfolio" value={d.total_projects} sub={`${live} live (preconstruction to closeout)`} />
             <Stat label="Live contract value" value={<MoneyTotals totals={d.live_contract_value} />} sub={missingNote(d.live_contract_value)} />
             <Stat label="Pursuit pipeline" value={<MoneyTotals totals={d.pursuit_value} />} sub={missingNote(d.pursuit_value)} />
+            {d.original_budget && (
+              <Stat label="Approved original budgets" value={<MoneyTotals totals={d.original_budget} />} sub={budgetNote(d.original_budget)} />
+            )}
             <Stat label="Completing in 90 days" value={d.upcoming_completions.length} sub="Planned completion dates" />
           </div>
 

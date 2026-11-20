@@ -14,6 +14,7 @@ import {
   HardHat,
   LayoutDashboard,
   LineChart,
+  ListTree,
   Ruler,
   Settings,
   ShieldCheck,
@@ -41,7 +42,8 @@ export const NAV: { section: string; items: NavItem[] }[] = [
   {
     section: "Preconstruction",
     items: [
-      { label: "Estimating", icon: Calculator, phase: 2 },
+      { label: "Estimating", icon: Calculator, href: "/estimating" },
+      { label: "Cost Codes", icon: ListTree, href: "/cost-codes" },
       { label: "AI Measurement", icon: Ruler, phase: 5 },
       { label: "Cost Database", icon: Database, phase: 2 },
       { label: "Procurement", icon: Gavel, phase: 3 },

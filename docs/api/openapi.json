@@ -3860,6 +3860,2369 @@
     }
    }
   },
+  "/api/v1/cost-code-sets/templates": {
+   "get": {
+    "tags": [
+     "cost codes"
+    ],
+    "summary": "Templates",
+    "operationId": "templates_api_v1_cost_code_sets_templates_get",
+    "parameters": [
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "array",
+         "items": {
+          "$ref": "#/components/schemas/TemplateOut"
+         },
+         "title": "Response Templates Api V1 Cost Code Sets Templates Get"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/cost-code-sets": {
+   "get": {
+    "tags": [
+     "cost codes"
+    ],
+    "summary": "List Sets",
+    "operationId": "list_sets_api_v1_cost_code_sets_get",
+    "parameters": [
+     {
+      "name": "include_inactive",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "type": "boolean",
+       "default": false,
+       "title": "Include Inactive"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "array",
+         "items": {
+          "$ref": "#/components/schemas/CostCodeSetOut"
+         },
+         "title": "Response List Sets Api V1 Cost Code Sets Get"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   },
+   "post": {
+    "tags": [
+     "cost codes"
+    ],
+    "summary": "Create Set",
+    "operationId": "create_set_api_v1_cost_code_sets_post",
+    "parameters": [
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/CostCodeSetCreate"
+       }
+      }
+     }
+    },
+    "responses": {
+     "201": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/CostCodeSetOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/cost-code-sets/{set_id}": {
+   "get": {
+    "tags": [
+     "cost codes"
+    ],
+    "summary": "Get Set",
+    "operationId": "get_set_api_v1_cost_code_sets__set_id__get",
+    "parameters": [
+     {
+      "name": "set_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Set Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/CostCodeSetOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   },
+   "patch": {
+    "tags": [
+     "cost codes"
+    ],
+    "summary": "Update Set",
+    "operationId": "update_set_api_v1_cost_code_sets__set_id__patch",
+    "parameters": [
+     {
+      "name": "set_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Set Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/CostCodeSetUpdate"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/CostCodeSetOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/cost-code-sets/{set_id}/codes": {
+   "get": {
+    "tags": [
+     "cost codes"
+    ],
+    "summary": "List Codes",
+    "operationId": "list_codes_api_v1_cost_code_sets__set_id__codes_get",
+    "parameters": [
+     {
+      "name": "set_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Set Id"
+      }
+     },
+     {
+      "name": "q",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string",
+         "maxLength": 100
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Q"
+      }
+     },
+     {
+      "name": "include_inactive",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "type": "boolean",
+       "default": false,
+       "title": "Include Inactive"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "array",
+         "items": {
+          "$ref": "#/components/schemas/CostCodeOut"
+         },
+         "title": "Response List Codes Api V1 Cost Code Sets  Set Id  Codes Get"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   },
+   "post": {
+    "tags": [
+     "cost codes"
+    ],
+    "summary": "Create Code",
+    "operationId": "create_code_api_v1_cost_code_sets__set_id__codes_post",
+    "parameters": [
+     {
+      "name": "set_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Set Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/CostCodeIn"
+       }
+      }
+     }
+    },
+    "responses": {
+     "201": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/CostCodeOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/cost-code-sets/{set_id}/codes/{code_id}": {
+   "patch": {
+    "tags": [
+     "cost codes"
+    ],
+    "summary": "Update Code",
+    "operationId": "update_code_api_v1_cost_code_sets__set_id__codes__code_id__patch",
+    "parameters": [
+     {
+      "name": "set_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Set Id"
+      }
+     },
+     {
+      "name": "code_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Code Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/CostCodeUpdate"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/CostCodeOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   },
+   "delete": {
+    "tags": [
+     "cost codes"
+    ],
+    "summary": "Delete Code",
+    "operationId": "delete_code_api_v1_cost_code_sets__set_id__codes__code_id__delete",
+    "parameters": [
+     {
+      "name": "set_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Set Id"
+      }
+     },
+     {
+      "name": "code_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Code Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "responses": {
+     "204": {
+      "description": "Successful Response"
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/cost-code-sets/{set_id}/import": {
+   "post": {
+    "tags": [
+     "cost codes"
+    ],
+    "summary": "Import Codes",
+    "operationId": "import_codes_api_v1_cost_code_sets__set_id__import_post",
+    "parameters": [
+     {
+      "name": "set_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Set Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "multipart/form-data": {
+       "schema": {
+        "$ref": "#/components/schemas/Body_import_codes_api_v1_cost_code_sets__set_id__import_post"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ImportResult"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/estimating/reference": {
+   "get": {
+    "tags": [
+     "estimating"
+    ],
+    "summary": "Reference",
+    "operationId": "reference_api_v1_estimating_reference_get",
+    "parameters": [
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "additionalProperties": {
+          "type": "object",
+          "additionalProperties": {
+           "type": "string"
+          }
+         },
+         "title": "Response Reference Api V1 Estimating Reference Get"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/estimating/calculate-line": {
+   "post": {
+    "tags": [
+     "estimating"
+    ],
+    "summary": "Calculate",
+    "description": "Stateless preview so the UI shows build-ups computed by the same engine (no client-side arithmetic).",
+    "operationId": "calculate_api_v1_estimating_calculate_line_post",
+    "parameters": [
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/LineFields"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/LineCalcOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/estimates": {
+   "get": {
+    "tags": [
+     "estimating"
+    ],
+    "summary": "List Estimates",
+    "operationId": "list_estimates_api_v1_estimates_get",
+    "parameters": [
+     {
+      "name": "project_id",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string",
+         "format": "uuid"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Project Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "array",
+         "items": {
+          "$ref": "#/components/schemas/EstimateOut"
+         },
+         "title": "Response List Estimates Api V1 Estimates Get"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/projects/{project_id}/estimates": {
+   "post": {
+    "tags": [
+     "estimating"
+    ],
+    "summary": "Create Estimate",
+    "operationId": "create_estimate_api_v1_projects__project_id__estimates_post",
+    "parameters": [
+     {
+      "name": "project_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Project Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/EstimateCreate"
+       }
+      }
+     }
+    },
+    "responses": {
+     "201": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/EstimateOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/estimates/{estimate_id}": {
+   "get": {
+    "tags": [
+     "estimating"
+    ],
+    "summary": "Get Estimate",
+    "operationId": "get_estimate_api_v1_estimates__estimate_id__get",
+    "parameters": [
+     {
+      "name": "estimate_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Estimate Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/EstimateOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   },
+   "patch": {
+    "tags": [
+     "estimating"
+    ],
+    "summary": "Rename",
+    "operationId": "rename_api_v1_estimates__estimate_id__patch",
+    "parameters": [
+     {
+      "name": "estimate_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Estimate Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/EstimateUpdate"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/EstimateOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/estimates/{estimate_id}/versions/{number}": {
+   "get": {
+    "tags": [
+     "estimating"
+    ],
+    "summary": "Get Version",
+    "operationId": "get_version_api_v1_estimates__estimate_id__versions__number__get",
+    "parameters": [
+     {
+      "name": "estimate_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Estimate Id"
+      }
+     },
+     {
+      "name": "number",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "integer",
+       "title": "Number"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/VersionOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   },
+   "patch": {
+    "tags": [
+     "estimating"
+    ],
+    "summary": "Update Version",
+    "operationId": "update_version_api_v1_estimates__estimate_id__versions__number__patch",
+    "parameters": [
+     {
+      "name": "estimate_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Estimate Id"
+      }
+     },
+     {
+      "name": "number",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "integer",
+       "title": "Number"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/VersionUpdate"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/VersionOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/estimates/{estimate_id}/versions/{number}/lines": {
+   "post": {
+    "tags": [
+     "estimating"
+    ],
+    "summary": "Add Line",
+    "operationId": "add_line_api_v1_estimates__estimate_id__versions__number__lines_post",
+    "parameters": [
+     {
+      "name": "estimate_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Estimate Id"
+      }
+     },
+     {
+      "name": "number",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "integer",
+       "title": "Number"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/LineIn"
+       }
+      }
+     }
+    },
+    "responses": {
+     "201": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/VersionOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/estimates/{estimate_id}/versions/{number}/lines/{line_id}": {
+   "put": {
+    "tags": [
+     "estimating"
+    ],
+    "summary": "Update Line",
+    "operationId": "update_line_api_v1_estimates__estimate_id__versions__number__lines__line_id__put",
+    "parameters": [
+     {
+      "name": "estimate_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Estimate Id"
+      }
+     },
+     {
+      "name": "number",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "integer",
+       "title": "Number"
+      }
+     },
+     {
+      "name": "line_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Line Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/LineIn"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/VersionOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   },
+   "delete": {
+    "tags": [
+     "estimating"
+    ],
+    "summary": "Delete Line",
+    "operationId": "delete_line_api_v1_estimates__estimate_id__versions__number__lines__line_id__delete",
+    "parameters": [
+     {
+      "name": "estimate_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Estimate Id"
+      }
+     },
+     {
+      "name": "number",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "integer",
+       "title": "Number"
+      }
+     },
+     {
+      "name": "line_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Line Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/VersionOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/estimates/{estimate_id}/versions/{number}/markups": {
+   "put": {
+    "tags": [
+     "estimating"
+    ],
+    "summary": "Set Markups",
+    "operationId": "set_markups_api_v1_estimates__estimate_id__versions__number__markups_put",
+    "parameters": [
+     {
+      "name": "estimate_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Estimate Id"
+      }
+     },
+     {
+      "name": "number",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "integer",
+       "title": "Number"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/MarkupsIn"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/VersionOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/estimates/{estimate_id}/versions/{number}/issue": {
+   "post": {
+    "tags": [
+     "estimating"
+    ],
+    "summary": "Issue",
+    "operationId": "issue_api_v1_estimates__estimate_id__versions__number__issue_post",
+    "parameters": [
+     {
+      "name": "estimate_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Estimate Id"
+      }
+     },
+     {
+      "name": "number",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "integer",
+       "title": "Number"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/VersionOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/estimates/{estimate_id}/versions/{number}/approve": {
+   "post": {
+    "tags": [
+     "estimating"
+    ],
+    "summary": "Approve",
+    "operationId": "approve_api_v1_estimates__estimate_id__versions__number__approve_post",
+    "parameters": [
+     {
+      "name": "estimate_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Estimate Id"
+      }
+     },
+     {
+      "name": "number",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "integer",
+       "title": "Number"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/VersionOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/estimates/{estimate_id}/versions": {
+   "post": {
+    "tags": [
+     "estimating"
+    ],
+    "summary": "Create Version",
+    "operationId": "create_version_api_v1_estimates__estimate_id__versions_post",
+    "parameters": [
+     {
+      "name": "estimate_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Estimate Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "responses": {
+     "201": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/VersionOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/estimates/{estimate_id}/compare": {
+   "get": {
+    "tags": [
+     "estimating"
+    ],
+    "summary": "Compare",
+    "operationId": "compare_api_v1_estimates__estimate_id__compare_get",
+    "parameters": [
+     {
+      "name": "estimate_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Estimate Id"
+      }
+     },
+     {
+      "name": "from_version",
+      "in": "query",
+      "required": true,
+      "schema": {
+       "type": "integer",
+       "title": "From Version"
+      }
+     },
+     {
+      "name": "to_version",
+      "in": "query",
+      "required": true,
+      "schema": {
+       "type": "integer",
+       "title": "To Version"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/CompareOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/projects/{project_id}/budgets": {
+   "get": {
+    "tags": [
+     "budgets"
+    ],
+    "summary": "List Budgets",
+    "operationId": "list_budgets_api_v1_projects__project_id__budgets_get",
+    "parameters": [
+     {
+      "name": "project_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Project Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "array",
+         "items": {
+          "$ref": "#/components/schemas/BudgetOut"
+         },
+         "title": "Response List Budgets Api V1 Projects  Project Id  Budgets Get"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   },
+   "post": {
+    "tags": [
+     "budgets"
+    ],
+    "summary": "Create Budget",
+    "operationId": "create_budget_api_v1_projects__project_id__budgets_post",
+    "parameters": [
+     {
+      "name": "project_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Project Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/BudgetCreate"
+       }
+      }
+     }
+    },
+    "responses": {
+     "201": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/BudgetOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/projects/{project_id}/budgets/from-estimate": {
+   "post": {
+    "tags": [
+     "budgets"
+    ],
+    "summary": "Create From Estimate",
+    "operationId": "create_from_estimate_api_v1_projects__project_id__budgets_from_estimate_post",
+    "parameters": [
+     {
+      "name": "project_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Project Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/BudgetFromEstimate"
+       }
+      }
+     }
+    },
+    "responses": {
+     "201": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/BudgetOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/budgets/{budget_id}": {
+   "get": {
+    "tags": [
+     "budgets"
+    ],
+    "summary": "Get Budget",
+    "operationId": "get_budget_api_v1_budgets__budget_id__get",
+    "parameters": [
+     {
+      "name": "budget_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Budget Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/BudgetOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   },
+   "delete": {
+    "tags": [
+     "budgets"
+    ],
+    "summary": "Delete Budget",
+    "operationId": "delete_budget_api_v1_budgets__budget_id__delete",
+    "parameters": [
+     {
+      "name": "budget_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Budget Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "responses": {
+     "204": {
+      "description": "Successful Response"
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/budgets/{budget_id}/lines": {
+   "post": {
+    "tags": [
+     "budgets"
+    ],
+    "summary": "Add Line",
+    "operationId": "add_line_api_v1_budgets__budget_id__lines_post",
+    "parameters": [
+     {
+      "name": "budget_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Budget Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/BudgetLineIn"
+       }
+      }
+     }
+    },
+    "responses": {
+     "201": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/BudgetOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/budgets/{budget_id}/lines/{line_id}": {
+   "put": {
+    "tags": [
+     "budgets"
+    ],
+    "summary": "Update Line",
+    "operationId": "update_line_api_v1_budgets__budget_id__lines__line_id__put",
+    "parameters": [
+     {
+      "name": "budget_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Budget Id"
+      }
+     },
+     {
+      "name": "line_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Line Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/BudgetLineIn"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/BudgetOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   },
+   "delete": {
+    "tags": [
+     "budgets"
+    ],
+    "summary": "Delete Line",
+    "operationId": "delete_line_api_v1_budgets__budget_id__lines__line_id__delete",
+    "parameters": [
+     {
+      "name": "budget_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Budget Id"
+      }
+     },
+     {
+      "name": "line_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Line Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/BudgetOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/budgets/{budget_id}/approve": {
+   "post": {
+    "tags": [
+     "budgets"
+    ],
+    "summary": "Approve",
+    "operationId": "approve_api_v1_budgets__budget_id__approve_post",
+    "parameters": [
+     {
+      "name": "budget_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Budget Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/BudgetOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
   "/api/v1/health": {
    "get": {
     "tags": [
@@ -4100,6 +6463,24 @@
     ],
     "title": "AddressOut"
    },
+   "AlternateOut": {
+    "properties": {
+     "label": {
+      "type": "string",
+      "title": "Label"
+     },
+     "amount": {
+      "type": "string",
+      "title": "Amount"
+     }
+    },
+    "type": "object",
+    "required": [
+     "label",
+     "amount"
+    ],
+    "title": "AlternateOut"
+   },
    "AuditEventOut": {
     "properties": {
      "id": {
@@ -4198,6 +6579,20 @@
      "occurred_at"
     ],
     "title": "AuditEventOut"
+   },
+   "Body_import_codes_api_v1_cost_code_sets__set_id__import_post": {
+    "properties": {
+     "file": {
+      "type": "string",
+      "contentMediaType": "application/octet-stream",
+      "title": "File"
+     }
+    },
+    "type": "object",
+    "required": [
+     "file"
+    ],
+    "title": "Body_import_codes_api_v1_cost_code_sets__set_id__import_post"
    },
    "Body_upload_document_api_v1_documents_post": {
     "properties": {
@@ -4316,6 +6711,289 @@
      "file"
     ],
     "title": "Body_upload_version_api_v1_documents__document_id__versions_post"
+   },
+   "BudgetCreate": {
+    "properties": {
+     "name": {
+      "type": "string",
+      "maxLength": 200,
+      "minLength": 2,
+      "title": "Name",
+      "default": "Original budget"
+     },
+     "cost_code_set_id": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "uuid"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Cost Code Set Id"
+     },
+     "currency": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Currency"
+     }
+    },
+    "additionalProperties": false,
+    "type": "object",
+    "title": "BudgetCreate"
+   },
+   "BudgetFromEstimate": {
+    "properties": {
+     "estimate_id": {
+      "type": "string",
+      "format": "uuid",
+      "title": "Estimate Id"
+     },
+     "version_number": {
+      "type": "integer",
+      "minimum": 1.0,
+      "title": "Version Number"
+     },
+     "name": {
+      "type": "string",
+      "maxLength": 200,
+      "minLength": 2,
+      "title": "Name",
+      "default": "Original budget"
+     }
+    },
+    "additionalProperties": false,
+    "type": "object",
+    "required": [
+     "estimate_id",
+     "version_number"
+    ],
+    "title": "BudgetFromEstimate"
+   },
+   "BudgetLineIn": {
+    "properties": {
+     "cost_code_id": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "uuid"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Cost Code Id"
+     },
+     "description": {
+      "type": "string",
+      "maxLength": 300,
+      "minLength": 1,
+      "title": "Description"
+     },
+     "amount": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "string"
+       }
+      ],
+      "title": "Amount"
+     },
+     "notes": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 2000
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Notes"
+     }
+    },
+    "additionalProperties": false,
+    "type": "object",
+    "required": [
+     "description",
+     "amount"
+    ],
+    "title": "BudgetLineIn"
+   },
+   "BudgetLineOut": {
+    "properties": {
+     "id": {
+      "type": "string",
+      "format": "uuid",
+      "title": "Id"
+     },
+     "sequence": {
+      "type": "integer",
+      "title": "Sequence"
+     },
+     "cost_code": {
+      "anyOf": [
+       {
+        "$ref": "#/components/schemas/CostCodeRef"
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "description": {
+      "type": "string",
+      "title": "Description"
+     },
+     "amount": {
+      "type": "string",
+      "title": "Amount"
+     },
+     "notes": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Notes"
+     }
+    },
+    "type": "object",
+    "required": [
+     "id",
+     "sequence",
+     "cost_code",
+     "description",
+     "amount",
+     "notes"
+    ],
+    "title": "BudgetLineOut"
+   },
+   "BudgetOut": {
+    "properties": {
+     "id": {
+      "type": "string",
+      "format": "uuid",
+      "title": "Id"
+     },
+     "project_id": {
+      "type": "string",
+      "format": "uuid",
+      "title": "Project Id"
+     },
+     "name": {
+      "type": "string",
+      "title": "Name"
+     },
+     "kind": {
+      "type": "string",
+      "title": "Kind"
+     },
+     "status": {
+      "type": "string",
+      "title": "Status"
+     },
+     "currency": {
+      "type": "string",
+      "title": "Currency"
+     },
+     "cost_code_set_id": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "uuid"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Cost Code Set Id"
+     },
+     "source_estimate_version_id": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "uuid"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Source Estimate Version Id"
+     },
+     "source_description": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Source Description"
+     },
+     "total": {
+      "type": "string",
+      "title": "Total"
+     },
+     "approved_at": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "date-time"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Approved At"
+     },
+     "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Created At"
+     },
+     "is_editable": {
+      "type": "boolean",
+      "title": "Is Editable"
+     },
+     "lines": {
+      "items": {
+       "$ref": "#/components/schemas/BudgetLineOut"
+      },
+      "type": "array",
+      "title": "Lines"
+     }
+    },
+    "type": "object",
+    "required": [
+     "id",
+     "project_id",
+     "name",
+     "kind",
+     "status",
+     "currency",
+     "cost_code_set_id",
+     "source_estimate_version_id",
+     "total",
+     "approved_at",
+     "created_at",
+     "is_editable",
+     "lines"
+    ],
+    "title": "BudgetOut"
    },
    "ChangePasswordRequest": {
     "properties": {
@@ -4716,6 +7394,87 @@
     ],
     "title": "CompanyUpdate"
    },
+   "CompareOut": {
+    "properties": {
+     "from_version": {
+      "type": "integer",
+      "title": "From Version"
+     },
+     "to_version": {
+      "type": "integer",
+      "title": "To Version"
+     },
+     "rows": {
+      "items": {
+       "$ref": "#/components/schemas/CompareRow"
+      },
+      "type": "array",
+      "title": "Rows"
+     },
+     "from_total": {
+      "type": "string",
+      "title": "From Total"
+     },
+     "to_total": {
+      "type": "string",
+      "title": "To Total"
+     },
+     "change": {
+      "type": "string",
+      "title": "Change"
+     }
+    },
+    "type": "object",
+    "required": [
+     "from_version",
+     "to_version",
+     "rows",
+     "from_total",
+     "to_total",
+     "change"
+    ],
+    "title": "CompareOut"
+   },
+   "CompareRow": {
+    "properties": {
+     "cost_code": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Cost Code"
+     },
+     "title": {
+      "type": "string",
+      "title": "Title"
+     },
+     "from_amount": {
+      "type": "string",
+      "title": "From Amount"
+     },
+     "to_amount": {
+      "type": "string",
+      "title": "To Amount"
+     },
+     "change": {
+      "type": "string",
+      "title": "Change"
+     }
+    },
+    "type": "object",
+    "required": [
+     "cost_code",
+     "title",
+     "from_amount",
+     "to_amount",
+     "change"
+    ],
+    "title": "CompareRow"
+   },
    "ContactIn": {
     "properties": {
      "first_name": {
@@ -4902,6 +7661,369 @@
     ],
     "title": "ContactOut"
    },
+   "CostCodeIn": {
+    "properties": {
+     "code": {
+      "type": "string",
+      "maxLength": 40,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9 ._/\\-]*$",
+      "title": "Code"
+     },
+     "title": {
+      "type": "string",
+      "maxLength": 300,
+      "minLength": 1,
+      "title": "Title"
+     },
+     "parent_id": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "uuid"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Parent Id"
+     },
+     "unit": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 20
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Unit"
+     }
+    },
+    "additionalProperties": false,
+    "type": "object",
+    "required": [
+     "code",
+     "title"
+    ],
+    "title": "CostCodeIn"
+   },
+   "CostCodeOut": {
+    "properties": {
+     "id": {
+      "type": "string",
+      "format": "uuid",
+      "title": "Id"
+     },
+     "set_id": {
+      "type": "string",
+      "format": "uuid",
+      "title": "Set Id"
+     },
+     "parent_id": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "uuid"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Parent Id"
+     },
+     "code": {
+      "type": "string",
+      "title": "Code"
+     },
+     "title": {
+      "type": "string",
+      "title": "Title"
+     },
+     "level": {
+      "type": "integer",
+      "title": "Level"
+     },
+     "unit": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Unit"
+     },
+     "is_active": {
+      "type": "boolean",
+      "title": "Is Active"
+     }
+    },
+    "type": "object",
+    "required": [
+     "id",
+     "set_id",
+     "parent_id",
+     "code",
+     "title",
+     "level",
+     "unit",
+     "is_active"
+    ],
+    "title": "CostCodeOut"
+   },
+   "CostCodeRef": {
+    "properties": {
+     "id": {
+      "type": "string",
+      "format": "uuid",
+      "title": "Id"
+     },
+     "code": {
+      "type": "string",
+      "title": "Code"
+     },
+     "title": {
+      "type": "string",
+      "title": "Title"
+     }
+    },
+    "type": "object",
+    "required": [
+     "id",
+     "code",
+     "title"
+    ],
+    "title": "CostCodeRef"
+   },
+   "CostCodeSetCreate": {
+    "properties": {
+     "name": {
+      "type": "string",
+      "maxLength": 120,
+      "minLength": 2,
+      "title": "Name"
+     },
+     "description": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 2000
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Description"
+     },
+     "template_key": {
+      "type": "string",
+      "title": "Template Key",
+      "default": "custom"
+     },
+     "level_names": {
+      "anyOf": [
+       {
+        "items": {
+         "type": "string"
+        },
+        "type": "array"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Level Names"
+     }
+    },
+    "additionalProperties": false,
+    "type": "object",
+    "required": [
+     "name"
+    ],
+    "title": "CostCodeSetCreate"
+   },
+   "CostCodeSetOut": {
+    "properties": {
+     "id": {
+      "type": "string",
+      "format": "uuid",
+      "title": "Id"
+     },
+     "name": {
+      "type": "string",
+      "title": "Name"
+     },
+     "description": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Description"
+     },
+     "template_key": {
+      "type": "string",
+      "title": "Template Key"
+     },
+     "level_names": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array",
+      "title": "Level Names"
+     },
+     "is_active": {
+      "type": "boolean",
+      "title": "Is Active"
+     },
+     "version": {
+      "type": "integer",
+      "title": "Version"
+     },
+     "code_count": {
+      "type": "integer",
+      "title": "Code Count",
+      "default": 0
+     },
+     "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Created At"
+     },
+     "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Updated At"
+     }
+    },
+    "type": "object",
+    "required": [
+     "id",
+     "name",
+     "description",
+     "template_key",
+     "level_names",
+     "is_active",
+     "version",
+     "created_at",
+     "updated_at"
+    ],
+    "title": "CostCodeSetOut"
+   },
+   "CostCodeSetUpdate": {
+    "properties": {
+     "version": {
+      "type": "integer",
+      "minimum": 1.0,
+      "title": "Version"
+     },
+     "name": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 120,
+        "minLength": 2
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Name"
+     },
+     "description": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 2000
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Description"
+     },
+     "level_names": {
+      "anyOf": [
+       {
+        "items": {
+         "type": "string"
+        },
+        "type": "array"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Level Names"
+     },
+     "is_active": {
+      "anyOf": [
+       {
+        "type": "boolean"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Is Active"
+     }
+    },
+    "additionalProperties": false,
+    "type": "object",
+    "required": [
+     "version"
+    ],
+    "title": "CostCodeSetUpdate"
+   },
+   "CostCodeUpdate": {
+    "properties": {
+     "title": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 300,
+        "minLength": 1
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Title"
+     },
+     "unit": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 20
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Unit"
+     },
+     "is_active": {
+      "anyOf": [
+       {
+        "type": "boolean"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Is Active"
+     }
+    },
+    "additionalProperties": false,
+    "type": "object",
+    "title": "CostCodeUpdate"
+   },
    "CurrencyTotalOut": {
     "properties": {
      "currency": {
@@ -5002,6 +8124,20 @@
       ],
       "title": "Pursuit Value"
      },
+     "original_budget": {
+      "anyOf": [
+       {
+        "items": {
+         "$ref": "#/components/schemas/CurrencyTotalOut"
+        },
+        "type": "array"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Original Budget"
+     },
      "upcoming_completions": {
       "items": {
        "$ref": "#/components/schemas/ProjectListItem"
@@ -5046,6 +8182,7 @@
      "by_sector",
      "live_contract_value",
      "pursuit_value",
+     "original_budget",
      "upcoming_completions",
      "recent_projects",
      "recent_activity",
@@ -5463,6 +8600,185 @@
     ],
     "title": "DocumentVersionOut"
    },
+   "EstimateCreate": {
+    "properties": {
+     "name": {
+      "type": "string",
+      "maxLength": 200,
+      "minLength": 2,
+      "title": "Name"
+     },
+     "estimate_type": {
+      "type": "string",
+      "enum": [
+       "conceptual",
+       "cost_plan",
+       "detailed",
+       "pre_tender",
+       "tender"
+      ],
+      "title": "Estimate Type",
+      "default": "detailed"
+     },
+     "cost_code_set_id": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "uuid"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Cost Code Set Id"
+     },
+     "currency": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Currency"
+     },
+     "price_base_date": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "date"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Price Base Date"
+     },
+     "label": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 120
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Label"
+     }
+    },
+    "additionalProperties": false,
+    "type": "object",
+    "required": [
+     "name"
+    ],
+    "title": "EstimateCreate"
+   },
+   "EstimateOut": {
+    "properties": {
+     "id": {
+      "type": "string",
+      "format": "uuid",
+      "title": "Id"
+     },
+     "project_id": {
+      "type": "string",
+      "format": "uuid",
+      "title": "Project Id"
+     },
+     "project_number": {
+      "type": "string",
+      "title": "Project Number"
+     },
+     "project_name": {
+      "type": "string",
+      "title": "Project Name"
+     },
+     "name": {
+      "type": "string",
+      "title": "Name"
+     },
+     "estimate_type": {
+      "type": "string",
+      "title": "Estimate Type"
+     },
+     "cost_code_set_id": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "uuid"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Cost Code Set Id"
+     },
+     "currency": {
+      "type": "string",
+      "title": "Currency"
+     },
+     "current_version_number": {
+      "type": "integer",
+      "title": "Current Version Number"
+     },
+     "versions": {
+      "items": {
+       "$ref": "#/components/schemas/VersionSummary"
+      },
+      "type": "array",
+      "title": "Versions"
+     },
+     "can_edit": {
+      "type": "boolean",
+      "title": "Can Edit"
+     },
+     "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Created At"
+     },
+     "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Updated At"
+     }
+    },
+    "type": "object",
+    "required": [
+     "id",
+     "project_id",
+     "project_number",
+     "project_name",
+     "name",
+     "estimate_type",
+     "cost_code_set_id",
+     "currency",
+     "current_version_number",
+     "versions",
+     "can_edit",
+     "created_at",
+     "updated_at"
+    ],
+    "title": "EstimateOut"
+   },
+   "EstimateUpdate": {
+    "properties": {
+     "name": {
+      "type": "string",
+      "maxLength": 200,
+      "minLength": 2,
+      "title": "Name"
+     }
+    },
+    "additionalProperties": false,
+    "type": "object",
+    "required": [
+     "name"
+    ],
+    "title": "EstimateUpdate"
+   },
    "ForgotPasswordRequest": {
     "properties": {
      "email": {
@@ -5490,6 +8806,28 @@
     },
     "type": "object",
     "title": "HTTPValidationError"
+   },
+   "ImportResult": {
+    "properties": {
+     "created": {
+      "type": "integer",
+      "title": "Created"
+     },
+     "errors": {
+      "items": {
+       "additionalProperties": true,
+       "type": "object"
+      },
+      "type": "array",
+      "title": "Errors"
+     }
+    },
+    "type": "object",
+    "required": [
+     "created",
+     "errors"
+    ],
+    "title": "ImportResult"
    },
    "InvitationCreate": {
     "properties": {
@@ -5636,6 +8974,479 @@
     ],
     "title": "InvitationPreview"
    },
+   "LineCalcOut": {
+    "properties": {
+     "labour_unit": {
+      "type": "string",
+      "title": "Labour Unit"
+     },
+     "material_unit": {
+      "type": "string",
+      "title": "Material Unit"
+     },
+     "equipment_unit": {
+      "type": "string",
+      "title": "Equipment Unit"
+     },
+     "subcontract_unit": {
+      "type": "string",
+      "title": "Subcontract Unit"
+     },
+     "other_unit": {
+      "type": "string",
+      "title": "Other Unit"
+     },
+     "unit_cost": {
+      "type": "string",
+      "title": "Unit Cost"
+     },
+     "labour_total": {
+      "type": "string",
+      "title": "Labour Total"
+     },
+     "material_total": {
+      "type": "string",
+      "title": "Material Total"
+     },
+     "equipment_total": {
+      "type": "string",
+      "title": "Equipment Total"
+     },
+     "subcontract_total": {
+      "type": "string",
+      "title": "Subcontract Total"
+     },
+     "other_total": {
+      "type": "string",
+      "title": "Other Total"
+     },
+     "total": {
+      "type": "string",
+      "title": "Total"
+     },
+     "labour_hours": {
+      "type": "string",
+      "title": "Labour Hours"
+     }
+    },
+    "type": "object",
+    "required": [
+     "labour_unit",
+     "material_unit",
+     "equipment_unit",
+     "subcontract_unit",
+     "other_unit",
+     "unit_cost",
+     "labour_total",
+     "material_total",
+     "equipment_total",
+     "subcontract_total",
+     "other_total",
+     "total",
+     "labour_hours"
+    ],
+    "title": "LineCalcOut"
+   },
+   "LineFields": {
+    "properties": {
+     "quantity": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "string"
+       }
+      ],
+      "title": "Quantity"
+     },
+     "labour_hours_per_unit": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "string"
+       }
+      ],
+      "title": "Labour Hours Per Unit",
+      "default": "0"
+     },
+     "labour_rate": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "string"
+       }
+      ],
+      "title": "Labour Rate",
+      "default": "0"
+     },
+     "material_rate": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "string"
+       }
+      ],
+      "title": "Material Rate",
+      "default": "0"
+     },
+     "material_waste_percent": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "string"
+       }
+      ],
+      "title": "Material Waste Percent",
+      "default": "0"
+     },
+     "equipment_rate": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "string"
+       }
+      ],
+      "title": "Equipment Rate",
+      "default": "0"
+     },
+     "subcontract_rate": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "string"
+       }
+      ],
+      "title": "Subcontract Rate",
+      "default": "0"
+     },
+     "other_rate": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "string"
+       }
+      ],
+      "title": "Other Rate",
+      "default": "0"
+     }
+    },
+    "additionalProperties": false,
+    "type": "object",
+    "required": [
+     "quantity"
+    ],
+    "title": "LineFields"
+   },
+   "LineIn": {
+    "properties": {
+     "quantity": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "string"
+       }
+      ],
+      "title": "Quantity"
+     },
+     "labour_hours_per_unit": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "string"
+       }
+      ],
+      "title": "Labour Hours Per Unit",
+      "default": "0"
+     },
+     "labour_rate": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "string"
+       }
+      ],
+      "title": "Labour Rate",
+      "default": "0"
+     },
+     "material_rate": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "string"
+       }
+      ],
+      "title": "Material Rate",
+      "default": "0"
+     },
+     "material_waste_percent": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "string"
+       }
+      ],
+      "title": "Material Waste Percent",
+      "default": "0"
+     },
+     "equipment_rate": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "string"
+       }
+      ],
+      "title": "Equipment Rate",
+      "default": "0"
+     },
+     "subcontract_rate": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "string"
+       }
+      ],
+      "title": "Subcontract Rate",
+      "default": "0"
+     },
+     "other_rate": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "string"
+       }
+      ],
+      "title": "Other Rate",
+      "default": "0"
+     },
+     "cost_code_id": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "uuid"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Cost Code Id"
+     },
+     "line_type": {
+      "type": "string",
+      "enum": [
+       "item",
+       "allowance",
+       "provisional_sum",
+       "prime_cost_sum",
+       "daywork"
+      ],
+      "title": "Line Type",
+      "default": "item"
+     },
+     "inclusion": {
+      "type": "string",
+      "enum": [
+       "base",
+       "alternate",
+       "excluded"
+      ],
+      "title": "Inclusion",
+      "default": "base"
+     },
+     "alternate_label": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 80
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Alternate Label"
+     },
+     "description": {
+      "type": "string",
+      "maxLength": 500,
+      "minLength": 1,
+      "title": "Description"
+     },
+     "unit": {
+      "type": "string",
+      "maxLength": 20,
+      "minLength": 1,
+      "title": "Unit"
+     },
+     "notes": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 5000
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Notes"
+     }
+    },
+    "additionalProperties": false,
+    "type": "object",
+    "required": [
+     "quantity",
+     "description",
+     "unit"
+    ],
+    "title": "LineIn"
+   },
+   "LineOut": {
+    "properties": {
+     "id": {
+      "type": "string",
+      "format": "uuid",
+      "title": "Id"
+     },
+     "sequence": {
+      "type": "integer",
+      "title": "Sequence"
+     },
+     "cost_code": {
+      "anyOf": [
+       {
+        "$ref": "#/components/schemas/CostCodeRef"
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "line_type": {
+      "type": "string",
+      "title": "Line Type"
+     },
+     "inclusion": {
+      "type": "string",
+      "title": "Inclusion"
+     },
+     "alternate_label": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Alternate Label"
+     },
+     "description": {
+      "type": "string",
+      "title": "Description"
+     },
+     "quantity": {
+      "type": "string",
+      "title": "Quantity"
+     },
+     "unit": {
+      "type": "string",
+      "title": "Unit"
+     },
+     "labour_hours_per_unit": {
+      "type": "string",
+      "title": "Labour Hours Per Unit"
+     },
+     "labour_rate": {
+      "type": "string",
+      "title": "Labour Rate"
+     },
+     "material_rate": {
+      "type": "string",
+      "title": "Material Rate"
+     },
+     "material_waste_percent": {
+      "type": "string",
+      "title": "Material Waste Percent"
+     },
+     "equipment_rate": {
+      "type": "string",
+      "title": "Equipment Rate"
+     },
+     "subcontract_rate": {
+      "type": "string",
+      "title": "Subcontract Rate"
+     },
+     "other_rate": {
+      "type": "string",
+      "title": "Other Rate"
+     },
+     "notes": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Notes"
+     },
+     "calc": {
+      "$ref": "#/components/schemas/LineCalcOut"
+     }
+    },
+    "type": "object",
+    "required": [
+     "id",
+     "sequence",
+     "cost_code",
+     "line_type",
+     "inclusion",
+     "alternate_label",
+     "description",
+     "quantity",
+     "unit",
+     "labour_hours_per_unit",
+     "labour_rate",
+     "material_rate",
+     "material_waste_percent",
+     "equipment_rate",
+     "subcontract_rate",
+     "other_rate",
+     "notes",
+     "calc"
+    ],
+    "title": "LineOut"
+   },
    "LoginRequest": {
     "properties": {
      "email": {
@@ -5700,6 +9511,104 @@
     },
     "type": "object",
     "title": "LoginResult"
+   },
+   "MarkupIn": {
+    "properties": {
+     "name": {
+      "type": "string",
+      "maxLength": 120,
+      "minLength": 1,
+      "title": "Name"
+     },
+     "percent": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "string"
+       }
+      ],
+      "title": "Percent"
+     },
+     "basis": {
+      "type": "string",
+      "enum": [
+       "direct_cost",
+       "cumulative"
+      ],
+      "title": "Basis",
+      "default": "direct_cost"
+     },
+     "include_in_budget": {
+      "type": "boolean",
+      "title": "Include In Budget",
+      "default": true
+     }
+    },
+    "additionalProperties": false,
+    "type": "object",
+    "required": [
+     "name",
+     "percent"
+    ],
+    "title": "MarkupIn"
+   },
+   "MarkupOut": {
+    "properties": {
+     "name": {
+      "type": "string",
+      "title": "Name"
+     },
+     "percent": {
+      "type": "string",
+      "title": "Percent"
+     },
+     "basis": {
+      "type": "string",
+      "title": "Basis"
+     },
+     "include_in_budget": {
+      "type": "boolean",
+      "title": "Include In Budget"
+     },
+     "base_amount": {
+      "type": "string",
+      "title": "Base Amount"
+     },
+     "amount": {
+      "type": "string",
+      "title": "Amount"
+     }
+    },
+    "type": "object",
+    "required": [
+     "name",
+     "percent",
+     "basis",
+     "include_in_budget",
+     "base_amount",
+     "amount"
+    ],
+    "title": "MarkupOut"
+   },
+   "MarkupsIn": {
+    "properties": {
+     "markups": {
+      "items": {
+       "$ref": "#/components/schemas/MarkupIn"
+      },
+      "type": "array",
+      "maxItems": 20,
+      "title": "Markups"
+     }
+    },
+    "additionalProperties": false,
+    "type": "object",
+    "required": [
+     "markups"
+    ],
+    "title": "MarkupsIn"
    },
    "MemberOut": {
     "properties": {
@@ -6265,9 +10174,16 @@
       "title": "Contract Type"
      },
      "our_role": {
-      "type": "string",
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
       "title": "Our Role",
-      "default": "general_contractor"
+      "description": "Defaults to the country's main contractor role"
      },
      "currency": {
       "anyOf": [
@@ -7409,6 +11325,32 @@
     ],
     "title": "SessionOut"
    },
+   "TemplateOut": {
+    "properties": {
+     "key": {
+      "type": "string",
+      "title": "Key"
+     },
+     "name": {
+      "type": "string",
+      "title": "Name"
+     },
+     "level_names": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array",
+      "title": "Level Names"
+     }
+    },
+    "type": "object",
+    "required": [
+     "key",
+     "name",
+     "level_names"
+    ],
+    "title": "TemplateOut"
+   },
    "TenantOut": {
     "properties": {
      "id": {
@@ -7539,6 +11481,55 @@
     "type": "object",
     "title": "TenantUpdate"
    },
+   "TotalsOut": {
+    "properties": {
+     "direct_cost": {
+      "type": "string",
+      "title": "Direct Cost"
+     },
+     "markup_total": {
+      "type": "string",
+      "title": "Markup Total"
+     },
+     "total": {
+      "type": "string",
+      "title": "Total"
+     },
+     "alternates": {
+      "items": {
+       "$ref": "#/components/schemas/AlternateOut"
+      },
+      "type": "array",
+      "title": "Alternates"
+     },
+     "excluded_total": {
+      "type": "string",
+      "title": "Excluded Total"
+     },
+     "labour_hours": {
+      "type": "string",
+      "title": "Labour Hours"
+     },
+     "components": {
+      "additionalProperties": {
+       "type": "string"
+      },
+      "type": "object",
+      "title": "Components"
+     }
+    },
+    "type": "object",
+    "required": [
+     "direct_cost",
+     "markup_total",
+     "total",
+     "alternates",
+     "excluded_total",
+     "labour_hours",
+     "components"
+    ],
+    "title": "TotalsOut"
+   },
    "UpdateProfileRequest": {
     "properties": {
      "full_name": {
@@ -7635,6 +11626,259 @@
      "type"
     ],
     "title": "ValidationError"
+   },
+   "VersionOut": {
+    "properties": {
+     "id": {
+      "type": "string",
+      "format": "uuid",
+      "title": "Id"
+     },
+     "version_number": {
+      "type": "integer",
+      "title": "Version Number"
+     },
+     "status": {
+      "type": "string",
+      "title": "Status"
+     },
+     "label": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Label"
+     },
+     "total": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Total"
+     },
+     "issued_at": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "date-time"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Issued At"
+     },
+     "approved_at": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "date-time"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Approved At"
+     },
+     "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Created At"
+     },
+     "notes": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Notes"
+     },
+     "price_base_date": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "date"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Price Base Date"
+     },
+     "is_editable": {
+      "type": "boolean",
+      "title": "Is Editable"
+     },
+     "lines": {
+      "items": {
+       "$ref": "#/components/schemas/LineOut"
+      },
+      "type": "array",
+      "title": "Lines"
+     },
+     "markups": {
+      "items": {
+       "$ref": "#/components/schemas/MarkupOut"
+      },
+      "type": "array",
+      "title": "Markups"
+     },
+     "totals": {
+      "$ref": "#/components/schemas/TotalsOut"
+     }
+    },
+    "type": "object",
+    "required": [
+     "id",
+     "version_number",
+     "status",
+     "label",
+     "total",
+     "issued_at",
+     "approved_at",
+     "created_at",
+     "notes",
+     "price_base_date",
+     "is_editable",
+     "lines",
+     "markups",
+     "totals"
+    ],
+    "title": "VersionOut"
+   },
+   "VersionSummary": {
+    "properties": {
+     "id": {
+      "type": "string",
+      "format": "uuid",
+      "title": "Id"
+     },
+     "version_number": {
+      "type": "integer",
+      "title": "Version Number"
+     },
+     "status": {
+      "type": "string",
+      "title": "Status"
+     },
+     "label": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Label"
+     },
+     "total": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Total"
+     },
+     "issued_at": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "date-time"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Issued At"
+     },
+     "approved_at": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "date-time"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Approved At"
+     },
+     "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Created At"
+     }
+    },
+    "type": "object",
+    "required": [
+     "id",
+     "version_number",
+     "status",
+     "label",
+     "total",
+     "issued_at",
+     "approved_at",
+     "created_at"
+    ],
+    "title": "VersionSummary"
+   },
+   "VersionUpdate": {
+    "properties": {
+     "label": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 120
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Label"
+     },
+     "notes": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 5000
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Notes"
+     },
+     "price_base_date": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "date"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Price Base Date"
+     }
+    },
+    "additionalProperties": false,
+    "type": "object",
+    "title": "VersionUpdate"
    },
    "VocabularyOut": {
     "properties": {

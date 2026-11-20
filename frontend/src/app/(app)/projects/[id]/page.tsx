@@ -6,7 +6,9 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useState } from "react";
 import { ActivityList } from "@/components/domain/activity";
+import { BudgetPanel } from "@/components/domain/budget-panel";
 import { DocumentsPanel } from "@/components/domain/documents-panel";
+import { EstimatesList } from "@/components/domain/estimates-list";
 import { ProjectForm } from "@/components/domain/project-form";
 import { Badge, StatusBadge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -411,6 +413,8 @@ export default function ProjectPage() {
           { value: "team", label: "Team" },
           { value: "parties", label: "Parties" },
           { value: "phases", label: "Phases" },
+          ...(can(P.ESTIMATES_VIEW) ? [{ value: "estimates", label: "Estimates" }] : []),
+          ...(can(P.BUDGETS_VIEW) ? [{ value: "budget", label: "Budget" }] : []),
           { value: "documents", label: "Documents" },
           { value: "activity", label: "Activity" },
         ]}
@@ -442,6 +446,8 @@ export default function ProjectPage() {
           <TabPanel value="team"><Team project={project} /></TabPanel>
           <TabPanel value="parties"><Parties project={project} /></TabPanel>
           <TabPanel value="phases"><Phases project={project} /></TabPanel>
+          <TabPanel value="estimates"><Card><EstimatesList projectId={project.id} canCreate={!project.archived_at} /></Card></TabPanel>
+          <TabPanel value="budget"><BudgetPanel project={project} /></TabPanel>
           <TabPanel value="documents"><Card><DocumentsPanel projectId={project.id} canUpload={!project.archived_at} /></Card></TabPanel>
           <TabPanel value="activity"><Activity project={project} /></TabPanel>
         </div>
