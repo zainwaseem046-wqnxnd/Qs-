@@ -9,7 +9,9 @@ import { ActivityList } from "@/components/domain/activity";
 import { BudgetPanel } from "@/components/domain/budget-panel";
 import { ChangeOrdersList, changesLabel } from "@/components/domain/change-orders-list";
 import { ContractsList } from "@/components/domain/contracts-list";
+import { CostLedger } from "@/components/domain/cost-ledger";
 import { CostSummary } from "@/components/domain/cost-summary";
+import { ForecastPanel } from "@/components/domain/forecast-panel";
 import { DocumentsPanel } from "@/components/domain/documents-panel";
 import { EstimatesList } from "@/components/domain/estimates-list";
 import { ProjectForm } from "@/components/domain/project-form";
@@ -421,6 +423,8 @@ export default function ProjectPage() {
           ...(can(P.CONTRACTS_VIEW) || can(P.COMMITMENTS_VIEW) ? [{ value: "contracts", label: "Contracts" }] : []),
           ...(can(P.CHANGES_VIEW) ? [{ value: "changes", label: changesLabel() }] : []),
           ...(can(P.BUDGETS_VIEW) || can(P.COMMITMENTS_VIEW) ? [{ value: "cost", label: "Cost summary" }] : []),
+          ...(can(P.COSTS_VIEW) ? [{ value: "ledger", label: "Costs" }] : []),
+          ...(can(P.FORECASTS_VIEW) ? [{ value: "forecast", label: "Forecast" }] : []),
           { value: "documents", label: "Documents" },
           { value: "activity", label: "Activity" },
         ]}
@@ -462,6 +466,8 @@ export default function ProjectPage() {
           </TabPanel>
           <TabPanel value="changes"><Card><ChangeOrdersList projectId={project.id} canCreate={!project.archived_at} /></Card></TabPanel>
           <TabPanel value="cost"><CostSummary project={project} /></TabPanel>
+          <TabPanel value="ledger"><CostLedger project={project} /></TabPanel>
+          <TabPanel value="forecast"><ForecastPanel project={project} /></TabPanel>
           <TabPanel value="documents"><Card><DocumentsPanel projectId={project.id} canUpload={!project.archived_at} /></Card></TabPanel>
           <TabPanel value="activity"><Activity project={project} /></TabPanel>
         </div>

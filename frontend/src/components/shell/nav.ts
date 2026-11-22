@@ -58,8 +58,8 @@ export const NAV: { section: string; items: NavItem[] }[] = [
       { label: "Subcontracts & POs", icon: Briefcase, href: "/subcontracts" },
       { label: "Change Orders", ukLabel: "Variations", icon: GitPullRequestArrow, href: "/change-orders" },
       { label: "Pay Applications", icon: Wallet, phase: 3 },
-      { label: "Cost Management", icon: BarChart3, phase: 2 },
-      { label: "Forecasting", icon: LineChart, phase: 2 },
+      { label: "Cost Management", icon: BarChart3, href: "/cost-management" },
+      { label: "Forecasting", icon: LineChart, href: "/forecasting" },
     ],
   },
   {

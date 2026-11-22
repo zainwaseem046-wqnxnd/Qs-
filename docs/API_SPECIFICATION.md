@@ -122,6 +122,17 @@ cd backend && .venv/bin/python -c "import json; from app.main import create_app;
 | cost codes | `POST` | `/api/v1/cost-code-sets` | Create Set |
 | cost codes | `POST` | `/api/v1/cost-code-sets/{set_id}/codes` | Create Code |
 | cost codes | `POST` | `/api/v1/cost-code-sets/{set_id}/import` | Import Codes |
+| cost management | `DELETE` | `/api/v1/forecasts/{forecast_id}` | Delete Forecast |
+| cost management | `GET` | `/api/v1/forecasts/{forecast_id}` | Get Forecast |
+| cost management | `GET` | `/api/v1/projects/{project_id}/cost-transactions` | List Transactions |
+| cost management | `GET` | `/api/v1/projects/{project_id}/forecasts` | List Forecasts |
+| cost management | `PATCH` | `/api/v1/forecasts/{forecast_id}` | Update Forecast |
+| cost management | `POST` | `/api/v1/forecasts/{forecast_id}/approve` | Approve Forecast |
+| cost management | `POST` | `/api/v1/projects/{project_id}/cost-transactions` | Post Transaction |
+| cost management | `POST` | `/api/v1/projects/{project_id}/cost-transactions/import` | Import Costs |
+| cost management | `POST` | `/api/v1/projects/{project_id}/cost-transactions/{tx_id}/reverse` | Reverse |
+| cost management | `POST` | `/api/v1/projects/{project_id}/forecasts` | Create Forecast |
+| cost management | `PUT` | `/api/v1/forecasts/{forecast_id}/lines/{line_id}` | Update Line |
 | dashboard | `GET` | `/api/v1/dashboard/summary` | Summary |
 | directory | `DELETE` | `/api/v1/companies/{company_id}/contacts/{contact_id}` | Delete Contact |
 | directory | `GET` | `/api/v1/companies` | List Companies |

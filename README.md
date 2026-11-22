@@ -68,9 +68,9 @@ docker compose -f infra/docker-compose.yml up --build
 ## Tests
 
 ```bash
-cd backend  && .venv/bin/pytest -p no:warnings          # 137 tests: auth, RLS, RBAC, money, estimating, budgets, contracts, changes…
+cd backend  && .venv/bin/pytest -p no:warnings          # 150 tests: auth, RLS, RBAC, money, estimating, budgets, contracts, changes, costs, forecasts…
 cd frontend && npm run typecheck && npm test              # 23 unit/component tests
-cd frontend && npx playwright test                        # 9 e2e tests (needs API on :8000 and web on :3000)
+cd frontend && npx playwright test                        # 10 e2e tests (needs API on :8000 and web on :3000)
 ```
 
 ## Documentation

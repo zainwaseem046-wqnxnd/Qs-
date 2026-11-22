@@ -156,6 +156,17 @@ summarised in §6.
 | CO-6 | Separation of rights | Project managers raise and submit; approval needs change_orders.approve | ✅ tested |
 | DB-3 | Dashboard | Pending client changes awaiting decision, with overdue count | ✅ tested |
 
+## 5e. Phase 2.4 requirements (Actual costs and forecasting) — delivered
+
+| ID | Requirement | Acceptance criteria | Status |
+|---|---|---|---|
+| CM-1 | Cost ledger | Post actuals/accruals by cost code; append-only; corrections by reversing entry with reason | ✅ tested incl. SQL-level immutability |
+| CM-2 | Accounting import | CSV, all-or-nothing with row-level errors, duplicate file rejected, US/UK dates, "$1,234.50" and "(345.67)" formats, commitment linking | ✅ tested (API + e2e) |
+| FC-1 | Monthly forecast | CTD, revised budget, committed, CTC by method (greater-of default, budget, committed, manual with note), FFC, variance | ✅ tested (golden values) |
+| FC-2 | Revenue and margin | Revised contract sum + justified adjustment; GP, margin, percent complete, earned revenue | ✅ tested |
+| FC-3 | Approval | forecasts.approve required; approved figures snapshotted and frozen (DB trigger); drafts deletable | ✅ tested |
+| DB-4 | Dashboard | Forecast revenue, final cost and gross profit from latest *approved* forecasts only | ✅ tested (API + e2e) |
+
 ## 6. Later phases (summary)
 
 * **Phase 2 — Commercial core:** cost codes (customer-licensed classifications), estimating with full line

@@ -31,10 +31,10 @@ Milestones, each shippable:
 6. ✅ **Change orders / variations / compensation events** (milestone 2.3): priced, submitted, approved/rejected;
    revised contract sum, commitment and budget derived from approvals. Remaining: budget transfers, change events
    that fan out to several commitments, document attachments.
-7. **Cost ledger:** immutable `cost_transactions` (actual, committed, accrued) with reversals; CSV import from
-   ERP exports.
-8. **Forecasting engine:** FFC, CTC, GP, margin, variance, WIP, over/under billing — deterministic and
-   documented, with no-double-counting rules between commitments, invoices, accruals and actuals.
+7. ✅ **Cost ledger** (milestone 2.4): immutable `cost_transactions` (actuals, accruals) with reversals; CSV import
+   from accounting exports. Remaining: direct ERP/accounting integrations (Phase 6).
+8. ✅ **Forecasting engine** (milestone 2.4): monthly FFC, CTC methods, GP, margin, variance, percent complete;
+   approval freeze. Remaining: WIP and over/under billing (needs payment applications — next milestone).
 9. **Commercial reporting & dashboard v2:** cost reports, configurable widgets, exports (CSV/XLSX/PDF).
 
 ## Phase 3 — Procurement & payments

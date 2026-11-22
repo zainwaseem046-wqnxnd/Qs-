@@ -8806,6 +8806,828 @@
     }
    }
   },
+  "/api/v1/projects/{project_id}/cost-transactions": {
+   "get": {
+    "tags": [
+     "cost management"
+    ],
+    "summary": "List Transactions",
+    "operationId": "list_transactions_api_v1_projects__project_id__cost_transactions_get",
+    "parameters": [
+     {
+      "name": "project_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Project Id"
+      }
+     },
+     {
+      "name": "cost_code_id",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string",
+         "format": "uuid"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Cost Code Id"
+      }
+     },
+     {
+      "name": "transaction_type",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "enum": [
+          "actual",
+          "accrual"
+         ],
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Transaction Type"
+      }
+     },
+     {
+      "name": "date_from",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string",
+         "format": "date"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Date From"
+      }
+     },
+     {
+      "name": "date_to",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string",
+         "format": "date"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Date To"
+      }
+     },
+     {
+      "name": "limit",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "type": "integer",
+       "maximum": 500,
+       "minimum": 1,
+       "default": 100,
+       "title": "Limit"
+      }
+     },
+     {
+      "name": "offset",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "type": "integer",
+       "minimum": 0,
+       "default": 0,
+       "title": "Offset"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/TransactionPage"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   },
+   "post": {
+    "tags": [
+     "cost management"
+    ],
+    "summary": "Post Transaction",
+    "operationId": "post_transaction_api_v1_projects__project_id__cost_transactions_post",
+    "parameters": [
+     {
+      "name": "project_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Project Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/TransactionIn"
+       }
+      }
+     }
+    },
+    "responses": {
+     "201": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/TransactionOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/projects/{project_id}/cost-transactions/{tx_id}/reverse": {
+   "post": {
+    "tags": [
+     "cost management"
+    ],
+    "summary": "Reverse",
+    "operationId": "reverse_api_v1_projects__project_id__cost_transactions__tx_id__reverse_post",
+    "parameters": [
+     {
+      "name": "project_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Project Id"
+      }
+     },
+     {
+      "name": "tx_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Tx Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/ReverseIn"
+       }
+      }
+     }
+    },
+    "responses": {
+     "201": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/TransactionOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/projects/{project_id}/cost-transactions/import": {
+   "post": {
+    "tags": [
+     "cost management"
+    ],
+    "summary": "Import Costs",
+    "operationId": "import_costs_api_v1_projects__project_id__cost_transactions_import_post",
+    "parameters": [
+     {
+      "name": "project_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Project Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "multipart/form-data": {
+       "schema": {
+        "$ref": "#/components/schemas/Body_import_costs_api_v1_projects__project_id__cost_transactions_import_post"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ImportOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/projects/{project_id}/forecasts": {
+   "get": {
+    "tags": [
+     "cost management"
+    ],
+    "summary": "List Forecasts",
+    "operationId": "list_forecasts_api_v1_projects__project_id__forecasts_get",
+    "parameters": [
+     {
+      "name": "project_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Project Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "array",
+         "items": {
+          "$ref": "#/components/schemas/ForecastSummary"
+         },
+         "title": "Response List Forecasts Api V1 Projects  Project Id  Forecasts Get"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   },
+   "post": {
+    "tags": [
+     "cost management"
+    ],
+    "summary": "Create Forecast",
+    "operationId": "create_forecast_api_v1_projects__project_id__forecasts_post",
+    "parameters": [
+     {
+      "name": "project_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Project Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/ForecastCreate"
+       }
+      }
+     }
+    },
+    "responses": {
+     "201": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ForecastOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/forecasts/{forecast_id}": {
+   "get": {
+    "tags": [
+     "cost management"
+    ],
+    "summary": "Get Forecast",
+    "operationId": "get_forecast_api_v1_forecasts__forecast_id__get",
+    "parameters": [
+     {
+      "name": "forecast_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Forecast Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ForecastOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   },
+   "patch": {
+    "tags": [
+     "cost management"
+    ],
+    "summary": "Update Forecast",
+    "operationId": "update_forecast_api_v1_forecasts__forecast_id__patch",
+    "parameters": [
+     {
+      "name": "forecast_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Forecast Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/ForecastUpdate"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ForecastOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   },
+   "delete": {
+    "tags": [
+     "cost management"
+    ],
+    "summary": "Delete Forecast",
+    "operationId": "delete_forecast_api_v1_forecasts__forecast_id__delete",
+    "parameters": [
+     {
+      "name": "forecast_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Forecast Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "responses": {
+     "204": {
+      "description": "Successful Response"
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/forecasts/{forecast_id}/lines/{line_id}": {
+   "put": {
+    "tags": [
+     "cost management"
+    ],
+    "summary": "Update Line",
+    "operationId": "update_line_api_v1_forecasts__forecast_id__lines__line_id__put",
+    "parameters": [
+     {
+      "name": "forecast_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Forecast Id"
+      }
+     },
+     {
+      "name": "line_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Line Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/ForecastLineIn"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ForecastOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/forecasts/{forecast_id}/approve": {
+   "post": {
+    "tags": [
+     "cost management"
+    ],
+    "summary": "Approve Forecast",
+    "operationId": "approve_forecast_api_v1_forecasts__forecast_id__approve_post",
+    "parameters": [
+     {
+      "name": "forecast_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Forecast Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/VersionIn"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ForecastOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
   "/api/v1/health": {
    "get": {
     "tags": [
@@ -9176,6 +9998,20 @@
      "file"
     ],
     "title": "Body_import_codes_api_v1_cost_code_sets__set_id__import_post"
+   },
+   "Body_import_costs_api_v1_projects__project_id__cost_transactions_import_post": {
+    "properties": {
+     "file": {
+      "type": "string",
+      "contentMediaType": "application/octet-stream",
+      "title": "File"
+     }
+    },
+    "type": "object",
+    "required": [
+     "file"
+    ],
+    "title": "Body_import_costs_api_v1_projects__project_id__cost_transactions_import_post"
    },
    "Body_upload_document_api_v1_documents_post": {
     "properties": {
@@ -12778,6 +13614,20 @@
       ],
       "title": "Pending Changes"
      },
+     "forecast": {
+      "anyOf": [
+       {
+        "items": {
+         "$ref": "#/components/schemas/ForecastTotalsOut"
+        },
+        "type": "array"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Forecast"
+     },
      "upcoming_completions": {
       "items": {
        "$ref": "#/components/schemas/ProjectListItem"
@@ -12825,6 +13675,7 @@
      "original_budget",
      "committed_cost",
      "pending_changes",
+     "forecast",
      "upcoming_completions",
      "recent_projects",
      "recent_activity",
@@ -13469,6 +14320,551 @@
     ],
     "title": "ExecuteIn"
    },
+   "ForecastCreate": {
+    "properties": {
+     "period": {
+      "type": "string",
+      "format": "date",
+      "title": "Period"
+     }
+    },
+    "additionalProperties": false,
+    "type": "object",
+    "required": [
+     "period"
+    ],
+    "title": "ForecastCreate"
+   },
+   "ForecastLineIn": {
+    "properties": {
+     "method": {
+      "type": "string",
+      "enum": [
+       "greater_of",
+       "budget_remaining",
+       "committed_remaining",
+       "manual"
+      ],
+      "title": "Method"
+     },
+     "manual_ctc": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Manual Ctc"
+     },
+     "notes": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 2000
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Notes"
+     }
+    },
+    "additionalProperties": false,
+    "type": "object",
+    "required": [
+     "method"
+    ],
+    "title": "ForecastLineIn"
+   },
+   "ForecastLineOut": {
+    "properties": {
+     "id": {
+      "type": "string",
+      "format": "uuid",
+      "title": "Id"
+     },
+     "cost_code": {
+      "anyOf": [
+       {
+        "$ref": "#/components/schemas/CostCodeRef"
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "method": {
+      "type": "string",
+      "title": "Method"
+     },
+     "manual_ctc": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Manual Ctc"
+     },
+     "notes": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Notes"
+     },
+     "revised_budget": {
+      "type": "string",
+      "title": "Revised Budget"
+     },
+     "committed": {
+      "type": "string",
+      "title": "Committed"
+     },
+     "cost_to_date": {
+      "type": "string",
+      "title": "Cost To Date"
+     },
+     "cost_to_complete": {
+      "type": "string",
+      "title": "Cost To Complete"
+     },
+     "final_cost": {
+      "type": "string",
+      "title": "Final Cost"
+     },
+     "variance": {
+      "type": "string",
+      "title": "Variance"
+     }
+    },
+    "type": "object",
+    "required": [
+     "id",
+     "cost_code",
+     "method",
+     "manual_ctc",
+     "notes",
+     "revised_budget",
+     "committed",
+     "cost_to_date",
+     "cost_to_complete",
+     "final_cost",
+     "variance"
+    ],
+    "title": "ForecastLineOut"
+   },
+   "ForecastOut": {
+    "properties": {
+     "id": {
+      "type": "string",
+      "format": "uuid",
+      "title": "Id"
+     },
+     "project_id": {
+      "type": "string",
+      "format": "uuid",
+      "title": "Project Id"
+     },
+     "period": {
+      "type": "string",
+      "format": "date",
+      "title": "Period"
+     },
+     "period_end": {
+      "type": "string",
+      "format": "date",
+      "title": "Period End"
+     },
+     "status": {
+      "type": "string",
+      "title": "Status"
+     },
+     "currency": {
+      "type": "string",
+      "title": "Currency"
+     },
+     "revenue_adjustment": {
+      "type": "string",
+      "title": "Revenue Adjustment"
+     },
+     "revenue_adjustment_note": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Revenue Adjustment Note"
+     },
+     "notes": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Notes"
+     },
+     "version": {
+      "type": "integer",
+      "title": "Version"
+     },
+     "approved_at": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "date-time"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Approved At"
+     },
+     "is_editable": {
+      "type": "boolean",
+      "title": "Is Editable"
+     },
+     "can_approve": {
+      "type": "boolean",
+      "title": "Can Approve"
+     },
+     "revised_contract": {
+      "type": "string",
+      "title": "Revised Contract"
+     },
+     "revenue": {
+      "type": "string",
+      "title": "Revenue"
+     },
+     "revised_budget": {
+      "type": "string",
+      "title": "Revised Budget"
+     },
+     "committed": {
+      "type": "string",
+      "title": "Committed"
+     },
+     "cost_to_date": {
+      "type": "string",
+      "title": "Cost To Date"
+     },
+     "cost_to_complete": {
+      "type": "string",
+      "title": "Cost To Complete"
+     },
+     "final_cost": {
+      "type": "string",
+      "title": "Final Cost"
+     },
+     "variance": {
+      "type": "string",
+      "title": "Variance"
+     },
+     "gross_profit": {
+      "type": "string",
+      "title": "Gross Profit"
+     },
+     "margin_percent": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Margin Percent"
+     },
+     "percent_complete": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Percent Complete"
+     },
+     "earned_revenue": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Earned Revenue"
+     },
+     "lines": {
+      "items": {
+       "$ref": "#/components/schemas/ForecastLineOut"
+      },
+      "type": "array",
+      "title": "Lines"
+     }
+    },
+    "type": "object",
+    "required": [
+     "id",
+     "project_id",
+     "period",
+     "period_end",
+     "status",
+     "currency",
+     "revenue_adjustment",
+     "revenue_adjustment_note",
+     "notes",
+     "version",
+     "approved_at",
+     "is_editable",
+     "can_approve",
+     "revised_contract",
+     "revenue",
+     "revised_budget",
+     "committed",
+     "cost_to_date",
+     "cost_to_complete",
+     "final_cost",
+     "variance",
+     "gross_profit",
+     "margin_percent",
+     "percent_complete",
+     "earned_revenue",
+     "lines"
+    ],
+    "title": "ForecastOut"
+   },
+   "ForecastSummary": {
+    "properties": {
+     "id": {
+      "type": "string",
+      "format": "uuid",
+      "title": "Id"
+     },
+     "period": {
+      "type": "string",
+      "format": "date",
+      "title": "Period"
+     },
+     "status": {
+      "type": "string",
+      "title": "Status"
+     },
+     "currency": {
+      "type": "string",
+      "title": "Currency"
+     },
+     "revenue": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Revenue"
+     },
+     "final_cost": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Final Cost"
+     },
+     "gross_profit": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Gross Profit"
+     },
+     "margin_percent": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Margin Percent"
+     },
+     "approved_at": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "date-time"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Approved At"
+     }
+    },
+    "type": "object",
+    "required": [
+     "id",
+     "period",
+     "status",
+     "currency",
+     "revenue",
+     "final_cost",
+     "gross_profit",
+     "margin_percent",
+     "approved_at"
+    ],
+    "title": "ForecastSummary"
+   },
+   "ForecastTotalsOut": {
+    "properties": {
+     "currency": {
+      "type": "string",
+      "title": "Currency"
+     },
+     "revenue": {
+      "type": "string",
+      "title": "Revenue"
+     },
+     "cost_to_date": {
+      "type": "string",
+      "title": "Cost To Date"
+     },
+     "final_cost": {
+      "type": "string",
+      "title": "Final Cost"
+     },
+     "gross_profit": {
+      "type": "string",
+      "title": "Gross Profit"
+     },
+     "margin_percent": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Margin Percent"
+     },
+     "projects_forecast": {
+      "type": "integer",
+      "title": "Projects Forecast"
+     },
+     "projects_without_forecast": {
+      "type": "integer",
+      "title": "Projects Without Forecast"
+     },
+     "latest_period": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "date"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Latest Period"
+     }
+    },
+    "type": "object",
+    "required": [
+     "currency",
+     "revenue",
+     "cost_to_date",
+     "final_cost",
+     "gross_profit",
+     "margin_percent",
+     "projects_forecast",
+     "projects_without_forecast",
+     "latest_period"
+    ],
+    "title": "ForecastTotalsOut"
+   },
+   "ForecastUpdate": {
+    "properties": {
+     "version": {
+      "type": "integer",
+      "minimum": 1.0,
+      "title": "Version"
+     },
+     "revenue_adjustment": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Revenue Adjustment"
+     },
+     "revenue_adjustment_note": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 2000
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Revenue Adjustment Note"
+     },
+     "notes": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 5000
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Notes"
+     }
+    },
+    "additionalProperties": false,
+    "type": "object",
+    "required": [
+     "version"
+    ],
+    "title": "ForecastUpdate"
+   },
    "ForgotPasswordRequest": {
     "properties": {
      "email": {
@@ -13496,6 +14892,33 @@
     },
     "type": "object",
     "title": "HTTPValidationError"
+   },
+   "ImportOut": {
+    "properties": {
+     "created": {
+      "type": "integer",
+      "title": "Created"
+     },
+     "total": {
+      "type": "string",
+      "title": "Total"
+     },
+     "errors": {
+      "items": {
+       "additionalProperties": true,
+       "type": "object"
+      },
+      "type": "array",
+      "title": "Errors"
+     }
+    },
+    "type": "object",
+    "required": [
+     "created",
+     "total",
+     "errors"
+    ],
+    "title": "ImportOut"
    },
    "ImportResult": {
     "properties": {
@@ -15687,6 +17110,22 @@
     ],
     "title": "ResetPasswordRequest"
    },
+   "ReverseIn": {
+    "properties": {
+     "reason": {
+      "type": "string",
+      "maxLength": 200,
+      "minLength": 3,
+      "title": "Reason"
+     }
+    },
+    "additionalProperties": false,
+    "type": "object",
+    "required": [
+     "reason"
+    ],
+    "title": "ReverseIn"
+   },
    "RoleCreate": {
     "properties": {
      "name": {
@@ -15940,6 +17379,10 @@
      "contract_value": {
       "type": "string",
       "title": "Contract Value"
+     },
+     "cost_to_date": {
+      "type": "string",
+      "title": "Cost To Date"
      }
     },
     "type": "object",
@@ -15953,7 +17396,8 @@
      "committed",
      "pending",
      "uncommitted",
-     "contract_value"
+     "contract_value",
+     "cost_to_date"
     ],
     "title": "SummaryRow"
    },
@@ -16211,6 +17655,244 @@
      "components"
     ],
     "title": "TotalsOut"
+   },
+   "TransactionIn": {
+    "properties": {
+     "transaction_type": {
+      "type": "string",
+      "enum": [
+       "actual",
+       "accrual"
+      ],
+      "title": "Transaction Type",
+      "default": "actual"
+     },
+     "transaction_date": {
+      "type": "string",
+      "format": "date",
+      "title": "Transaction Date"
+     },
+     "description": {
+      "type": "string",
+      "maxLength": 300,
+      "minLength": 1,
+      "title": "Description"
+     },
+     "amount": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "string"
+       }
+      ],
+      "title": "Amount"
+     },
+     "reference": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 80
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Reference"
+     },
+     "cost_code_id": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "uuid"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Cost Code Id"
+     },
+     "commitment_id": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "uuid"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Commitment Id"
+     },
+     "vendor_company_id": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "uuid"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Vendor Company Id"
+     }
+    },
+    "additionalProperties": false,
+    "type": "object",
+    "required": [
+     "transaction_date",
+     "description",
+     "amount"
+    ],
+    "title": "TransactionIn"
+   },
+   "TransactionOut": {
+    "properties": {
+     "id": {
+      "type": "string",
+      "format": "uuid",
+      "title": "Id"
+     },
+     "transaction_type": {
+      "type": "string",
+      "title": "Transaction Type"
+     },
+     "transaction_date": {
+      "type": "string",
+      "format": "date",
+      "title": "Transaction Date"
+     },
+     "description": {
+      "type": "string",
+      "title": "Description"
+     },
+     "reference": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Reference"
+     },
+     "amount": {
+      "type": "string",
+      "title": "Amount"
+     },
+     "cost_code": {
+      "anyOf": [
+       {
+        "$ref": "#/components/schemas/CostCodeRef"
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "commitment_number": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Commitment Number"
+     },
+     "vendor_name": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Vendor Name"
+     },
+     "reverses_id": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "uuid"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Reverses Id"
+     },
+     "reversed": {
+      "type": "boolean",
+      "title": "Reversed"
+     },
+     "imported": {
+      "type": "boolean",
+      "title": "Imported"
+     },
+     "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Created At"
+     }
+    },
+    "type": "object",
+    "required": [
+     "id",
+     "transaction_type",
+     "transaction_date",
+     "description",
+     "reference",
+     "amount",
+     "cost_code",
+     "commitment_number",
+     "vendor_name",
+     "reverses_id",
+     "reversed",
+     "imported",
+     "created_at"
+    ],
+    "title": "TransactionOut"
+   },
+   "TransactionPage": {
+    "properties": {
+     "items": {
+      "items": {
+       "$ref": "#/components/schemas/TransactionOut"
+      },
+      "type": "array",
+      "title": "Items"
+     },
+     "total": {
+      "type": "integer",
+      "title": "Total"
+     },
+     "amount_total": {
+      "type": "string",
+      "title": "Amount Total"
+     },
+     "limit": {
+      "type": "integer",
+      "title": "Limit"
+     },
+     "offset": {
+      "type": "integer",
+      "title": "Offset"
+     }
+    },
+    "type": "object",
+    "required": [
+     "items",
+     "total",
+     "amount_total",
+     "limit",
+     "offset"
+    ],
+    "title": "TransactionPage"
    },
    "UpdateProfileRequest": {
     "properties": {

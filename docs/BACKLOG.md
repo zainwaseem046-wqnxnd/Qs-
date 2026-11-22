@@ -43,7 +43,8 @@ Priority: P0 (blocks next phase) · P1 (this phase) · P2 (soon) · P3 (later). 
 | C-10 | ~~UK delivery routes, JCT/NEC contract types~~ — done (2.1); remaining: VAT and CIS handling | P1 |
 | C-2 | ~~Estimating core~~ — done (2.1) | ✅ |
 | C-3 | ~~Original budget from approved estimate~~ — done (2.1) | ✅ |
-| C-6 | Immutable cost transaction ledger + CSV import | P0 |
-| C-7 | Forecasting engine (FFC, CTC, GP, margin, WIP, over/under billing) | P0 |
+| C-6 | ~~Immutable cost transaction ledger + CSV import~~ — done (2.4) | ✅ |
+| C-7 | ~~Forecasting engine (FFC, CTC, GP, margin)~~ — done (2.4); remaining: WIP, over/under billing | P0 |
+| C-11 | Payment applications / interim valuations (SOV, retention, G702/G703-compatible data, UK payment and pay-less notices) | P0 |
 | C-8 | Cost report + dashboard v2 with configurable widgets | P1 |
 | C-9 | Exports: CSV, XLSX, PDF | P1 |

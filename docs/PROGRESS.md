@@ -26,9 +26,11 @@
 | 2.2 | Prime contracts, subcontracts and POs; execute/close/void with DB lock | ✅ Done | `test_contracts.py`, e2e `contracts.spec.ts` |
 | 2.2 | Budget vs committed by cost code; dashboard committed cost | ✅ Done | `test_contracts.py` |
 | 2.3 | Change orders / variations / compensation events; derived revised sums; overdue tracking | ✅ Done | `test_change_orders.py`, e2e `change-orders.spec.ts` |
-| 2 | Remaining Phase 2: cost ledger (actuals), forecasting, reporting | ⏳ Next | see BACKLOG.md |
+| 2.4 | Immutable cost ledger, accounting CSV import, reversals | ✅ Done | `test_cost_management.py`, e2e `costs-forecast.spec.ts` |
+| 2.4 | Monthly forecasts (CTC methods, FFC, GP, margin), approval freeze, dashboard forecast tiles | ✅ Done | `test_forecast_calc.py` (golden values), `test_cost_management.py` |
+| 2 | Remaining Phase 2: payment applications / valuations, WIP & over/under billing, reporting & exports | ⏳ Next | see BACKLOG.md |
 
-## Latest test results (milestone 2.3)
-* Backend: 137 passed (pytest, PostgreSQL 16, runtime role `qs_app` with RLS).
+## Latest test results (milestone 2.4)
+* Backend: 150 passed (pytest, PostgreSQL 16, runtime role `qs_app` with RLS).
 * Frontend: TypeScript strict — no errors; Vitest 23 passed; production build succeeded.
-* E2E: 9 passed (Chromium desktop + Pixel 7 emulation), stable across consecutive runs.
+* E2E: 10 passed (Chromium desktop + Pixel 7 emulation), stable across consecutive runs.

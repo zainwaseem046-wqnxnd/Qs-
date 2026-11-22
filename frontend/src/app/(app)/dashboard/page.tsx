@@ -11,7 +11,7 @@ import { PageHeader, Stat } from "@/components/ui/page";
 import { api } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
 import { formatDate, label, P, useVocabulary } from "@/lib/hooks";
-import { formatMoney, formatMoneyCompact } from "@/lib/money";
+import { formatMoney, formatMoneyCompact, formatPercent } from "@/lib/money";
 import { region } from "@/lib/region";
 import type { CurrencyTotal, DashboardSummary } from "@/lib/types";
 
@@ -35,6 +35,12 @@ function missingNote(totals: CurrencyTotal[] | null) {
   const projects = totals.reduce((n, t) => n + t.project_count, 0);
   const missing = totals.reduce((n, t) => n + t.projects_without_value, 0);
   return `${projects} project${projects === 1 ? "" : "s"}${missing ? ` · ${missing} without a contract value` : ""}`;
+}
+
+function forecastNote(f: { projects_forecast: number; projects_without_forecast: number }[]) {
+  const n = f.reduce((a, x) => a + x.projects_forecast, 0);
+  const m = f.reduce((a, x) => a + x.projects_without_forecast, 0);
+  return `Latest approved forecasts · ${n} project${n === 1 ? "" : "s"}${m ? ` · ${m} without one` : ""}`;
 }
 
 function budgetNote(totals: CurrencyTotal[]) {
@@ -109,6 +115,16 @@ export default function DashboardPage() {
             <Stat label="Pursuit pipeline" value={<MoneyTotals totals={d.pursuit_value} />} sub={missingNote(d.pursuit_value)} />
             {d.original_budget && (
               <Stat label="Approved original budgets" value={<MoneyTotals totals={d.original_budget} />} sub={budgetNote(d.original_budget)} />
+            )}
+            {d.forecast && d.forecast.some((f) => f.projects_forecast > 0) && (
+              <>
+                <Stat label="Forecast revenue" value={<MoneyTotals totals={d.forecast.map((f) => ({ currency: f.currency, amount: f.revenue, project_count: f.projects_forecast, projects_without_value: f.projects_without_forecast }))} />} sub={forecastNote(d.forecast)} />
+                <Stat label="Forecast final cost" value={<MoneyTotals totals={d.forecast.map((f) => ({ currency: f.currency, amount: f.final_cost, project_count: f.projects_forecast, projects_without_value: 0 }))} />} sub={<>Actual cost to date {d.forecast.map((f) => formatMoneyCompact(f.cost_to_date, f.currency)).join(" · ")}</>} />
+                <Stat label="Forecast gross profit" value={<MoneyTotals totals={d.forecast.map((f) => ({ currency: f.currency, amount: f.gross_profit, project_count: f.projects_forecast, projects_without_value: 0 }))} />} sub={<>Margin {d.forecast.map((f) => (f.margin_percent ? `${formatPercent(f.margin_percent)}${d.forecast!.length > 1 ? ` ${f.currency}` : ""}` : "—")).join(" · ")}</>} />
+              </>
+            )}
+            {d.forecast && !d.forecast.some((f) => f.projects_forecast > 0) && (
+              <Stat label="Forecast margin" value="—" sub="No approved forecasts yet — figures appear once a project forecast is approved" />
             )}
             {d.pending_changes && (
               <Stat

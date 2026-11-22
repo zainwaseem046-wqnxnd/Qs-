@@ -239,6 +239,7 @@ export interface DashboardSummary {
   original_budget: CurrencyTotal[] | null;
   committed_cost: CurrencyTotal[] | null;
   pending_changes: { currency: string; amount: string; count: number; overdue_count: number }[] | null;
+  forecast: DashboardForecast[] | null;
   upcoming_completions: ProjectListItem[];
   recent_projects: ProjectListItem[];
   recent_activity: AuditEvent[];
@@ -561,6 +562,7 @@ export interface SummaryRow {
   pending: string;
   uncommitted: string;
   contract_value: string;
+  cost_to_date: string;
 }
 
 export interface CommercialSummary {
@@ -639,4 +641,96 @@ export interface ChangeOrderListItem {
   response_due_date: string | null;
   overdue: boolean;
   updated_at: string;
+}
+
+// --- Phase 2.4: cost ledger and forecasts ---------------------------------------------------------------
+export interface CostTransactionItem {
+  id: string;
+  transaction_type: "actual" | "accrual";
+  transaction_date: string;
+  description: string;
+  reference: string | null;
+  amount: string;
+  cost_code: CostCodeRef | null;
+  commitment_number: string | null;
+  vendor_name: string | null;
+  reverses_id: string | null;
+  reversed: boolean;
+  imported: boolean;
+  created_at: string;
+}
+
+export interface CostTransactionPage {
+  items: CostTransactionItem[];
+  total: number;
+  amount_total: string;
+  limit: number;
+  offset: number;
+}
+
+export interface ForecastLineItem {
+  id: string;
+  cost_code: CostCodeRef | null;
+  method: "greater_of" | "budget_remaining" | "committed_remaining" | "manual";
+  manual_ctc: string | null;
+  notes: string | null;
+  revised_budget: string;
+  committed: string;
+  cost_to_date: string;
+  cost_to_complete: string;
+  final_cost: string;
+  variance: string;
+}
+
+export interface ForecastSummaryItem {
+  id: string;
+  period: string;
+  status: "draft" | "approved";
+  currency: string;
+  revenue: string | null;
+  final_cost: string | null;
+  gross_profit: string | null;
+  margin_percent: string | null;
+  approved_at: string | null;
+}
+
+export interface ForecastDetail {
+  id: string;
+  project_id: string;
+  period: string;
+  period_end: string;
+  status: "draft" | "approved";
+  currency: string;
+  revenue_adjustment: string;
+  revenue_adjustment_note: string | null;
+  notes: string | null;
+  version: number;
+  approved_at: string | null;
+  is_editable: boolean;
+  can_approve: boolean;
+  revised_contract: string;
+  revenue: string;
+  revised_budget: string;
+  committed: string;
+  cost_to_date: string;
+  cost_to_complete: string;
+  final_cost: string;
+  variance: string;
+  gross_profit: string;
+  margin_percent: string | null;
+  percent_complete: string | null;
+  earned_revenue: string | null;
+  lines: ForecastLineItem[];
+}
+
+export interface DashboardForecast {
+  currency: string;
+  revenue: string;
+  cost_to_date: string;
+  final_cost: string;
+  gross_profit: string;
+  margin_percent: string | null;
+  projects_forecast: number;
+  projects_without_forecast: number;
+  latest_period: string | null;
 }

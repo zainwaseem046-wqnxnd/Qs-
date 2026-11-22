@@ -13,9 +13,9 @@
 | Layer | Tooling | Location | Phase 1 count |
 |---|---|---|---|
 | Unit — money/decimal | pytest | `backend/tests/test_money.py` | 22 |
-| API integration (DB + RLS) | pytest + FastAPI TestClient | `backend/tests/test_*.py` | 54 |
-| Frontend unit/component | Vitest + Testing Library (jsdom) | `frontend/src/**/*.test.ts(x)` | 18 |
-| End-to-end | Playwright (Chromium; desktop + Pixel 7) | `frontend/e2e` | 3 |
+| API integration (DB + RLS) | pytest + FastAPI TestClient | `backend/tests/test_*.py` | 128 |
+| Frontend unit/component | Vitest + Testing Library (jsdom) | `frontend/src/**/*.test.ts(x)` | 23 |
+| End-to-end | Playwright (Chromium; desktop + Pixel 7) | `frontend/e2e` | 10 |
 
 ### Backend suites
 | Suite | Covers |
@@ -30,6 +30,8 @@
 | `test_commercial_core.py` | cost code templates, CSV import (ordering, all-or-nothing, depth, duplicates), in-use protection, permissions/isolation; estimate totals, validation (floats, decimals, waste range, foreign codes), issue/lock/new version/compare, **SQL-level freeze of issued versions and approved budgets**, approval permissions, visibility; budget from estimate reconciliation, approval, one-per-project rule, dashboard totals |
 | `test_contracts.py` | prime contract lifecycle (auto number, default cost code set, optimistic locking, future-date and empty execution refused, lock, close), validation (country forms, retention range, LD pairing, dates), UK forms, measured line pricing (half-up), **SQL-level freeze after execution**, void/delete drafts, permissions (PM cannot execute), visibility and tenant isolation, budget vs committed summary and dashboard |
 | `test_change_orders.py` | client-side lifecycle with measured addition + omission and budget adjustment, revised contract sum (original untouched), negotiation via return-to-draft, rejection reason required, withdraw/delete, commitment changes and the revised cost summary, executed-target rule, **SQL-level freeze**, validation and negative-quantity rounding, overdue flags and dashboard, permissions/isolation/audit, UK VAR/CE labelling |
+| `test_forecast_calc.py` | golden-value forecast engine: greater-of / budget / committed / manual CTC, never-negative CTC, variance, GP and margin rounding, percent complete, zero-revenue handling |
+| `test_cost_management.py` | ledger posting and validation, reversal (once only, reason required, no reversing a reversal), **SQL-level append-only**, CSV import (all-or-nothing, duplicates, US/UK dates, accounting negatives, commitment links), forecast create/compute/edit/approve/freeze, one per period, permissions/isolation, dashboard uses approved only |
 | `test_regions_email.py` | US/UK defaults, postcodes, region guard, country-specific contract vocabularies, invitation/reset emails |
 | `test_dashboard_audit.py` | exact decimal sums grouped by currency, visibility/archive scoping, upcoming completions, audit append-only even for the schema owner, document version immutability, audit filters |
 

@@ -165,6 +165,22 @@ Approval snapshots the approved amount. Terminology and numbering follow the con
 other UK forms), CE/SCE (NEC4). Notified and response-due dates drive overdue flags (NEC time bars, US notice
 clauses). Omissions are negative amounts or negative quantities; measured lines round half-up away from zero.
 
+### ADR-027 Immutable cost ledger and approved monthly forecasts
+**Ledger:** `cost_transactions` is append-only (database grants SELECT/INSERT only to the runtime role, plus a trigger
+blocking UPDATE/DELETE for every role). Corrections are reversing entries that reference the original (one reversal
+per entry, unique index); reversals of reversals are refused. CSV import from accounting exports is all-or-nothing,
+rejects a file already imported (SHA-256), accepts US (MM/DD/YYYY), UK (DD/MM/YYYY per tenant country) and ISO
+dates, currency symbols, thousands separators and accounting negatives "(123.45)", and links rows to commitments
+by number. **Forecast definitions** (one per project per month): cost to date (CTD) = ledger total by cost code to
+period end; revised budget (RB) = approved budget + approved budget adjustments; committed (CM) = executed
+commitments + approved commitment changes. Cost to complete (CTC) per cost code by method — `greater_of` (default)
+= max(RB−CTD, CM−CTD, 0); `budget_remaining`; `committed_remaining`; `manual` (with mandatory note). Forecast final
+cost FFC = CTD + CTC; variance = RB − FFC; revenue = revised contract sum + optional adjustment (reason required);
+gross profit = revenue − FFC; margin = GP ÷ revenue (2 dp, half-up); percent complete is cost-to-cost (CTD ÷ FFC).
+Drafts recompute live; **approval snapshots every figure and database triggers freeze it**. The dashboard shows
+only the latest approved forecast per live project, never drafts. Cash flow and outstanding payments remain
+unavailable until payment applications exist.
+
 ### ADR-016 Dashboard never estimates unavailable metrics
 **Decision:** commercial metrics needing Phase 2 data are listed as unavailable with the reason, instead of
 being approximated from contract values.
