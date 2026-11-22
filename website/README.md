@@ -29,3 +29,11 @@ cd website && python3 -m http.server 8080   # then open http://localhost:8080
 
 Upload the `website/` folder to any static host: Netlify, Vercel, Cloudflare Pages, GitHub Pages or
 ordinary shared hosting.
+
+### GitHub Pages (set up in this repo)
+
+`.github/workflows/website.yml` deploys this folder to GitHub Pages whenever `website/` changes on the
+default branch. One-time setup: in the repository on GitHub go to **Settings → Pages** and set
+**Source** to **GitHub Actions**, then merge this branch (or run the workflow from the Actions tab).
+The site will be at `https://zainwaseem046-wqnxnd.github.io/Qs-/`. To use your own domain such as
+`clearviewqs.co.uk`, add it under **Settings → Pages → Custom domain** and point your DNS at GitHub.
