@@ -1,0 +1,31 @@
+# Clearview QS website
+
+Marketing website for **Clearview QS**, an independent cost consultancy. It is a static site
+(plain HTML, CSS and a little JavaScript) with no build step, separate from the QS Intelligence app in this repo.
+
+```
+website/
+  index.html    all page content (hero, services, approach, sectors, about, contact)
+  styles.css    styling and responsive layout
+  script.js     mobile menu, scroll effects, contact-form handling
+  favicon.svg   site icon
+```
+
+## Preview locally
+
+```bash
+cd website && python3 -m http.server 8080   # then open http://localhost:8080
+```
+
+## Before going live
+
+- Replace the placeholder contact details in `index.html` (search for `info@clearviewqs.co.uk`,
+  `+44 (0)000 000 0000` and `Address to be confirmed`).
+- The contact form opens the visitor's email app addressed to the email shown on the page. To receive
+  submissions directly instead, point the form at a form service (e.g. Formspree or Netlify Forms).
+- The cost report figures in the hero are labelled as an illustrative example.
+
+## Hosting
+
+Upload the `website/` folder to any static host: Netlify, Vercel, Cloudflare Pages, GitHub Pages or
+ordinary shared hosting.
