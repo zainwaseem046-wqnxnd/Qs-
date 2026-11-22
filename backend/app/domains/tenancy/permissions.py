@@ -34,6 +34,12 @@ class P(StrEnum):
     BUDGETS_VIEW = "budgets.view"
     BUDGETS_EDIT = "budgets.edit"
     BUDGETS_APPROVE = "budgets.approve"
+    CONTRACTS_VIEW = "contracts.view"
+    CONTRACTS_EDIT = "contracts.edit"
+    CONTRACTS_EXECUTE = "contracts.execute"
+    COMMITMENTS_VIEW = "commitments.view"
+    COMMITMENTS_EDIT = "commitments.edit"
+    COMMITMENTS_EXECUTE = "commitments.execute"
 
 
 PERMISSION_CATALOG: dict[str, tuple[str, str]] = {
@@ -61,6 +67,12 @@ PERMISSION_CATALOG: dict[str, tuple[str, str]] = {
     P.BUDGETS_VIEW: ("Commercial", "View project budgets"),
     P.BUDGETS_EDIT: ("Commercial", "Create and edit draft budgets"),
     P.BUDGETS_APPROVE: ("Commercial", "Approve original budgets"),
+    P.CONTRACTS_VIEW: ("Contracts", "View prime contracts with clients"),
+    P.CONTRACTS_EDIT: ("Contracts", "Create and edit draft prime contracts"),
+    P.CONTRACTS_EXECUTE: ("Contracts", "Execute, close and void prime contracts"),
+    P.COMMITMENTS_VIEW: ("Contracts", "View subcontracts and purchase orders"),
+    P.COMMITMENTS_EDIT: ("Contracts", "Create and edit draft subcontracts and purchase orders"),
+    P.COMMITMENTS_EXECUTE: ("Contracts", "Execute, close and void subcontracts and purchase orders"),
 }
 
 ALL = set(PERMISSION_CATALOG)
@@ -82,6 +94,7 @@ SYSTEM_ROLES: dict[str, dict[str, object]] = {
         "permissions": {
             P.DASHBOARD_VIEW, P.PROJECTS_VIEW_ALL, P.PROJECTS_FINANCIALS_VIEW, P.COMPANIES_VIEW,
             P.DOCUMENTS_VIEW, P.MEMBERS_VIEW, P.AUDIT_VIEW, P.ESTIMATES_VIEW, P.BUDGETS_VIEW,
+            P.CONTRACTS_VIEW, P.COMMITMENTS_VIEW,
         },
     },
     "commercial_manager": {
@@ -92,6 +105,8 @@ SYSTEM_ROLES: dict[str, dict[str, object]] = {
             P.PROJECTS_FINANCIALS_VIEW, P.PROJECTS_MEMBERS_MANAGE, P.COMPANIES_VIEW, P.COMPANIES_MANAGE,
             P.DOCUMENTS_VIEW, P.DOCUMENTS_UPLOAD, P.MEMBERS_VIEW, P.COST_CODES_MANAGE, P.ESTIMATES_VIEW,
             P.ESTIMATES_EDIT, P.ESTIMATES_APPROVE, P.BUDGETS_VIEW, P.BUDGETS_EDIT, P.BUDGETS_APPROVE,
+            P.CONTRACTS_VIEW, P.CONTRACTS_EDIT, P.CONTRACTS_EXECUTE, P.COMMITMENTS_VIEW, P.COMMITMENTS_EDIT,
+            P.COMMITMENTS_EXECUTE,
         },
     },
     "project_manager": {
@@ -101,6 +116,7 @@ SYSTEM_ROLES: dict[str, dict[str, object]] = {
             P.DASHBOARD_VIEW, P.PROJECTS_CREATE, P.PROJECTS_EDIT, P.PROJECTS_FINANCIALS_VIEW,
             P.PROJECTS_MEMBERS_MANAGE, P.COMPANIES_VIEW, P.COMPANIES_MANAGE, P.DOCUMENTS_VIEW,
             P.DOCUMENTS_UPLOAD, P.MEMBERS_VIEW, P.ESTIMATES_VIEW, P.ESTIMATES_EDIT, P.BUDGETS_VIEW, P.BUDGETS_EDIT,
+            P.CONTRACTS_VIEW, P.CONTRACTS_EDIT, P.COMMITMENTS_VIEW, P.COMMITMENTS_EDIT,
         },
     },
     "field_engineer": {

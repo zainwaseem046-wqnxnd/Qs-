@@ -20,6 +20,7 @@ from sqlalchemy.orm import Session
 from app.api.deps import TenantContext
 from app.domains.audit.models import AuditEvent
 from app.domains.budgets.models import Budget
+from app.domains.contracts.models import Commitment, CommitmentLine
 from app.domains.projects.constants import LIVE_STATUSES
 from app.domains.projects.models import Project
 from app.domains.projects.service import visible_project_ids
@@ -42,6 +43,7 @@ class DashboardData:
     live_contract_value: list[CurrencyTotal] | None
     pursuit_value: list[CurrencyTotal] | None
     original_budget: list[CurrencyTotal] | None
+    committed_cost: list[CurrencyTotal] | None
     upcoming_completions: list[Project]
     recent_projects: list[Project]
     recent_events: list[AuditEvent]
@@ -50,7 +52,7 @@ class DashboardData:
 
 
 UNAVAILABLE_PHASE_2 = [
-    "Revised budget", "Actual cost", "Committed cost", "Forecast final cost",
+    "Revised budget", "Actual cost", "Forecast final cost",
     "Forecast revenue", "Forecast gross profit", "Forecast gross margin", "Pending changes",
     "Outstanding payments", "Cash flow",
 ]
@@ -102,6 +104,32 @@ def _budget_totals(db: Session, ctx: TenantContext) -> list[CurrencyTotal]:
     return [CurrencyTotal(c, Decimal(a), int(n), int(missing)) for c, a, n, missing in rows]
 
 
+def _committed_totals(db: Session, ctx: TenantContext) -> list[CurrencyTotal]:
+    """Executed/closed commitments on live projects, by currency. project_count = projects with commitments;
+    projects_without_value = live projects with none yet."""
+    committed = (
+        select(Commitment.project_id, func.sum(CommitmentLine.amount).label("amount"))
+        .join(CommitmentLine, CommitmentLine.commitment_id == Commitment.id)
+        .where(Commitment.status.in_(("executed", "closed")))
+        .group_by(Commitment.project_id)
+        .subquery()
+    )
+    rows = db.execute(
+        select(
+            Project.currency,
+            func.coalesce(func.sum(committed.c.amount), 0),
+            func.count(committed.c.project_id),
+            func.count().filter(committed.c.project_id.is_(None)),
+        )
+        .select_from(Project)
+        .outerjoin(committed, committed.c.project_id == Project.id)
+        .where(*_scope(ctx), Project.status.in_(LIVE_STATUSES))
+        .group_by(Project.currency)
+        .order_by(Project.currency)
+    ).all()
+    return [CurrencyTotal(c, Decimal(a), int(n), int(missing)) for c, a, n, missing in rows]
+
+
 def build(db: Session, ctx: TenantContext) -> DashboardData:
     scope = _scope(ctx)
     by_status = dict(db.execute(select(Project.status, func.count()).where(*scope).group_by(Project.status)).all())
@@ -132,6 +160,7 @@ def build(db: Session, ctx: TenantContext) -> DashboardData:
         live_contract_value=_currency_totals(db, ctx, LIVE_STATUSES) if financials else None,
         pursuit_value=_currency_totals(db, ctx, ("pursuit",)) if financials else None,
         original_budget=_budget_totals(db, ctx) if ctx.has(P.BUDGETS_VIEW) else None,
+        committed_cost=_committed_totals(db, ctx) if ctx.has(P.COMMITMENTS_VIEW) else None,
         upcoming_completions=list(upcoming),
         recent_projects=list(recent),
         recent_events=list(events),

@@ -3,6 +3,7 @@
 from app.domains.audit.models import AuditEvent
 from app.domains.budgets.models import Budget, BudgetLine
 from app.domains.companies.models import Address, Company, Contact
+from app.domains.contracts.models import Commitment, CommitmentLine, Contract, ContractLine
 from app.domains.cost_codes.models import CostCode, CostCodeSet
 from app.domains.documents.models import Document, DocumentVersion
 from app.domains.estimating.models import Estimate, EstimateLine, EstimateMarkup, EstimateVersion
@@ -16,8 +17,12 @@ __all__ = [
     "AuthSession",
     "Budget",
     "BudgetLine",
+    "Commitment",
+    "CommitmentLine",
     "Company",
     "Contact",
+    "Contract",
+    "ContractLine",
     "CostCode",
     "CostCodeSet",
     "Document",

@@ -30,6 +30,7 @@ class DashboardOut(ApiModel):
     live_contract_value: list[CurrencyTotalOut] | None
     pursuit_value: list[CurrencyTotalOut] | None
     original_budget: list[CurrencyTotalOut] | None
+    committed_cost: list[CurrencyTotalOut] | None
     upcoming_completions: list[ProjectListItem]
     recent_projects: list[ProjectListItem]
     recent_activity: list[AuditEventOut]
@@ -52,13 +53,14 @@ def summary(db: DB, ctx: Annotated[TenantContext, Depends(require(P.DASHBOARD_VI
         live_contract_value=totals(data.live_contract_value),
         pursuit_value=totals(data.pursuit_value),
         original_budget=totals(data.original_budget),
+        committed_cost=totals(data.committed_cost),
         upcoming_completions=[list_item(ctx, p) for p in data.upcoming_completions],
         recent_projects=[list_item(ctx, p) for p in data.recent_projects],
         recent_activity=to_out(db, data.recent_events, redact_financials=not data.financials_visible),
         financials_visible=data.financials_visible,
         unavailable_metrics=data.unavailable_metrics,
         unavailable_reason=(
-            "These metrics are calculated from cost transactions, commitments, change orders and payment "
-            "applications, which are delivered in later Phase 2 milestones. They are not estimated."
+            "These metrics are calculated from cost transactions, change orders and payment applications, "
+            "which are delivered in later Phase 2 milestones. They are not estimated."
         ),
     )
