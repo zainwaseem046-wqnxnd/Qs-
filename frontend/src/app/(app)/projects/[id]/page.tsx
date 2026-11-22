@@ -7,6 +7,8 @@ import { useParams } from "next/navigation";
 import { useState } from "react";
 import { ActivityList } from "@/components/domain/activity";
 import { BudgetPanel } from "@/components/domain/budget-panel";
+import { ContractsList } from "@/components/domain/contracts-list";
+import { CostSummary } from "@/components/domain/cost-summary";
 import { DocumentsPanel } from "@/components/domain/documents-panel";
 import { EstimatesList } from "@/components/domain/estimates-list";
 import { ProjectForm } from "@/components/domain/project-form";
@@ -415,6 +417,8 @@ export default function ProjectPage() {
           { value: "phases", label: "Phases" },
           ...(can(P.ESTIMATES_VIEW) ? [{ value: "estimates", label: "Estimates" }] : []),
           ...(can(P.BUDGETS_VIEW) ? [{ value: "budget", label: "Budget" }] : []),
+          ...(can(P.CONTRACTS_VIEW) || can(P.COMMITMENTS_VIEW) ? [{ value: "contracts", label: "Contracts" }] : []),
+          ...(can(P.BUDGETS_VIEW) || can(P.COMMITMENTS_VIEW) ? [{ value: "cost", label: "Cost summary" }] : []),
           { value: "documents", label: "Documents" },
           { value: "activity", label: "Activity" },
         ]}
@@ -448,6 +452,13 @@ export default function ProjectPage() {
           <TabPanel value="phases"><Phases project={project} /></TabPanel>
           <TabPanel value="estimates"><Card><EstimatesList projectId={project.id} canCreate={!project.archived_at} /></Card></TabPanel>
           <TabPanel value="budget"><BudgetPanel project={project} /></TabPanel>
+          <TabPanel value="contracts">
+            <div className="space-y-6">
+              {can(P.CONTRACTS_VIEW) && <Card><CardHeader title="Prime contract" description="With the client / employer" /><ContractsList kind="contracts" projectId={project.id} canCreate={!project.archived_at} /></Card>}
+              {can(P.COMMITMENTS_VIEW) && <Card><CardHeader title="Subcontracts & purchase orders" description="Committed cost" /><ContractsList kind="commitments" projectId={project.id} canCreate={!project.archived_at} /></Card>}
+            </div>
+          </TabPanel>
+          <TabPanel value="cost"><CostSummary project={project} /></TabPanel>
           <TabPanel value="documents"><Card><DocumentsPanel projectId={project.id} canUpload={!project.archived_at} /></Card></TabPanel>
           <TabPanel value="activity"><Activity project={project} /></TabPanel>
         </div>

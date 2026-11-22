@@ -52,8 +52,8 @@ export const NAV: { section: string; items: NavItem[] }[] = [
   {
     section: "Commercial",
     items: [
-      { label: "Contracts", icon: FileSignature, phase: 2 },
-      { label: "Subcontracts", icon: Briefcase, phase: 3 },
+      { label: "Contracts", icon: FileSignature, href: "/contracts" },
+      { label: "Subcontracts & POs", icon: Briefcase, href: "/subcontracts" },
       { label: "Change Orders", icon: GitPullRequestArrow, phase: 2 },
       { label: "Pay Applications", icon: Wallet, phase: 3 },
       { label: "Cost Management", icon: BarChart3, phase: 2 },

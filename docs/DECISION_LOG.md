@@ -137,6 +137,23 @@ roles, validated per country. NRM1/NRM2 are RICS publications: we ship **level-n
 ("Group element › Element › Sub-element › Component", "Work section › Item"); customers import their own
 licensed codes. Same approach for US MasterFormat/UniFormat (ADR-009).
 
+### ADR-024 Contracts and commitments share one lifecycle
+**Decision:** prime contracts (with the client/employer) and commitments (subcontracts and purchase orders) use one
+service and one lifecycle: draft → executed → closed, or draft → void. Executing records the original sum (sum of
+lines) and the signed date; database triggers then freeze the commercial terms and lines, allowing only
+executed → closed. Changes to the sum after execution will come through change orders (next milestone), never by
+editing the original. Numbers auto-assign as PC-/SC-/PO-nnn per project unless given.
+**Contract forms** are country-specific references (JCT, NEC4 for UK; AIA A401, ConsensusDocs 750 for US); no
+contract text is shipped. **Currency** is the project currency in this milestone; multi-currency commitments are
+deferred. **Cost codes:** each record carries a cost code structure, defaulting to the approved budget's (then the
+latest estimate's), so lines roll up against the budget consistently.
+
+### ADR-025 Commercial summary definitions
+budget = approved original budget lines; committed = lines of executed or closed commitments; pending = lines of
+draft commitments; uncommitted = budget − committed (negative = over-committed, flagged); contract value = lines
+of executed/closed prime contracts (revenue side, shown for reference). All amounts are in project currency;
+anything in another currency is excluded with a warning rather than converted.
+
 ### ADR-016 Dashboard never estimates unavailable metrics
 **Decision:** commercial metrics needing Phase 2 data are listed as unavailable with the reason, instead of
 being approximated from contract values.

@@ -102,12 +102,15 @@ export default function DashboardPage() {
         </Card>
       ) : (
         <div className="space-y-6">
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-5">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
             <Stat label="Projects in portfolio" value={d.total_projects} sub={`${live} live (preconstruction to closeout)`} />
             <Stat label="Live contract value" value={<MoneyTotals totals={d.live_contract_value} />} sub={missingNote(d.live_contract_value)} />
             <Stat label="Pursuit pipeline" value={<MoneyTotals totals={d.pursuit_value} />} sub={missingNote(d.pursuit_value)} />
             {d.original_budget && (
               <Stat label="Approved original budgets" value={<MoneyTotals totals={d.original_budget} />} sub={budgetNote(d.original_budget)} />
+            )}
+            {d.committed_cost && (
+              <Stat label="Committed cost" value={<MoneyTotals totals={d.committed_cost} />} sub="Executed subcontracts and purchase orders" />
             )}
             <Stat label="Completing in 90 days" value={d.upcoming_completions.length} sub="Planned completion dates" />
           </div>

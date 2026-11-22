@@ -237,6 +237,7 @@ export interface DashboardSummary {
   live_contract_value: CurrencyTotal[] | null;
   pursuit_value: CurrencyTotal[] | null;
   original_budget: CurrencyTotal[] | null;
+  committed_cost: CurrencyTotal[] | null;
   upcoming_completions: ProjectListItem[];
   recent_projects: ProjectListItem[];
   recent_activity: AuditEvent[];
@@ -462,4 +463,103 @@ export interface Budget {
   created_at: string;
   is_editable: boolean;
   lines: BudgetLine[];
+}
+
+// --- Phase 2.2: contracts and commitments --------------------------------------------------------------
+export type ContractKind = "contracts" | "commitments";
+
+export interface ContractLineItem {
+  id: string;
+  sequence: number;
+  cost_code: CostCodeRef | null;
+  description: string;
+  quantity: string | null;
+  unit: string | null;
+  unit_rate: string | null;
+  amount: string;
+}
+
+export interface ContractRecord {
+  id: string;
+  project_id: string;
+  project_number: string;
+  project_name: string;
+  number: string;
+  title: string;
+  contract_form: string;
+  status: "draft" | "executed" | "closed" | "void";
+  currency: string;
+  cost_code_set_id: string | null;
+  retention_percent: string | null;
+  retention_terms: string | null;
+  payment_terms_days: number | null;
+  start_date: string | null;
+  completion_date: string | null;
+  scope_summary: string | null;
+  original_sum: string | null;
+  current_total: string;
+  executed_date: string | null;
+  executed_at: string | null;
+  closed_at: string | null;
+  version: number;
+  created_at: string;
+  updated_at: string;
+  is_editable: boolean;
+  can_execute: boolean;
+  lines: ContractLineItem[];
+  // prime contracts
+  client_company?: CompanyRef | null;
+  defects_period_months?: number | null;
+  liquidated_damages_amount?: string | null;
+  liquidated_damages_period?: "day" | "week" | null;
+  bond_required?: boolean;
+  bond_percent?: string | null;
+  insurance_notes?: string | null;
+  // commitments
+  commitment_type?: "subcontract" | "purchase_order";
+  vendor?: CompanyRef;
+  exclusions?: string | null;
+}
+
+export interface ContractListItem {
+  id: string;
+  project_id: string;
+  project_number: string;
+  project_name: string;
+  number: string;
+  title: string;
+  status: string;
+  currency: string;
+  counterparty: string | null;
+  commitment_type: string | null;
+  current_total: string;
+  original_sum: string | null;
+  executed_date: string | null;
+  updated_at: string;
+}
+
+export interface ContractVocab {
+  prime_forms: Record<string, string>;
+  subcontract_forms: Record<string, string>;
+  commitment_types: Record<string, string>;
+  statuses: Record<string, string>;
+}
+
+export interface SummaryRow {
+  cost_code_id: string | null;
+  code: string | null;
+  title: string;
+  budget: string;
+  committed: string;
+  pending: string;
+  uncommitted: string;
+  contract_value: string;
+}
+
+export interface CommercialSummary {
+  currency: string;
+  has_approved_budget: boolean;
+  rows: SummaryRow[];
+  totals: SummaryRow;
+  warnings: string[];
 }

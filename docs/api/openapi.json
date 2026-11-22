@@ -6223,6 +6223,1620 @@
     }
    }
   },
+  "/api/v1/contracts/vocabulary": {
+   "get": {
+    "tags": [
+     "contracts"
+    ],
+    "summary": "Vocabulary",
+    "operationId": "vocabulary_api_v1_contracts_vocabulary_get",
+    "parameters": [
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ContractVocab"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/projects/{project_id}/commercial-summary": {
+   "get": {
+    "tags": [
+     "contracts"
+    ],
+    "summary": "Commercial Summary",
+    "operationId": "commercial_summary_api_v1_projects__project_id__commercial_summary_get",
+    "parameters": [
+     {
+      "name": "project_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Project Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/CommercialSummary"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/contracts": {
+   "get": {
+    "tags": [
+     "contracts"
+    ],
+    "summary": "List Contracts",
+    "operationId": "list_contracts_api_v1_contracts_get",
+    "parameters": [
+     {
+      "name": "project_id",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string",
+         "format": "uuid"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Project Id"
+      }
+     },
+     {
+      "name": "status",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Status"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "array",
+         "items": {
+          "$ref": "#/components/schemas/ListItem"
+         },
+         "title": "Response List Contracts Api V1 Contracts Get"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/projects/{project_id}/contracts": {
+   "post": {
+    "tags": [
+     "contracts"
+    ],
+    "summary": "Create Contracts",
+    "operationId": "create_contracts_api_v1_projects__project_id__contracts_post",
+    "parameters": [
+     {
+      "name": "project_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Project Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/ContractCreate"
+       }
+      }
+     }
+    },
+    "responses": {
+     "201": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ContractOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/contracts/{record_id}": {
+   "get": {
+    "tags": [
+     "contracts"
+    ],
+    "summary": "Get Contracts",
+    "operationId": "get_contracts_api_v1_contracts__record_id__get",
+    "parameters": [
+     {
+      "name": "record_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Record Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ContractOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   },
+   "patch": {
+    "tags": [
+     "contracts"
+    ],
+    "summary": "Update Contracts",
+    "operationId": "update_contracts_api_v1_contracts__record_id__patch",
+    "parameters": [
+     {
+      "name": "record_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Record Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/ContractUpdate"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ContractOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   },
+   "delete": {
+    "tags": [
+     "contracts"
+    ],
+    "summary": "Delete Contracts",
+    "operationId": "delete_contracts_api_v1_contracts__record_id__delete",
+    "parameters": [
+     {
+      "name": "record_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Record Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "responses": {
+     "204": {
+      "description": "Successful Response"
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/contracts/{record_id}/lines": {
+   "post": {
+    "tags": [
+     "contracts"
+    ],
+    "summary": "Add Line Contracts",
+    "operationId": "add_line_contracts_api_v1_contracts__record_id__lines_post",
+    "parameters": [
+     {
+      "name": "record_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Record Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/ContractLineIn"
+       }
+      }
+     }
+    },
+    "responses": {
+     "201": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ContractOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/contracts/{record_id}/lines/{line_id}": {
+   "put": {
+    "tags": [
+     "contracts"
+    ],
+    "summary": "Update Line Contracts",
+    "operationId": "update_line_contracts_api_v1_contracts__record_id__lines__line_id__put",
+    "parameters": [
+     {
+      "name": "record_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Record Id"
+      }
+     },
+     {
+      "name": "line_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Line Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/ContractLineIn"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ContractOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   },
+   "delete": {
+    "tags": [
+     "contracts"
+    ],
+    "summary": "Delete Line Contracts",
+    "operationId": "delete_line_contracts_api_v1_contracts__record_id__lines__line_id__delete",
+    "parameters": [
+     {
+      "name": "record_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Record Id"
+      }
+     },
+     {
+      "name": "line_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Line Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ContractOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/contracts/{record_id}/execute": {
+   "post": {
+    "tags": [
+     "contracts"
+    ],
+    "summary": "Execute Contracts",
+    "operationId": "execute_contracts_api_v1_contracts__record_id__execute_post",
+    "parameters": [
+     {
+      "name": "record_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Record Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/ExecuteIn"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ContractOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/contracts/{record_id}/close": {
+   "post": {
+    "tags": [
+     "contracts"
+    ],
+    "summary": "Close Contracts",
+    "operationId": "close_contracts_api_v1_contracts__record_id__close_post",
+    "parameters": [
+     {
+      "name": "record_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Record Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/StatusIn"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ContractOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/contracts/{record_id}/void": {
+   "post": {
+    "tags": [
+     "contracts"
+    ],
+    "summary": "Void Contracts",
+    "operationId": "void_contracts_api_v1_contracts__record_id__void_post",
+    "parameters": [
+     {
+      "name": "record_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Record Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/StatusIn"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ContractOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/commitments": {
+   "get": {
+    "tags": [
+     "contracts"
+    ],
+    "summary": "List Commitments",
+    "operationId": "list_commitments_api_v1_commitments_get",
+    "parameters": [
+     {
+      "name": "project_id",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string",
+         "format": "uuid"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Project Id"
+      }
+     },
+     {
+      "name": "status",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Status"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "array",
+         "items": {
+          "$ref": "#/components/schemas/ListItem"
+         },
+         "title": "Response List Commitments Api V1 Commitments Get"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/projects/{project_id}/commitments": {
+   "post": {
+    "tags": [
+     "contracts"
+    ],
+    "summary": "Create Commitments",
+    "operationId": "create_commitments_api_v1_projects__project_id__commitments_post",
+    "parameters": [
+     {
+      "name": "project_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Project Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/CommitmentCreate"
+       }
+      }
+     }
+    },
+    "responses": {
+     "201": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/CommitmentOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/commitments/{record_id}": {
+   "get": {
+    "tags": [
+     "contracts"
+    ],
+    "summary": "Get Commitments",
+    "operationId": "get_commitments_api_v1_commitments__record_id__get",
+    "parameters": [
+     {
+      "name": "record_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Record Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/CommitmentOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   },
+   "patch": {
+    "tags": [
+     "contracts"
+    ],
+    "summary": "Update Commitments",
+    "operationId": "update_commitments_api_v1_commitments__record_id__patch",
+    "parameters": [
+     {
+      "name": "record_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Record Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/CommitmentUpdate"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/CommitmentOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   },
+   "delete": {
+    "tags": [
+     "contracts"
+    ],
+    "summary": "Delete Commitments",
+    "operationId": "delete_commitments_api_v1_commitments__record_id__delete",
+    "parameters": [
+     {
+      "name": "record_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Record Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "responses": {
+     "204": {
+      "description": "Successful Response"
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/commitments/{record_id}/lines": {
+   "post": {
+    "tags": [
+     "contracts"
+    ],
+    "summary": "Add Line Commitments",
+    "operationId": "add_line_commitments_api_v1_commitments__record_id__lines_post",
+    "parameters": [
+     {
+      "name": "record_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Record Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/CommitmentLineIn"
+       }
+      }
+     }
+    },
+    "responses": {
+     "201": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/CommitmentOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/commitments/{record_id}/lines/{line_id}": {
+   "put": {
+    "tags": [
+     "contracts"
+    ],
+    "summary": "Update Line Commitments",
+    "operationId": "update_line_commitments_api_v1_commitments__record_id__lines__line_id__put",
+    "parameters": [
+     {
+      "name": "record_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Record Id"
+      }
+     },
+     {
+      "name": "line_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Line Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/CommitmentLineIn"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/CommitmentOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   },
+   "delete": {
+    "tags": [
+     "contracts"
+    ],
+    "summary": "Delete Line Commitments",
+    "operationId": "delete_line_commitments_api_v1_commitments__record_id__lines__line_id__delete",
+    "parameters": [
+     {
+      "name": "record_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Record Id"
+      }
+     },
+     {
+      "name": "line_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Line Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/CommitmentOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/commitments/{record_id}/execute": {
+   "post": {
+    "tags": [
+     "contracts"
+    ],
+    "summary": "Execute Commitments",
+    "operationId": "execute_commitments_api_v1_commitments__record_id__execute_post",
+    "parameters": [
+     {
+      "name": "record_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Record Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/ExecuteIn"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/CommitmentOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/commitments/{record_id}/close": {
+   "post": {
+    "tags": [
+     "contracts"
+    ],
+    "summary": "Close Commitments",
+    "operationId": "close_commitments_api_v1_commitments__record_id__close_post",
+    "parameters": [
+     {
+      "name": "record_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Record Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/StatusIn"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/CommitmentOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/commitments/{record_id}/void": {
+   "post": {
+    "tags": [
+     "contracts"
+    ],
+    "summary": "Void Commitments",
+    "operationId": "void_commitments_api_v1_commitments__record_id__void_post",
+    "parameters": [
+     {
+      "name": "record_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Record Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/StatusIn"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/CommitmentOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
   "/api/v1/health": {
    "get": {
     "tags": [
@@ -7017,6 +8631,669 @@
     ],
     "title": "ChangePasswordRequest"
    },
+   "CommercialSummary": {
+    "properties": {
+     "currency": {
+      "type": "string",
+      "title": "Currency"
+     },
+     "has_approved_budget": {
+      "type": "boolean",
+      "title": "Has Approved Budget"
+     },
+     "rows": {
+      "items": {
+       "$ref": "#/components/schemas/SummaryRow"
+      },
+      "type": "array",
+      "title": "Rows"
+     },
+     "totals": {
+      "$ref": "#/components/schemas/SummaryRow"
+     },
+     "warnings": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array",
+      "title": "Warnings"
+     }
+    },
+    "type": "object",
+    "required": [
+     "currency",
+     "has_approved_budget",
+     "rows",
+     "totals",
+     "warnings"
+    ],
+    "title": "CommercialSummary"
+   },
+   "CommitmentCreate": {
+    "properties": {
+     "title": {
+      "type": "string",
+      "maxLength": 200,
+      "minLength": 2,
+      "title": "Title"
+     },
+     "contract_form": {
+      "type": "string",
+      "maxLength": 40,
+      "title": "Contract Form"
+     },
+     "retention_percent": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Retention Percent"
+     },
+     "retention_terms": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 2000
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Retention Terms"
+     },
+     "payment_terms_days": {
+      "anyOf": [
+       {
+        "type": "integer",
+        "maximum": 365.0,
+        "minimum": 0.0
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Payment Terms Days"
+     },
+     "start_date": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "date"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Start Date"
+     },
+     "completion_date": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "date"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Completion Date"
+     },
+     "scope_summary": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 10000
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Scope Summary"
+     },
+     "exclusions": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 10000
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Exclusions"
+     },
+     "number": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 40,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._/\\-]*$"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Number"
+     },
+     "commitment_type": {
+      "type": "string",
+      "enum": [
+       "subcontract",
+       "purchase_order"
+      ],
+      "title": "Commitment Type"
+     },
+     "vendor_company_id": {
+      "type": "string",
+      "format": "uuid",
+      "title": "Vendor Company Id"
+     },
+     "cost_code_set_id": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "uuid"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Cost Code Set Id"
+     }
+    },
+    "additionalProperties": false,
+    "type": "object",
+    "required": [
+     "title",
+     "contract_form",
+     "commitment_type",
+     "vendor_company_id"
+    ],
+    "title": "CommitmentCreate"
+   },
+   "CommitmentLineIn": {
+    "properties": {
+     "cost_code_id": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "uuid"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Cost Code Id"
+     },
+     "description": {
+      "type": "string",
+      "maxLength": 300,
+      "minLength": 1,
+      "title": "Description"
+     },
+     "quantity": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Quantity"
+     },
+     "unit": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 20
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Unit"
+     },
+     "unit_rate": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Unit Rate"
+     },
+     "amount": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Amount"
+     }
+    },
+    "additionalProperties": false,
+    "type": "object",
+    "required": [
+     "description"
+    ],
+    "title": "CommitmentLineIn"
+   },
+   "CommitmentOut": {
+    "properties": {
+     "id": {
+      "type": "string",
+      "format": "uuid",
+      "title": "Id"
+     },
+     "project_id": {
+      "type": "string",
+      "format": "uuid",
+      "title": "Project Id"
+     },
+     "project_number": {
+      "type": "string",
+      "title": "Project Number"
+     },
+     "project_name": {
+      "type": "string",
+      "title": "Project Name"
+     },
+     "number": {
+      "type": "string",
+      "title": "Number"
+     },
+     "title": {
+      "type": "string",
+      "title": "Title"
+     },
+     "contract_form": {
+      "type": "string",
+      "title": "Contract Form"
+     },
+     "status": {
+      "type": "string",
+      "title": "Status"
+     },
+     "currency": {
+      "type": "string",
+      "title": "Currency"
+     },
+     "cost_code_set_id": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "uuid"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Cost Code Set Id"
+     },
+     "retention_percent": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Retention Percent"
+     },
+     "retention_terms": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Retention Terms"
+     },
+     "payment_terms_days": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Payment Terms Days"
+     },
+     "start_date": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "date"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Start Date"
+     },
+     "completion_date": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "date"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Completion Date"
+     },
+     "scope_summary": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Scope Summary"
+     },
+     "original_sum": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Original Sum"
+     },
+     "current_total": {
+      "type": "string",
+      "title": "Current Total"
+     },
+     "executed_date": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "date"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Executed Date"
+     },
+     "executed_at": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "date-time"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Executed At"
+     },
+     "closed_at": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "date-time"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Closed At"
+     },
+     "version": {
+      "type": "integer",
+      "title": "Version"
+     },
+     "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Created At"
+     },
+     "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Updated At"
+     },
+     "is_editable": {
+      "type": "boolean",
+      "title": "Is Editable"
+     },
+     "can_execute": {
+      "type": "boolean",
+      "title": "Can Execute"
+     },
+     "lines": {
+      "items": {
+       "$ref": "#/components/schemas/app__domains__contracts__schemas__LineOut"
+      },
+      "type": "array",
+      "title": "Lines"
+     },
+     "commitment_type": {
+      "type": "string",
+      "title": "Commitment Type"
+     },
+     "vendor": {
+      "$ref": "#/components/schemas/CompanyRef"
+     },
+     "exclusions": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Exclusions"
+     }
+    },
+    "type": "object",
+    "required": [
+     "id",
+     "project_id",
+     "project_number",
+     "project_name",
+     "number",
+     "title",
+     "contract_form",
+     "status",
+     "currency",
+     "cost_code_set_id",
+     "retention_percent",
+     "retention_terms",
+     "payment_terms_days",
+     "start_date",
+     "completion_date",
+     "scope_summary",
+     "original_sum",
+     "current_total",
+     "executed_date",
+     "executed_at",
+     "closed_at",
+     "version",
+     "created_at",
+     "updated_at",
+     "is_editable",
+     "can_execute",
+     "lines",
+     "commitment_type",
+     "vendor",
+     "exclusions"
+    ],
+    "title": "CommitmentOut"
+   },
+   "CommitmentUpdate": {
+    "properties": {
+     "title": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 200,
+        "minLength": 2
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Title"
+     },
+     "contract_form": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 40
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Contract Form"
+     },
+     "retention_percent": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Retention Percent"
+     },
+     "retention_terms": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 2000
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Retention Terms"
+     },
+     "payment_terms_days": {
+      "anyOf": [
+       {
+        "type": "integer",
+        "maximum": 365.0,
+        "minimum": 0.0
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Payment Terms Days"
+     },
+     "start_date": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "date"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Start Date"
+     },
+     "completion_date": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "date"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Completion Date"
+     },
+     "scope_summary": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 10000
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Scope Summary"
+     },
+     "exclusions": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 10000
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Exclusions"
+     },
+     "version": {
+      "type": "integer",
+      "minimum": 1.0,
+      "title": "Version"
+     },
+     "vendor_company_id": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "uuid"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Vendor Company Id"
+     }
+    },
+    "additionalProperties": false,
+    "type": "object",
+    "required": [
+     "version"
+    ],
+    "title": "CommitmentUpdate"
+   },
    "CompanyCreate": {
     "properties": {
      "legal_name": {
@@ -7661,6 +9938,815 @@
     ],
     "title": "ContactOut"
    },
+   "ContractCreate": {
+    "properties": {
+     "title": {
+      "type": "string",
+      "maxLength": 200,
+      "minLength": 2,
+      "title": "Title"
+     },
+     "contract_form": {
+      "type": "string",
+      "maxLength": 40,
+      "title": "Contract Form"
+     },
+     "retention_percent": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Retention Percent"
+     },
+     "retention_terms": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 2000
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Retention Terms"
+     },
+     "payment_terms_days": {
+      "anyOf": [
+       {
+        "type": "integer",
+        "maximum": 365.0,
+        "minimum": 0.0
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Payment Terms Days"
+     },
+     "start_date": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "date"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Start Date"
+     },
+     "completion_date": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "date"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Completion Date"
+     },
+     "scope_summary": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 10000
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Scope Summary"
+     },
+     "client_company_id": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "uuid"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Client Company Id"
+     },
+     "defects_period_months": {
+      "anyOf": [
+       {
+        "type": "integer",
+        "maximum": 120.0,
+        "minimum": 0.0
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Defects Period Months"
+     },
+     "liquidated_damages_amount": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Liquidated Damages Amount"
+     },
+     "liquidated_damages_period": {
+      "anyOf": [
+       {
+        "type": "string",
+        "enum": [
+         "day",
+         "week"
+        ]
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Liquidated Damages Period"
+     },
+     "bond_required": {
+      "anyOf": [
+       {
+        "type": "boolean"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Bond Required"
+     },
+     "bond_percent": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Bond Percent"
+     },
+     "insurance_notes": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 5000
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Insurance Notes"
+     },
+     "number": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 40,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._/\\-]*$"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Number"
+     },
+     "cost_code_set_id": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "uuid"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Cost Code Set Id"
+     }
+    },
+    "additionalProperties": false,
+    "type": "object",
+    "required": [
+     "title",
+     "contract_form"
+    ],
+    "title": "ContractCreate"
+   },
+   "ContractLineIn": {
+    "properties": {
+     "cost_code_id": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "uuid"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Cost Code Id"
+     },
+     "description": {
+      "type": "string",
+      "maxLength": 300,
+      "minLength": 1,
+      "title": "Description"
+     },
+     "amount": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "string"
+       }
+      ],
+      "title": "Amount"
+     }
+    },
+    "additionalProperties": false,
+    "type": "object",
+    "required": [
+     "description",
+     "amount"
+    ],
+    "title": "ContractLineIn"
+   },
+   "ContractOut": {
+    "properties": {
+     "id": {
+      "type": "string",
+      "format": "uuid",
+      "title": "Id"
+     },
+     "project_id": {
+      "type": "string",
+      "format": "uuid",
+      "title": "Project Id"
+     },
+     "project_number": {
+      "type": "string",
+      "title": "Project Number"
+     },
+     "project_name": {
+      "type": "string",
+      "title": "Project Name"
+     },
+     "number": {
+      "type": "string",
+      "title": "Number"
+     },
+     "title": {
+      "type": "string",
+      "title": "Title"
+     },
+     "contract_form": {
+      "type": "string",
+      "title": "Contract Form"
+     },
+     "status": {
+      "type": "string",
+      "title": "Status"
+     },
+     "currency": {
+      "type": "string",
+      "title": "Currency"
+     },
+     "cost_code_set_id": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "uuid"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Cost Code Set Id"
+     },
+     "retention_percent": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Retention Percent"
+     },
+     "retention_terms": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Retention Terms"
+     },
+     "payment_terms_days": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Payment Terms Days"
+     },
+     "start_date": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "date"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Start Date"
+     },
+     "completion_date": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "date"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Completion Date"
+     },
+     "scope_summary": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Scope Summary"
+     },
+     "original_sum": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Original Sum"
+     },
+     "current_total": {
+      "type": "string",
+      "title": "Current Total"
+     },
+     "executed_date": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "date"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Executed Date"
+     },
+     "executed_at": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "date-time"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Executed At"
+     },
+     "closed_at": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "date-time"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Closed At"
+     },
+     "version": {
+      "type": "integer",
+      "title": "Version"
+     },
+     "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Created At"
+     },
+     "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Updated At"
+     },
+     "is_editable": {
+      "type": "boolean",
+      "title": "Is Editable"
+     },
+     "can_execute": {
+      "type": "boolean",
+      "title": "Can Execute"
+     },
+     "lines": {
+      "items": {
+       "$ref": "#/components/schemas/app__domains__contracts__schemas__LineOut"
+      },
+      "type": "array",
+      "title": "Lines"
+     },
+     "client_company": {
+      "anyOf": [
+       {
+        "$ref": "#/components/schemas/CompanyRef"
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "defects_period_months": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Defects Period Months"
+     },
+     "liquidated_damages_amount": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Liquidated Damages Amount"
+     },
+     "liquidated_damages_period": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Liquidated Damages Period"
+     },
+     "bond_required": {
+      "type": "boolean",
+      "title": "Bond Required"
+     },
+     "bond_percent": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Bond Percent"
+     },
+     "insurance_notes": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Insurance Notes"
+     }
+    },
+    "type": "object",
+    "required": [
+     "id",
+     "project_id",
+     "project_number",
+     "project_name",
+     "number",
+     "title",
+     "contract_form",
+     "status",
+     "currency",
+     "cost_code_set_id",
+     "retention_percent",
+     "retention_terms",
+     "payment_terms_days",
+     "start_date",
+     "completion_date",
+     "scope_summary",
+     "original_sum",
+     "current_total",
+     "executed_date",
+     "executed_at",
+     "closed_at",
+     "version",
+     "created_at",
+     "updated_at",
+     "is_editable",
+     "can_execute",
+     "lines",
+     "client_company",
+     "defects_period_months",
+     "liquidated_damages_amount",
+     "liquidated_damages_period",
+     "bond_required",
+     "bond_percent",
+     "insurance_notes"
+    ],
+    "title": "ContractOut"
+   },
+   "ContractUpdate": {
+    "properties": {
+     "title": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 200,
+        "minLength": 2
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Title"
+     },
+     "contract_form": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 40
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Contract Form"
+     },
+     "retention_percent": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Retention Percent"
+     },
+     "retention_terms": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 2000
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Retention Terms"
+     },
+     "payment_terms_days": {
+      "anyOf": [
+       {
+        "type": "integer",
+        "maximum": 365.0,
+        "minimum": 0.0
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Payment Terms Days"
+     },
+     "start_date": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "date"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Start Date"
+     },
+     "completion_date": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "date"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Completion Date"
+     },
+     "scope_summary": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 10000
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Scope Summary"
+     },
+     "client_company_id": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "uuid"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Client Company Id"
+     },
+     "defects_period_months": {
+      "anyOf": [
+       {
+        "type": "integer",
+        "maximum": 120.0,
+        "minimum": 0.0
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Defects Period Months"
+     },
+     "liquidated_damages_amount": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Liquidated Damages Amount"
+     },
+     "liquidated_damages_period": {
+      "anyOf": [
+       {
+        "type": "string",
+        "enum": [
+         "day",
+         "week"
+        ]
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Liquidated Damages Period"
+     },
+     "bond_required": {
+      "anyOf": [
+       {
+        "type": "boolean"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Bond Required"
+     },
+     "bond_percent": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Bond Percent"
+     },
+     "insurance_notes": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 5000
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Insurance Notes"
+     },
+     "version": {
+      "type": "integer",
+      "minimum": 1.0,
+      "title": "Version"
+     }
+    },
+    "additionalProperties": false,
+    "type": "object",
+    "required": [
+     "version"
+    ],
+    "title": "ContractUpdate"
+   },
+   "ContractVocab": {
+    "properties": {
+     "prime_forms": {
+      "additionalProperties": {
+       "type": "string"
+      },
+      "type": "object",
+      "title": "Prime Forms"
+     },
+     "subcontract_forms": {
+      "additionalProperties": {
+       "type": "string"
+      },
+      "type": "object",
+      "title": "Subcontract Forms"
+     },
+     "commitment_types": {
+      "additionalProperties": {
+       "type": "string"
+      },
+      "type": "object",
+      "title": "Commitment Types"
+     },
+     "statuses": {
+      "additionalProperties": {
+       "type": "string"
+      },
+      "type": "object",
+      "title": "Statuses"
+     }
+    },
+    "type": "object",
+    "required": [
+     "prime_forms",
+     "subcontract_forms",
+     "commitment_types",
+     "statuses"
+    ],
+    "title": "ContractVocab"
+   },
    "CostCodeIn": {
     "properties": {
      "code": {
@@ -8138,6 +11224,20 @@
       ],
       "title": "Original Budget"
      },
+     "committed_cost": {
+      "anyOf": [
+       {
+        "items": {
+         "$ref": "#/components/schemas/CurrencyTotalOut"
+        },
+        "type": "array"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Committed Cost"
+     },
      "upcoming_completions": {
       "items": {
        "$ref": "#/components/schemas/ProjectListItem"
@@ -8183,6 +11283,7 @@
      "live_contract_value",
      "pursuit_value",
      "original_budget",
+     "committed_cost",
      "upcoming_completions",
      "recent_projects",
      "recent_activity",
@@ -8779,6 +11880,27 @@
     ],
     "title": "EstimateUpdate"
    },
+   "ExecuteIn": {
+    "properties": {
+     "executed_date": {
+      "type": "string",
+      "format": "date",
+      "title": "Executed Date"
+     },
+     "version": {
+      "type": "integer",
+      "minimum": 1.0,
+      "title": "Version"
+     }
+    },
+    "additionalProperties": false,
+    "type": "object",
+    "required": [
+     "executed_date",
+     "version"
+    ],
+    "title": "ExecuteIn"
+   },
    "ForgotPasswordRequest": {
     "properties": {
      "email": {
@@ -9329,87 +12451,43 @@
     ],
     "title": "LineIn"
    },
-   "LineOut": {
+   "ListItem": {
     "properties": {
      "id": {
       "type": "string",
       "format": "uuid",
       "title": "Id"
      },
-     "sequence": {
-      "type": "integer",
-      "title": "Sequence"
-     },
-     "cost_code": {
-      "anyOf": [
-       {
-        "$ref": "#/components/schemas/CostCodeRef"
-       },
-       {
-        "type": "null"
-       }
-      ]
-     },
-     "line_type": {
+     "project_id": {
       "type": "string",
-      "title": "Line Type"
+      "format": "uuid",
+      "title": "Project Id"
      },
-     "inclusion": {
+     "project_number": {
       "type": "string",
-      "title": "Inclusion"
+      "title": "Project Number"
      },
-     "alternate_label": {
-      "anyOf": [
-       {
-        "type": "string"
-       },
-       {
-        "type": "null"
-       }
-      ],
-      "title": "Alternate Label"
-     },
-     "description": {
+     "project_name": {
       "type": "string",
-      "title": "Description"
+      "title": "Project Name"
      },
-     "quantity": {
+     "number": {
       "type": "string",
-      "title": "Quantity"
+      "title": "Number"
      },
-     "unit": {
+     "title": {
       "type": "string",
-      "title": "Unit"
+      "title": "Title"
      },
-     "labour_hours_per_unit": {
+     "status": {
       "type": "string",
-      "title": "Labour Hours Per Unit"
+      "title": "Status"
      },
-     "labour_rate": {
+     "currency": {
       "type": "string",
-      "title": "Labour Rate"
+      "title": "Currency"
      },
-     "material_rate": {
-      "type": "string",
-      "title": "Material Rate"
-     },
-     "material_waste_percent": {
-      "type": "string",
-      "title": "Material Waste Percent"
-     },
-     "equipment_rate": {
-      "type": "string",
-      "title": "Equipment Rate"
-     },
-     "subcontract_rate": {
-      "type": "string",
-      "title": "Subcontract Rate"
-     },
-     "other_rate": {
-      "type": "string",
-      "title": "Other Rate"
-     },
-     "notes": {
+     "counterparty": {
       "anyOf": [
        {
         "type": "string"
@@ -9418,34 +12496,69 @@
         "type": "null"
        }
       ],
-      "title": "Notes"
+      "title": "Counterparty"
      },
-     "calc": {
-      "$ref": "#/components/schemas/LineCalcOut"
+     "commitment_type": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Commitment Type"
+     },
+     "current_total": {
+      "type": "string",
+      "title": "Current Total"
+     },
+     "original_sum": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Original Sum"
+     },
+     "executed_date": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "date"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Executed Date"
+     },
+     "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Updated At"
      }
     },
     "type": "object",
     "required": [
      "id",
-     "sequence",
-     "cost_code",
-     "line_type",
-     "inclusion",
-     "alternate_label",
-     "description",
-     "quantity",
-     "unit",
-     "labour_hours_per_unit",
-     "labour_rate",
-     "material_rate",
-     "material_waste_percent",
-     "equipment_rate",
-     "subcontract_rate",
-     "other_rate",
-     "notes",
-     "calc"
+     "project_id",
+     "project_number",
+     "project_name",
+     "number",
+     "title",
+     "status",
+     "currency",
+     "counterparty",
+     "current_total",
+     "original_sum",
+     "executed_date",
+     "updated_at"
     ],
-    "title": "LineOut"
+    "title": "ListItem"
    },
    "LoginRequest": {
     "properties": {
@@ -11325,6 +14438,84 @@
     ],
     "title": "SessionOut"
    },
+   "StatusIn": {
+    "properties": {
+     "version": {
+      "type": "integer",
+      "minimum": 1.0,
+      "title": "Version"
+     }
+    },
+    "additionalProperties": false,
+    "type": "object",
+    "required": [
+     "version"
+    ],
+    "title": "StatusIn"
+   },
+   "SummaryRow": {
+    "properties": {
+     "cost_code_id": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "uuid"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Cost Code Id"
+     },
+     "code": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Code"
+     },
+     "title": {
+      "type": "string",
+      "title": "Title"
+     },
+     "budget": {
+      "type": "string",
+      "title": "Budget"
+     },
+     "committed": {
+      "type": "string",
+      "title": "Committed"
+     },
+     "pending": {
+      "type": "string",
+      "title": "Pending"
+     },
+     "uncommitted": {
+      "type": "string",
+      "title": "Uncommitted"
+     },
+     "contract_value": {
+      "type": "string",
+      "title": "Contract Value"
+     }
+    },
+    "type": "object",
+    "required": [
+     "cost_code_id",
+     "code",
+     "title",
+     "budget",
+     "committed",
+     "pending",
+     "uncommitted",
+     "contract_value"
+    ],
+    "title": "SummaryRow"
+   },
    "TemplateOut": {
     "properties": {
      "key": {
@@ -11722,7 +14913,7 @@
      },
      "lines": {
       "items": {
-       "$ref": "#/components/schemas/LineOut"
+       "$ref": "#/components/schemas/app__domains__estimating__schemas__LineOut"
       },
       "type": "array",
       "title": "Lines"
@@ -12007,6 +15198,197 @@
      "measurement_systems"
     ],
     "title": "VocabularyOut"
+   },
+   "app__domains__contracts__schemas__LineOut": {
+    "properties": {
+     "id": {
+      "type": "string",
+      "format": "uuid",
+      "title": "Id"
+     },
+     "sequence": {
+      "type": "integer",
+      "title": "Sequence"
+     },
+     "cost_code": {
+      "anyOf": [
+       {
+        "$ref": "#/components/schemas/CostCodeRef"
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "description": {
+      "type": "string",
+      "title": "Description"
+     },
+     "quantity": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Quantity"
+     },
+     "unit": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Unit"
+     },
+     "unit_rate": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Unit Rate"
+     },
+     "amount": {
+      "type": "string",
+      "title": "Amount"
+     }
+    },
+    "type": "object",
+    "required": [
+     "id",
+     "sequence",
+     "cost_code",
+     "description",
+     "amount"
+    ],
+    "title": "LineOut"
+   },
+   "app__domains__estimating__schemas__LineOut": {
+    "properties": {
+     "id": {
+      "type": "string",
+      "format": "uuid",
+      "title": "Id"
+     },
+     "sequence": {
+      "type": "integer",
+      "title": "Sequence"
+     },
+     "cost_code": {
+      "anyOf": [
+       {
+        "$ref": "#/components/schemas/CostCodeRef"
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "line_type": {
+      "type": "string",
+      "title": "Line Type"
+     },
+     "inclusion": {
+      "type": "string",
+      "title": "Inclusion"
+     },
+     "alternate_label": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Alternate Label"
+     },
+     "description": {
+      "type": "string",
+      "title": "Description"
+     },
+     "quantity": {
+      "type": "string",
+      "title": "Quantity"
+     },
+     "unit": {
+      "type": "string",
+      "title": "Unit"
+     },
+     "labour_hours_per_unit": {
+      "type": "string",
+      "title": "Labour Hours Per Unit"
+     },
+     "labour_rate": {
+      "type": "string",
+      "title": "Labour Rate"
+     },
+     "material_rate": {
+      "type": "string",
+      "title": "Material Rate"
+     },
+     "material_waste_percent": {
+      "type": "string",
+      "title": "Material Waste Percent"
+     },
+     "equipment_rate": {
+      "type": "string",
+      "title": "Equipment Rate"
+     },
+     "subcontract_rate": {
+      "type": "string",
+      "title": "Subcontract Rate"
+     },
+     "other_rate": {
+      "type": "string",
+      "title": "Other Rate"
+     },
+     "notes": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Notes"
+     },
+     "calc": {
+      "$ref": "#/components/schemas/LineCalcOut"
+     }
+    },
+    "type": "object",
+    "required": [
+     "id",
+     "sequence",
+     "cost_code",
+     "line_type",
+     "inclusion",
+     "alternate_label",
+     "description",
+     "quantity",
+     "unit",
+     "labour_hours_per_unit",
+     "labour_rate",
+     "material_rate",
+     "material_waste_percent",
+     "equipment_rate",
+     "subcontract_rate",
+     "other_rate",
+     "notes",
+     "calc"
+    ],
+    "title": "LineOut"
    }
   }
  }

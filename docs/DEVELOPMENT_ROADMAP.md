@@ -6,7 +6,7 @@ committed until team size is known (see OUTSTANDING_DECISIONS.md, OD-1).
 | Phase | Theme | Status |
 |---|---|---|
 | 1 | Foundation | ✅ Complete (this milestone) |
-| 2 | Commercial core | In progress — milestone 2.1 complete |
+| 2 | Commercial core | In progress — milestones 2.1 and 2.2 complete |
 | 3 | Procurement & payments | Planned |
 | 4 | AI intelligence | Planned |
 | 5 | Advanced construction | Planned |
@@ -26,7 +26,8 @@ Milestones, each shippable:
 3. ✅ **Estimating:** versions, full build-up, allowances/provisional sums, alternates, markups, comparison
    (milestone 2.1). Remaining: assemblies, historical rate comparison (needs the cost database).
 4. ✅ **Original budget** from approved estimate (milestone 2.1). Remaining: budget transfers, revised budget.
-5. **Contracts & commitments:** prime contracts, subcontracts/POs (commitment lines), retainage terms.
+5. ✅ **Contracts & commitments:** prime contracts, subcontracts/POs, retention/retainage terms, execution lock,
+   budget vs committed summary (milestone 2.2). Remaining: multi-currency commitments, document links.
 6. **Change orders:** potential → priced → submitted → approved/rejected; approvals post to contract value,
    budget and commitments.
 7. **Cost ledger:** immutable `cost_transactions` (actual, committed, accrued) with reversals; CSV import from

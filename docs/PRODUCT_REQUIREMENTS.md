@@ -131,6 +131,19 @@ summarised in §6.
 | UK-1 | UK commercial vocabulary | Traditional/two-stage/D&B/management routes; JCT and NEC4 contracts; UK roles incl. QS | ✅ tested |
 | DB-1 | Dashboard | Approved original budget totals by currency | ✅ tested |
 
+## 5c. Phase 2.2 requirements (Contracts and commitments) — delivered
+
+| ID | Requirement | Acceptance criteria | Status |
+|---|---|---|---|
+| CT-1 | Prime contract per project | Form (JCT/NEC/US types by country), client, retention/retainage %, release terms, payment days, dates, defects/warranty period, liquidated damages per day/week, bond, insurance notes | ✅ tested |
+| CT-2 | Contract sum analysis | Lines by cost code; total shown live while draft | ✅ tested |
+| CM-1 | Subcontracts and purchase orders | Vendor from directory, subcontract forms (JCT SBCSub/DBSub/ICSub/ShortSub, NEC4 ECS/ECSS, AIA A401, ConsensusDocs 750), scope and exclusions | ✅ tested |
+| CM-2 | Measured or lump-sum lines | Quantity × rate calculated server-side and rounded once; validation rejects partial measured lines | ✅ tested |
+| LC-1 | Execute, close, void | Execution needs lines and a non-future signed date; records original sum; terms and lines then locked (DB trigger); close executed, void drafts | ✅ tested incl. SQL-level freeze |
+| LC-2 | Separation of rights | Project managers draft; execution requires contracts./commitments.execute (commercial manager, admin, owner) | ✅ tested |
+| CS-1 | Budget vs committed by cost code | Budget, committed, uncommitted, pending, contract value; over-commitment warnings | ✅ tested (API + e2e) |
+| DB-2 | Dashboard committed cost | Executed commitments on live projects by currency | ✅ tested |
+
 ## 6. Later phases (summary)
 
 * **Phase 2 — Commercial core:** cost codes (customer-licensed classifications), estimating with full line

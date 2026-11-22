@@ -25,6 +25,30 @@
 | budgets | `POST` | `/api/v1/projects/{project_id}/budgets` | Create Budget |
 | budgets | `POST` | `/api/v1/projects/{project_id}/budgets/from-estimate` | Create From Estimate |
 | budgets | `PUT` | `/api/v1/budgets/{budget_id}/lines/{line_id}` | Update Line |
+| contracts | `DELETE` | `/api/v1/commitments/{record_id}` | Delete Commitments |
+| contracts | `DELETE` | `/api/v1/commitments/{record_id}/lines/{line_id}` | Delete Line Commitments |
+| contracts | `DELETE` | `/api/v1/contracts/{record_id}` | Delete Contracts |
+| contracts | `DELETE` | `/api/v1/contracts/{record_id}/lines/{line_id}` | Delete Line Contracts |
+| contracts | `GET` | `/api/v1/commitments` | List Commitments |
+| contracts | `GET` | `/api/v1/commitments/{record_id}` | Get Commitments |
+| contracts | `GET` | `/api/v1/contracts` | List Contracts |
+| contracts | `GET` | `/api/v1/contracts/vocabulary` | Vocabulary |
+| contracts | `GET` | `/api/v1/contracts/{record_id}` | Get Contracts |
+| contracts | `GET` | `/api/v1/projects/{project_id}/commercial-summary` | Commercial Summary |
+| contracts | `PATCH` | `/api/v1/commitments/{record_id}` | Update Commitments |
+| contracts | `PATCH` | `/api/v1/contracts/{record_id}` | Update Contracts |
+| contracts | `POST` | `/api/v1/commitments/{record_id}/close` | Close Commitments |
+| contracts | `POST` | `/api/v1/commitments/{record_id}/execute` | Execute Commitments |
+| contracts | `POST` | `/api/v1/commitments/{record_id}/lines` | Add Line Commitments |
+| contracts | `POST` | `/api/v1/commitments/{record_id}/void` | Void Commitments |
+| contracts | `POST` | `/api/v1/contracts/{record_id}/close` | Close Contracts |
+| contracts | `POST` | `/api/v1/contracts/{record_id}/execute` | Execute Contracts |
+| contracts | `POST` | `/api/v1/contracts/{record_id}/lines` | Add Line Contracts |
+| contracts | `POST` | `/api/v1/contracts/{record_id}/void` | Void Contracts |
+| contracts | `POST` | `/api/v1/projects/{project_id}/commitments` | Create Commitments |
+| contracts | `POST` | `/api/v1/projects/{project_id}/contracts` | Create Contracts |
+| contracts | `PUT` | `/api/v1/commitments/{record_id}/lines/{line_id}` | Update Line Commitments |
+| contracts | `PUT` | `/api/v1/contracts/{record_id}/lines/{line_id}` | Update Line Contracts |
 | cost codes | `DELETE` | `/api/v1/cost-code-sets/{set_id}/codes/{code_id}` | Delete Code |
 | cost codes | `GET` | `/api/v1/cost-code-sets` | List Sets |
 | cost codes | `GET` | `/api/v1/cost-code-sets/templates` | Templates |
