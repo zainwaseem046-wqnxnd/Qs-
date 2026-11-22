@@ -238,6 +238,7 @@ export interface DashboardSummary {
   pursuit_value: CurrencyTotal[] | null;
   original_budget: CurrencyTotal[] | null;
   committed_cost: CurrencyTotal[] | null;
+  pending_changes: { currency: string; amount: string; count: number; overdue_count: number }[] | null;
   upcoming_completions: ProjectListItem[];
   recent_projects: ProjectListItem[];
   recent_activity: AuditEvent[];
@@ -498,6 +499,9 @@ export interface ContractRecord {
   scope_summary: string | null;
   original_sum: string | null;
   current_total: string;
+  approved_changes: string;
+  pending_changes: string;
+  revised_sum: string | null;
   executed_date: string | null;
   executed_at: string | null;
   closed_at: string | null;
@@ -534,6 +538,7 @@ export interface ContractListItem {
   commitment_type: string | null;
   current_total: string;
   original_sum: string | null;
+  revised_sum: string | null;
   executed_date: string | null;
   updated_at: string;
 }
@@ -550,6 +555,8 @@ export interface SummaryRow {
   code: string | null;
   title: string;
   budget: string;
+  budget_changes: string;
+  revised_budget: string;
   committed: string;
   pending: string;
   uncommitted: string;
@@ -562,4 +569,74 @@ export interface CommercialSummary {
   rows: SummaryRow[];
   totals: SummaryRow;
   warnings: string[];
+}
+
+// --- Phase 2.3: change orders ---------------------------------------------------------------------------
+export interface ChangeTarget {
+  type: "contract" | "commitment";
+  id: string;
+  number: string;
+  title: string;
+  counterparty: string | null;
+  contract_form: string;
+}
+
+export interface ChangeOrderLine {
+  id: string;
+  sequence: number;
+  cost_code: CostCodeRef | null;
+  description: string;
+  quantity: string | null;
+  unit: string | null;
+  unit_rate: string | null;
+  amount: string;
+  budget_amount: string | null;
+}
+
+export interface ChangeOrder {
+  id: string;
+  project_id: string;
+  project_number: string;
+  project_name: string;
+  target: ChangeTarget;
+  label: string;
+  number: string;
+  title: string;
+  description: string | null;
+  reason: string;
+  reference: string | null;
+  status: "draft" | "submitted" | "approved" | "rejected" | "withdrawn";
+  currency: string;
+  schedule_impact_days: number | null;
+  notified_date: string | null;
+  response_due_date: string | null;
+  overdue: boolean;
+  submitted_at: string | null;
+  decided_at: string | null;
+  decision_notes: string | null;
+  total: string;
+  budget_total: string;
+  version: number;
+  created_at: string;
+  updated_at: string;
+  is_editable: boolean;
+  can_approve: boolean;
+  lines: ChangeOrderLine[];
+}
+
+export interface ChangeOrderListItem {
+  id: string;
+  project_id: string;
+  project_number: string;
+  project_name: string;
+  target: ChangeTarget;
+  label: string;
+  number: string;
+  title: string;
+  status: string;
+  currency: string;
+  total: string;
+  response_due_date: string | null;
+  overdue: boolean;
+  updated_at: string;
 }

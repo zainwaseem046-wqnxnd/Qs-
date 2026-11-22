@@ -12,6 +12,7 @@ import { api } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
 import { formatDate, label, P, useVocabulary } from "@/lib/hooks";
 import { formatMoney, formatMoneyCompact } from "@/lib/money";
+import { region } from "@/lib/region";
 import type { CurrencyTotal, DashboardSummary } from "@/lib/types";
 
 function MoneyTotals({ totals }: { totals: CurrencyTotal[] | null }) {
@@ -108,6 +109,13 @@ export default function DashboardPage() {
             <Stat label="Pursuit pipeline" value={<MoneyTotals totals={d.pursuit_value} />} sub={missingNote(d.pursuit_value)} />
             {d.original_budget && (
               <Stat label="Approved original budgets" value={<MoneyTotals totals={d.original_budget} />} sub={budgetNote(d.original_budget)} />
+            )}
+            {d.pending_changes && (
+              <Stat
+                label={region() === "GB" ? "Variations awaiting decision" : "Pending change orders"}
+                value={d.pending_changes.length ? <span className="flex flex-col">{d.pending_changes.map((p) => <span key={p.currency} title={formatMoney(p.amount, p.currency)}>{formatMoneyCompact(p.amount, p.currency)}</span>)}</span> : formatMoneyCompact("0", "USD")}
+                sub={(() => { const n = d.pending_changes.reduce((a, p) => a + p.count, 0); const o = d.pending_changes.reduce((a, p) => a + p.overdue_count, 0); return `${n} submitted${o ? ` · ${o} overdue` : ""}`; })()}
+              />
             )}
             {d.committed_cost && (
               <Stat label="Committed cost" value={<MoneyTotals totals={d.committed_cost} />} sub="Executed subcontracts and purchase orders" />

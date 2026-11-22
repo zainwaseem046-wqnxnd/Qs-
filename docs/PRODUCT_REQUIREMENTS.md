@@ -144,6 +144,18 @@ summarised in §6.
 | CS-1 | Budget vs committed by cost code | Budget, committed, uncommitted, pending, contract value; over-commitment warnings | ✅ tested (API + e2e) |
 | DB-2 | Dashboard committed cost | Executed commitments on live projects by currency | ✅ tested |
 
+## 5d. Phase 2.3 requirements (Change orders / variations) — delivered
+
+| ID | Requirement | Acceptance criteria | Status |
+|---|---|---|---|
+| CO-1 | Raise changes against signed contracts and subcontracts | Only executed targets; country/contract terminology and numbering (CO/SCO, VAR/SV, CE/SCE) | ✅ tested |
+| CO-2 | Pricing | Additions and omissions; lump sum or measured (server-calculated); per-line budget adjustment on client-side changes | ✅ tested |
+| CO-3 | Workflow | Draft ⇄ submitted → approved / rejected (reason required); withdraw; content locked when submitted; decisions final (DB triggers) | ✅ tested incl. SQL-level freeze |
+| CO-4 | Notice dates | Notified and response-due dates; overdue flags in lists, detail and dashboard | ✅ tested |
+| CO-5 | Revised figures | Revised contract sum, revised commitment, revised budget derived from approved changes; originals untouched | ✅ tested (API + e2e) |
+| CO-6 | Separation of rights | Project managers raise and submit; approval needs change_orders.approve | ✅ tested |
+| DB-3 | Dashboard | Pending client changes awaiting decision, with overdue count | ✅ tested |
+
 ## 6. Later phases (summary)
 
 * **Phase 2 — Commercial core:** cost codes (customer-licensed classifications), estimating with full line

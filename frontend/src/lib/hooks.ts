@@ -81,6 +81,9 @@ export const P = {
   COMMITMENTS_VIEW: "commitments.view",
   COMMITMENTS_EDIT: "commitments.edit",
   COMMITMENTS_EXECUTE: "commitments.execute",
+  CHANGES_VIEW: "change_orders.view",
+  CHANGES_EDIT: "change_orders.edit",
+  CHANGES_APPROVE: "change_orders.approve",
 } as const;
 
 /** Format a non-money decimal string (quantity, rate) without float conversion: trims trailing zeros. */

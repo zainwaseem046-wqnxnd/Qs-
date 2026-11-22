@@ -33,13 +33,16 @@ Priority: P0 (blocks next phase) · P1 (this phase) · P2 (soon) · P3 (later). 
 | C-2c | Line reordering and bulk edit | P2 |
 | C-3a | Budget transfers and revised budget | P0 |
 | C-4 | ~~Prime contracts and commitments~~ — done (2.2) | ✅ |
+| C-5 | ~~Change orders / variations / compensation events~~ — done (2.3) | ✅ |
+| C-5a | Change events: one potential change fanning out to client CO + several subcontract COs | P1 |
+| C-5b | Attach instructions/quotes (Documents) to change orders | P1 |
+| C-5c | NEC programme of time-bar reminders (notifications) | P2 |
 | C-4a | Link executed contracts to signed documents (Documents module) | P1 |
 | C-4b | Multi-currency commitments with locked exchange rates | P2 |
 | C-4c | Contract obligations/notice register (feeds Phase 4 contract agent) | P1 |
 | C-10 | ~~UK delivery routes, JCT/NEC contract types~~ — done (2.1); remaining: VAT and CIS handling | P1 |
 | C-2 | ~~Estimating core~~ — done (2.1) | ✅ |
 | C-3 | ~~Original budget from approved estimate~~ — done (2.1) | ✅ |
-| C-5 | Change order lifecycle with posting to contract/budget/commitments | P0 |
 | C-6 | Immutable cost transaction ledger + CSV import | P0 |
 | C-7 | Forecasting engine (FFC, CTC, GP, margin, WIP, over/under billing) | P0 |
 | C-8 | Cost report + dashboard v2 with configurable widgets | P1 |

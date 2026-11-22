@@ -7,6 +7,7 @@ import { useParams } from "next/navigation";
 import { useState } from "react";
 import { ActivityList } from "@/components/domain/activity";
 import { BudgetPanel } from "@/components/domain/budget-panel";
+import { ChangeOrdersList, changesLabel } from "@/components/domain/change-orders-list";
 import { ContractsList } from "@/components/domain/contracts-list";
 import { CostSummary } from "@/components/domain/cost-summary";
 import { DocumentsPanel } from "@/components/domain/documents-panel";
@@ -418,6 +419,7 @@ export default function ProjectPage() {
           ...(can(P.ESTIMATES_VIEW) ? [{ value: "estimates", label: "Estimates" }] : []),
           ...(can(P.BUDGETS_VIEW) ? [{ value: "budget", label: "Budget" }] : []),
           ...(can(P.CONTRACTS_VIEW) || can(P.COMMITMENTS_VIEW) ? [{ value: "contracts", label: "Contracts" }] : []),
+          ...(can(P.CHANGES_VIEW) ? [{ value: "changes", label: changesLabel() }] : []),
           ...(can(P.BUDGETS_VIEW) || can(P.COMMITMENTS_VIEW) ? [{ value: "cost", label: "Cost summary" }] : []),
           { value: "documents", label: "Documents" },
           { value: "activity", label: "Activity" },
@@ -458,6 +460,7 @@ export default function ProjectPage() {
               {can(P.COMMITMENTS_VIEW) && <Card><CardHeader title="Subcontracts & purchase orders" description="Committed cost" /><ContractsList kind="commitments" projectId={project.id} canCreate={!project.archived_at} /></Card>}
             </div>
           </TabPanel>
+          <TabPanel value="changes"><Card><ChangeOrdersList projectId={project.id} canCreate={!project.archived_at} /></Card></TabPanel>
           <TabPanel value="cost"><CostSummary project={project} /></TabPanel>
           <TabPanel value="documents"><Card><DocumentsPanel projectId={project.id} canUpload={!project.archived_at} /></Card></TabPanel>
           <TabPanel value="activity"><Activity project={project} /></TabPanel>

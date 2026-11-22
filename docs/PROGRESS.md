@@ -25,9 +25,10 @@
 | 2.1 | UK procurement routes, JCT/NEC contracts, UK roles | ✅ Done | `test_regions_email.py` |
 | 2.2 | Prime contracts, subcontracts and POs; execute/close/void with DB lock | ✅ Done | `test_contracts.py`, e2e `contracts.spec.ts` |
 | 2.2 | Budget vs committed by cost code; dashboard committed cost | ✅ Done | `test_contracts.py` |
-| 2 | Remaining Phase 2: change orders, cost ledger, forecasting, reporting | ⏳ Next | see BACKLOG.md |
+| 2.3 | Change orders / variations / compensation events; derived revised sums; overdue tracking | ✅ Done | `test_change_orders.py`, e2e `change-orders.spec.ts` |
+| 2 | Remaining Phase 2: cost ledger (actuals), forecasting, reporting | ⏳ Next | see BACKLOG.md |
 
-## Latest test results (milestone 2.2)
-* Backend: 130 passed (pytest, PostgreSQL 16, runtime role `qs_app` with RLS).
+## Latest test results (milestone 2.3)
+* Backend: 137 passed (pytest, PostgreSQL 16, runtime role `qs_app` with RLS).
 * Frontend: TypeScript strict — no errors; Vitest 23 passed; production build succeeded.
-* E2E: 8 passed (Chromium desktop + Pixel 7 emulation), stable across consecutive runs.
+* E2E: 9 passed (Chromium desktop + Pixel 7 emulation), stable across consecutive runs.

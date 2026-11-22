@@ -45,7 +45,8 @@ test("subcontract: create → measured line → execute (locked) → cost summar
   await page.getByRole("dialog").getByRole("button", { name: "Execute" }).click();
   await expect(page.getByText("Terms and lines are locked")).toBeVisible();
   await expect(page.getByRole("button", { name: "Add line" })).toHaveCount(0);
-  await expect(page.getByText("Original commitment value, fixed at execution")).toBeVisible();
+  await expect(page.getByText("Original fixed at execution; revised = original + approved changes.")).toBeVisible();
+  await expect(page.getByRole("button", { name: "New change order" })).toBeVisible();
 
   await page.getByRole("link", { name: /26-200 Eastside Warehouse/ }).click();
   await page.getByRole("tab", { name: "Cost summary" }).click();

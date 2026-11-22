@@ -5098,7 +5098,7 @@
      "content": {
       "application/json": {
        "schema": {
-        "$ref": "#/components/schemas/LineIn"
+        "$ref": "#/components/schemas/app__domains__estimating__schemas__LineIn"
        }
       }
      }
@@ -5186,7 +5186,7 @@
      "content": {
       "application/json": {
        "schema": {
-        "$ref": "#/components/schemas/LineIn"
+        "$ref": "#/components/schemas/app__domains__estimating__schemas__LineIn"
        }
       }
      }
@@ -7837,6 +7837,975 @@
     }
    }
   },
+  "/api/v1/change-orders/reference": {
+   "get": {
+    "tags": [
+     "change orders"
+    ],
+    "summary": "Reference",
+    "operationId": "reference_api_v1_change_orders_reference_get",
+    "parameters": [
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "additionalProperties": {
+          "type": "object",
+          "additionalProperties": {
+           "type": "string"
+          }
+         },
+         "title": "Response Reference Api V1 Change Orders Reference Get"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/change-orders": {
+   "get": {
+    "tags": [
+     "change orders"
+    ],
+    "summary": "List Change Orders",
+    "operationId": "list_change_orders_api_v1_change_orders_get",
+    "parameters": [
+     {
+      "name": "project_id",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string",
+         "format": "uuid"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Project Id"
+      }
+     },
+     {
+      "name": "contract_id",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string",
+         "format": "uuid"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Contract Id"
+      }
+     },
+     {
+      "name": "commitment_id",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string",
+         "format": "uuid"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Commitment Id"
+      }
+     },
+     {
+      "name": "status",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Status"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "array",
+         "items": {
+          "$ref": "#/components/schemas/ChangeOrderListItem"
+         },
+         "title": "Response List Change Orders Api V1 Change Orders Get"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   },
+   "post": {
+    "tags": [
+     "change orders"
+    ],
+    "summary": "Create",
+    "operationId": "create_api_v1_change_orders_post",
+    "parameters": [
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/ChangeOrderCreate"
+       }
+      }
+     }
+    },
+    "responses": {
+     "201": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ChangeOrderOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/change-orders/{co_id}": {
+   "get": {
+    "tags": [
+     "change orders"
+    ],
+    "summary": "Get",
+    "operationId": "get_api_v1_change_orders__co_id__get",
+    "parameters": [
+     {
+      "name": "co_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Co Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ChangeOrderOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   },
+   "patch": {
+    "tags": [
+     "change orders"
+    ],
+    "summary": "Update",
+    "operationId": "update_api_v1_change_orders__co_id__patch",
+    "parameters": [
+     {
+      "name": "co_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Co Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/ChangeOrderUpdate"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ChangeOrderOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   },
+   "delete": {
+    "tags": [
+     "change orders"
+    ],
+    "summary": "Delete",
+    "operationId": "delete_api_v1_change_orders__co_id__delete",
+    "parameters": [
+     {
+      "name": "co_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Co Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "responses": {
+     "204": {
+      "description": "Successful Response"
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/change-orders/{co_id}/lines": {
+   "post": {
+    "tags": [
+     "change orders"
+    ],
+    "summary": "Add Line",
+    "operationId": "add_line_api_v1_change_orders__co_id__lines_post",
+    "parameters": [
+     {
+      "name": "co_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Co Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/app__domains__change_orders__schemas__LineIn"
+       }
+      }
+     }
+    },
+    "responses": {
+     "201": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ChangeOrderOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/change-orders/{co_id}/lines/{line_id}": {
+   "put": {
+    "tags": [
+     "change orders"
+    ],
+    "summary": "Update Line",
+    "operationId": "update_line_api_v1_change_orders__co_id__lines__line_id__put",
+    "parameters": [
+     {
+      "name": "co_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Co Id"
+      }
+     },
+     {
+      "name": "line_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Line Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/app__domains__change_orders__schemas__LineIn"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ChangeOrderOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   },
+   "delete": {
+    "tags": [
+     "change orders"
+    ],
+    "summary": "Delete Line",
+    "operationId": "delete_line_api_v1_change_orders__co_id__lines__line_id__delete",
+    "parameters": [
+     {
+      "name": "co_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Co Id"
+      }
+     },
+     {
+      "name": "line_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Line Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ChangeOrderOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/change-orders/{co_id}/submit": {
+   "post": {
+    "tags": [
+     "change orders"
+    ],
+    "summary": "Change Order Submit",
+    "operationId": "change_order_submit_api_v1_change_orders__co_id__submit_post",
+    "parameters": [
+     {
+      "name": "co_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Co Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/VersionIn"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ChangeOrderOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/change-orders/{co_id}/return-to-draft": {
+   "post": {
+    "tags": [
+     "change orders"
+    ],
+    "summary": "Change Order Return To Draft",
+    "operationId": "change_order_return_to_draft_api_v1_change_orders__co_id__return_to_draft_post",
+    "parameters": [
+     {
+      "name": "co_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Co Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/VersionIn"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ChangeOrderOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/change-orders/{co_id}/withdraw": {
+   "post": {
+    "tags": [
+     "change orders"
+    ],
+    "summary": "Change Order Withdraw",
+    "operationId": "change_order_withdraw_api_v1_change_orders__co_id__withdraw_post",
+    "parameters": [
+     {
+      "name": "co_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Co Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/VersionIn"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ChangeOrderOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/change-orders/{co_id}/approve": {
+   "post": {
+    "tags": [
+     "change orders"
+    ],
+    "summary": "Change Order Approve",
+    "operationId": "change_order_approve_api_v1_change_orders__co_id__approve_post",
+    "parameters": [
+     {
+      "name": "co_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Co Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/DecisionIn"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ChangeOrderOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/change-orders/{co_id}/reject": {
+   "post": {
+    "tags": [
+     "change orders"
+    ],
+    "summary": "Change Order Reject",
+    "operationId": "change_order_reject_api_v1_change_orders__co_id__reject_post",
+    "parameters": [
+     {
+      "name": "co_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Co Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/DecisionIn"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ChangeOrderOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
   "/api/v1/health": {
    "get": {
     "tags": [
@@ -8609,6 +9578,519 @@
     ],
     "title": "BudgetOut"
    },
+   "ChangeOrderCreate": {
+    "properties": {
+     "title": {
+      "type": "string",
+      "maxLength": 200,
+      "minLength": 2,
+      "title": "Title"
+     },
+     "description": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 10000
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Description"
+     },
+     "reason": {
+      "type": "string",
+      "title": "Reason",
+      "default": "client_instruction"
+     },
+     "reference": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 80
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Reference"
+     },
+     "schedule_impact_days": {
+      "anyOf": [
+       {
+        "type": "integer",
+        "maximum": 3650.0,
+        "minimum": -3650.0
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Schedule Impact Days"
+     },
+     "notified_date": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "date"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Notified Date"
+     },
+     "response_due_date": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "date"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Response Due Date"
+     },
+     "target_type": {
+      "type": "string",
+      "enum": [
+       "contract",
+       "commitment"
+      ],
+      "title": "Target Type"
+     },
+     "target_id": {
+      "type": "string",
+      "format": "uuid",
+      "title": "Target Id"
+     },
+     "number": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 40,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._/\\-]*$"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Number"
+     }
+    },
+    "additionalProperties": false,
+    "type": "object",
+    "required": [
+     "title",
+     "target_type",
+     "target_id"
+    ],
+    "title": "ChangeOrderCreate"
+   },
+   "ChangeOrderListItem": {
+    "properties": {
+     "id": {
+      "type": "string",
+      "format": "uuid",
+      "title": "Id"
+     },
+     "project_id": {
+      "type": "string",
+      "format": "uuid",
+      "title": "Project Id"
+     },
+     "project_number": {
+      "type": "string",
+      "title": "Project Number"
+     },
+     "project_name": {
+      "type": "string",
+      "title": "Project Name"
+     },
+     "target": {
+      "$ref": "#/components/schemas/TargetRef"
+     },
+     "label": {
+      "type": "string",
+      "title": "Label"
+     },
+     "number": {
+      "type": "string",
+      "title": "Number"
+     },
+     "title": {
+      "type": "string",
+      "title": "Title"
+     },
+     "status": {
+      "type": "string",
+      "title": "Status"
+     },
+     "currency": {
+      "type": "string",
+      "title": "Currency"
+     },
+     "total": {
+      "type": "string",
+      "title": "Total"
+     },
+     "response_due_date": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "date"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Response Due Date"
+     },
+     "overdue": {
+      "type": "boolean",
+      "title": "Overdue"
+     },
+     "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Updated At"
+     }
+    },
+    "type": "object",
+    "required": [
+     "id",
+     "project_id",
+     "project_number",
+     "project_name",
+     "target",
+     "label",
+     "number",
+     "title",
+     "status",
+     "currency",
+     "total",
+     "response_due_date",
+     "overdue",
+     "updated_at"
+    ],
+    "title": "ChangeOrderListItem"
+   },
+   "ChangeOrderOut": {
+    "properties": {
+     "id": {
+      "type": "string",
+      "format": "uuid",
+      "title": "Id"
+     },
+     "project_id": {
+      "type": "string",
+      "format": "uuid",
+      "title": "Project Id"
+     },
+     "project_number": {
+      "type": "string",
+      "title": "Project Number"
+     },
+     "project_name": {
+      "type": "string",
+      "title": "Project Name"
+     },
+     "target": {
+      "$ref": "#/components/schemas/TargetRef"
+     },
+     "label": {
+      "type": "string",
+      "title": "Label"
+     },
+     "number": {
+      "type": "string",
+      "title": "Number"
+     },
+     "title": {
+      "type": "string",
+      "title": "Title"
+     },
+     "description": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Description"
+     },
+     "reason": {
+      "type": "string",
+      "title": "Reason"
+     },
+     "reference": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Reference"
+     },
+     "status": {
+      "type": "string",
+      "title": "Status"
+     },
+     "currency": {
+      "type": "string",
+      "title": "Currency"
+     },
+     "schedule_impact_days": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Schedule Impact Days"
+     },
+     "notified_date": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "date"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Notified Date"
+     },
+     "response_due_date": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "date"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Response Due Date"
+     },
+     "overdue": {
+      "type": "boolean",
+      "title": "Overdue"
+     },
+     "submitted_at": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "date-time"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Submitted At"
+     },
+     "decided_at": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "date-time"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Decided At"
+     },
+     "decision_notes": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Decision Notes"
+     },
+     "total": {
+      "type": "string",
+      "title": "Total"
+     },
+     "budget_total": {
+      "type": "string",
+      "title": "Budget Total"
+     },
+     "version": {
+      "type": "integer",
+      "title": "Version"
+     },
+     "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Created At"
+     },
+     "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Updated At"
+     },
+     "is_editable": {
+      "type": "boolean",
+      "title": "Is Editable"
+     },
+     "can_approve": {
+      "type": "boolean",
+      "title": "Can Approve"
+     },
+     "lines": {
+      "items": {
+       "$ref": "#/components/schemas/app__domains__change_orders__schemas__LineOut"
+      },
+      "type": "array",
+      "title": "Lines"
+     }
+    },
+    "type": "object",
+    "required": [
+     "id",
+     "project_id",
+     "project_number",
+     "project_name",
+     "target",
+     "label",
+     "number",
+     "title",
+     "description",
+     "reason",
+     "reference",
+     "status",
+     "currency",
+     "schedule_impact_days",
+     "notified_date",
+     "response_due_date",
+     "overdue",
+     "submitted_at",
+     "decided_at",
+     "decision_notes",
+     "total",
+     "budget_total",
+     "version",
+     "created_at",
+     "updated_at",
+     "is_editable",
+     "can_approve",
+     "lines"
+    ],
+    "title": "ChangeOrderOut"
+   },
+   "ChangeOrderUpdate": {
+    "properties": {
+     "title": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 200,
+        "minLength": 2
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Title"
+     },
+     "description": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 10000
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Description"
+     },
+     "reason": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Reason"
+     },
+     "reference": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 80
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Reference"
+     },
+     "schedule_impact_days": {
+      "anyOf": [
+       {
+        "type": "integer",
+        "maximum": 3650.0,
+        "minimum": -3650.0
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Schedule Impact Days"
+     },
+     "notified_date": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "date"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Notified Date"
+     },
+     "response_due_date": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "date"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Response Due Date"
+     },
+     "version": {
+      "type": "integer",
+      "minimum": 1.0,
+      "title": "Version"
+     }
+    },
+    "additionalProperties": false,
+    "type": "object",
+    "required": [
+     "version"
+    ],
+    "title": "ChangeOrderUpdate"
+   },
    "ChangePasswordRequest": {
     "properties": {
      "current_password": {
@@ -9036,6 +10518,25 @@
       "type": "string",
       "title": "Current Total"
      },
+     "approved_changes": {
+      "type": "string",
+      "title": "Approved Changes"
+     },
+     "pending_changes": {
+      "type": "string",
+      "title": "Pending Changes"
+     },
+     "revised_sum": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Revised Sum"
+     },
      "executed_date": {
       "anyOf": [
        {
@@ -9140,6 +10641,9 @@
      "scope_summary",
      "original_sum",
      "current_total",
+     "approved_changes",
+     "pending_changes",
+     "revised_sum",
      "executed_date",
      "executed_at",
      "closed_at",
@@ -10327,6 +11831,25 @@
       "type": "string",
       "title": "Current Total"
      },
+     "approved_changes": {
+      "type": "string",
+      "title": "Approved Changes"
+     },
+     "pending_changes": {
+      "type": "string",
+      "title": "Pending Changes"
+     },
+     "revised_sum": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Revised Sum"
+     },
      "executed_date": {
       "anyOf": [
        {
@@ -10482,6 +12005,9 @@
      "scope_summary",
      "original_sum",
      "current_total",
+     "approved_changes",
+     "pending_changes",
+     "revised_sum",
      "executed_date",
      "executed_at",
      "closed_at",
@@ -11238,6 +12764,20 @@
       ],
       "title": "Committed Cost"
      },
+     "pending_changes": {
+      "anyOf": [
+       {
+        "items": {
+         "$ref": "#/components/schemas/PendingChangesOut"
+        },
+        "type": "array"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Pending Changes"
+     },
      "upcoming_completions": {
       "items": {
        "$ref": "#/components/schemas/ProjectListItem"
@@ -11284,6 +12824,7 @@
      "pursuit_value",
      "original_budget",
      "committed_cost",
+     "pending_changes",
      "upcoming_completions",
      "recent_projects",
      "recent_activity",
@@ -11292,6 +12833,33 @@
      "unavailable_reason"
     ],
     "title": "DashboardOut"
+   },
+   "DecisionIn": {
+    "properties": {
+     "version": {
+      "type": "integer",
+      "minimum": 1.0,
+      "title": "Version"
+     },
+     "notes": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 5000
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Notes"
+     }
+    },
+    "additionalProperties": false,
+    "type": "object",
+    "required": [
+     "version"
+    ],
+    "title": "DecisionIn"
    },
    "DocumentDetailOut": {
     "properties": {
@@ -12274,183 +13842,6 @@
     ],
     "title": "LineFields"
    },
-   "LineIn": {
-    "properties": {
-     "quantity": {
-      "anyOf": [
-       {
-        "type": "number"
-       },
-       {
-        "type": "string"
-       }
-      ],
-      "title": "Quantity"
-     },
-     "labour_hours_per_unit": {
-      "anyOf": [
-       {
-        "type": "number"
-       },
-       {
-        "type": "string"
-       }
-      ],
-      "title": "Labour Hours Per Unit",
-      "default": "0"
-     },
-     "labour_rate": {
-      "anyOf": [
-       {
-        "type": "number"
-       },
-       {
-        "type": "string"
-       }
-      ],
-      "title": "Labour Rate",
-      "default": "0"
-     },
-     "material_rate": {
-      "anyOf": [
-       {
-        "type": "number"
-       },
-       {
-        "type": "string"
-       }
-      ],
-      "title": "Material Rate",
-      "default": "0"
-     },
-     "material_waste_percent": {
-      "anyOf": [
-       {
-        "type": "number"
-       },
-       {
-        "type": "string"
-       }
-      ],
-      "title": "Material Waste Percent",
-      "default": "0"
-     },
-     "equipment_rate": {
-      "anyOf": [
-       {
-        "type": "number"
-       },
-       {
-        "type": "string"
-       }
-      ],
-      "title": "Equipment Rate",
-      "default": "0"
-     },
-     "subcontract_rate": {
-      "anyOf": [
-       {
-        "type": "number"
-       },
-       {
-        "type": "string"
-       }
-      ],
-      "title": "Subcontract Rate",
-      "default": "0"
-     },
-     "other_rate": {
-      "anyOf": [
-       {
-        "type": "number"
-       },
-       {
-        "type": "string"
-       }
-      ],
-      "title": "Other Rate",
-      "default": "0"
-     },
-     "cost_code_id": {
-      "anyOf": [
-       {
-        "type": "string",
-        "format": "uuid"
-       },
-       {
-        "type": "null"
-       }
-      ],
-      "title": "Cost Code Id"
-     },
-     "line_type": {
-      "type": "string",
-      "enum": [
-       "item",
-       "allowance",
-       "provisional_sum",
-       "prime_cost_sum",
-       "daywork"
-      ],
-      "title": "Line Type",
-      "default": "item"
-     },
-     "inclusion": {
-      "type": "string",
-      "enum": [
-       "base",
-       "alternate",
-       "excluded"
-      ],
-      "title": "Inclusion",
-      "default": "base"
-     },
-     "alternate_label": {
-      "anyOf": [
-       {
-        "type": "string",
-        "maxLength": 80
-       },
-       {
-        "type": "null"
-       }
-      ],
-      "title": "Alternate Label"
-     },
-     "description": {
-      "type": "string",
-      "maxLength": 500,
-      "minLength": 1,
-      "title": "Description"
-     },
-     "unit": {
-      "type": "string",
-      "maxLength": 20,
-      "minLength": 1,
-      "title": "Unit"
-     },
-     "notes": {
-      "anyOf": [
-       {
-        "type": "string",
-        "maxLength": 5000
-       },
-       {
-        "type": "null"
-       }
-      ],
-      "title": "Notes"
-     }
-    },
-    "additionalProperties": false,
-    "type": "object",
-    "required": [
-     "quantity",
-     "description",
-     "unit"
-    ],
-    "title": "LineIn"
-   },
    "ListItem": {
     "properties": {
      "id": {
@@ -12524,6 +13915,17 @@
       ],
       "title": "Original Sum"
      },
+     "revised_sum": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Revised Sum"
+     },
      "executed_date": {
       "anyOf": [
        {
@@ -12555,6 +13957,7 @@
      "counterparty",
      "current_total",
      "original_sum",
+     "revised_sum",
      "executed_date",
      "updated_at"
     ],
@@ -13095,6 +14498,34 @@
      "password"
     ],
     "title": "PasswordConfirmRequest"
+   },
+   "PendingChangesOut": {
+    "properties": {
+     "currency": {
+      "type": "string",
+      "title": "Currency"
+     },
+     "amount": {
+      "type": "string",
+      "title": "Amount"
+     },
+     "count": {
+      "type": "integer",
+      "title": "Count"
+     },
+     "overdue_count": {
+      "type": "integer",
+      "title": "Overdue Count"
+     }
+    },
+    "type": "object",
+    "required": [
+     "currency",
+     "amount",
+     "count",
+     "overdue_count"
+    ],
+    "title": "PendingChangesOut"
    },
    "PermissionOut": {
     "properties": {
@@ -14486,6 +15917,14 @@
       "type": "string",
       "title": "Budget"
      },
+     "budget_changes": {
+      "type": "string",
+      "title": "Budget Changes"
+     },
+     "revised_budget": {
+      "type": "string",
+      "title": "Revised Budget"
+     },
      "committed": {
       "type": "string",
       "title": "Committed"
@@ -14509,12 +15948,64 @@
      "code",
      "title",
      "budget",
+     "budget_changes",
+     "revised_budget",
      "committed",
      "pending",
      "uncommitted",
      "contract_value"
     ],
     "title": "SummaryRow"
+   },
+   "TargetRef": {
+    "properties": {
+     "type": {
+      "type": "string",
+      "enum": [
+       "contract",
+       "commitment"
+      ],
+      "title": "Type"
+     },
+     "id": {
+      "type": "string",
+      "format": "uuid",
+      "title": "Id"
+     },
+     "number": {
+      "type": "string",
+      "title": "Number"
+     },
+     "title": {
+      "type": "string",
+      "title": "Title"
+     },
+     "counterparty": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Counterparty"
+     },
+     "contract_form": {
+      "type": "string",
+      "title": "Contract Form"
+     }
+    },
+    "type": "object",
+    "required": [
+     "type",
+     "id",
+     "number",
+     "title",
+     "counterparty",
+     "contract_form"
+    ],
+    "title": "TargetRef"
    },
    "TemplateOut": {
     "properties": {
@@ -14817,6 +16308,21 @@
      "type"
     ],
     "title": "ValidationError"
+   },
+   "VersionIn": {
+    "properties": {
+     "version": {
+      "type": "integer",
+      "minimum": 1.0,
+      "title": "Version"
+     }
+    },
+    "additionalProperties": false,
+    "type": "object",
+    "required": [
+     "version"
+    ],
+    "title": "VersionIn"
    },
    "VersionOut": {
     "properties": {
@@ -15199,6 +16705,190 @@
     ],
     "title": "VocabularyOut"
    },
+   "app__domains__change_orders__schemas__LineIn": {
+    "properties": {
+     "cost_code_id": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "uuid"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Cost Code Id"
+     },
+     "description": {
+      "type": "string",
+      "maxLength": 300,
+      "minLength": 1,
+      "title": "Description"
+     },
+     "quantity": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Quantity"
+     },
+     "unit": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 20
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Unit"
+     },
+     "unit_rate": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Unit Rate"
+     },
+     "amount": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Amount"
+     },
+     "budget_amount": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Budget Amount"
+     }
+    },
+    "additionalProperties": false,
+    "type": "object",
+    "required": [
+     "description"
+    ],
+    "title": "LineIn"
+   },
+   "app__domains__change_orders__schemas__LineOut": {
+    "properties": {
+     "id": {
+      "type": "string",
+      "format": "uuid",
+      "title": "Id"
+     },
+     "sequence": {
+      "type": "integer",
+      "title": "Sequence"
+     },
+     "cost_code": {
+      "anyOf": [
+       {
+        "$ref": "#/components/schemas/CostCodeRef"
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "description": {
+      "type": "string",
+      "title": "Description"
+     },
+     "quantity": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Quantity"
+     },
+     "unit": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Unit"
+     },
+     "unit_rate": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Unit Rate"
+     },
+     "amount": {
+      "type": "string",
+      "title": "Amount"
+     },
+     "budget_amount": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Budget Amount"
+     }
+    },
+    "type": "object",
+    "required": [
+     "id",
+     "sequence",
+     "cost_code",
+     "description",
+     "quantity",
+     "unit",
+     "unit_rate",
+     "amount",
+     "budget_amount"
+    ],
+    "title": "LineOut"
+   },
    "app__domains__contracts__schemas__LineOut": {
     "properties": {
      "id": {
@@ -15271,6 +16961,183 @@
      "amount"
     ],
     "title": "LineOut"
+   },
+   "app__domains__estimating__schemas__LineIn": {
+    "properties": {
+     "quantity": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "string"
+       }
+      ],
+      "title": "Quantity"
+     },
+     "labour_hours_per_unit": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "string"
+       }
+      ],
+      "title": "Labour Hours Per Unit",
+      "default": "0"
+     },
+     "labour_rate": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "string"
+       }
+      ],
+      "title": "Labour Rate",
+      "default": "0"
+     },
+     "material_rate": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "string"
+       }
+      ],
+      "title": "Material Rate",
+      "default": "0"
+     },
+     "material_waste_percent": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "string"
+       }
+      ],
+      "title": "Material Waste Percent",
+      "default": "0"
+     },
+     "equipment_rate": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "string"
+       }
+      ],
+      "title": "Equipment Rate",
+      "default": "0"
+     },
+     "subcontract_rate": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "string"
+       }
+      ],
+      "title": "Subcontract Rate",
+      "default": "0"
+     },
+     "other_rate": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "string"
+       }
+      ],
+      "title": "Other Rate",
+      "default": "0"
+     },
+     "cost_code_id": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "uuid"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Cost Code Id"
+     },
+     "line_type": {
+      "type": "string",
+      "enum": [
+       "item",
+       "allowance",
+       "provisional_sum",
+       "prime_cost_sum",
+       "daywork"
+      ],
+      "title": "Line Type",
+      "default": "item"
+     },
+     "inclusion": {
+      "type": "string",
+      "enum": [
+       "base",
+       "alternate",
+       "excluded"
+      ],
+      "title": "Inclusion",
+      "default": "base"
+     },
+     "alternate_label": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 80
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Alternate Label"
+     },
+     "description": {
+      "type": "string",
+      "maxLength": 500,
+      "minLength": 1,
+      "title": "Description"
+     },
+     "unit": {
+      "type": "string",
+      "maxLength": 20,
+      "minLength": 1,
+      "title": "Unit"
+     },
+     "notes": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 5000
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Notes"
+     }
+    },
+    "additionalProperties": false,
+    "type": "object",
+    "required": [
+     "quantity",
+     "description",
+     "unit"
+    ],
+    "title": "LineIn"
    },
    "app__domains__estimating__schemas__LineOut": {
     "properties": {

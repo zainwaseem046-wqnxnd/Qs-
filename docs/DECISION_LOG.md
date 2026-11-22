@@ -154,6 +154,17 @@ draft commitments; uncommitted = budget − committed (negative = over-committed
 of executed/closed prime contracts (revenue side, shown for reference). All amounts are in project currency;
 anything in another currency is excluded with a warning rather than converted.
 
+### ADR-026 Change orders revise figures by derivation, never by editing
+**Decision:** one change-order record targets exactly one executed prime contract (client side: revenue, with an
+optional per-line `budget_amount` cost adjustment) or one executed commitment (supply side: committed cost).
+Lifecycle draft ⇄ submitted → approved | rejected; draft/submitted → withdrawn. Content is editable only in draft
+(return-to-draft supports negotiation); decisions are final — enforced by database triggers. Signed contracts and
+the approved original budget are never modified: revised contract sum, revised commitment value and revised budget
+are always computed as original + approved changes, so every revised figure traces back to specific approvals.
+Approval snapshots the approved amount. Terminology and numbering follow the contract: CO/SCO (US), VAR/SV (JCT and
+other UK forms), CE/SCE (NEC4). Notified and response-due dates drive overdue flags (NEC time bars, US notice
+clauses). Omissions are negative amounts or negative quantities; measured lines round half-up away from zero.
+
 ### ADR-016 Dashboard never estimates unavailable metrics
 **Decision:** commercial metrics needing Phase 2 data are listed as unavailable with the reason, instead of
 being approximated from contract values.

@@ -19,6 +19,9 @@ import { formatDate, formatDecimal } from "@/lib/hooks";
 import { formatMoney, formatPercent, parseMoneyInput } from "@/lib/money";
 import { terms } from "@/lib/region";
 import type { Company, ContractKind, ContractLineItem, ContractRecord, CostCode, Page } from "@/lib/types";
+import { useAuth } from "@/lib/auth";
+import { P } from "@/lib/hooks";
+import { ChangeOrdersList } from "./change-orders-list";
 import { STATUS_TONES, useContractVocab } from "./contracts-list";
 
 const msg = (err: unknown) => (err instanceof ApiError ? err.message : "Something went wrong");
@@ -195,6 +198,7 @@ export function ContractDetail({ kind, id }: { kind: ContractKind; id: string })
   const vocab = useContractVocab().data;
   const t = terms();
   const isPrime = kind === "contracts";
+  const { can } = useAuth();
   const [lineOpen, setLineOpen] = useState(false);
   const [editingLine, setEditingLine] = useState<ContractLineItem | null>(null);
   const [termsOpen, setTermsOpen] = useState(false);
@@ -275,8 +279,20 @@ export function ContractDetail({ kind, id }: { kind: ContractKind; id: string })
           <Card>
             <CardHeader title="Value" actions={r.status !== "draft" && <Lock className="size-4 text-subtle" aria-label="Locked" />} />
             <CardBody>
-              <p className="num text-2xl font-semibold">{formatMoney(r.original_sum ?? r.current_total, c)}</p>
-              <p className="mt-1 text-xs text-subtle">{r.original_sum ? `Original ${isPrime ? "contract sum" : "commitment value"}, fixed at execution` : "Draft total — fixed when executed"}</p>
+              {r.original_sum ? (
+                <dl className="num space-y-1.5 text-sm">
+                  <div className="flex justify-between text-muted"><dt>Original {isPrime ? "contract sum" : "value"}</dt><dd>{formatMoney(r.original_sum, c)}</dd></div>
+                  <div className="flex justify-between text-muted"><dt>Approved changes</dt><dd>{formatMoney(r.approved_changes, c)}</dd></div>
+                  <div className="flex justify-between border-t border-border pt-2 text-lg font-semibold"><dt>Revised</dt><dd>{formatMoney(r.revised_sum, c)}</dd></div>
+                  {r.pending_changes !== "0.00" && <div className="flex justify-between text-xs text-subtle"><dt>Pending changes</dt><dd>{formatMoney(r.pending_changes, c)}</dd></div>}
+                  <p className="pt-1 text-xs font-sans text-subtle">Original fixed at execution; revised = original + approved changes.</p>
+                </dl>
+              ) : (
+                <>
+                  <p className="num text-2xl font-semibold">{formatMoney(r.current_total, c)}</p>
+                  <p className="mt-1 text-xs text-subtle">Draft total — fixed when executed</p>
+                </>
+              )}
             </CardBody>
           </Card>
           <Card>
@@ -300,6 +316,17 @@ export function ContractDetail({ kind, id }: { kind: ContractKind; id: string })
           </Card>
         </div>
       </div>
+      {(r.status === "executed" || r.status === "closed") && can(P.CHANGES_VIEW) && (
+        <Card className="mt-6">
+          <CardHeader title={terms().retainage === "Retention" ? "Variations" : "Change orders"} description="Approved changes revise the value above" />
+          <ChangeOrdersList
+            contractId={isPrime ? r.id : undefined}
+            commitmentId={isPrime ? undefined : r.id}
+            canCreate={r.status === "executed"}
+            target={{ type: isPrime ? "contract" : "commitment", id: r.id, label: `${r.number} ${r.title}` }}
+          />
+        </Card>
+      )}
       <LineDialog kind={kind} record={r} line={editingLine} open={lineOpen} onOpenChange={setLineOpen} codes={codes.data ?? []} onSaved={(x) => { apply(x); notify(editingLine ? "Line saved" : "Line added"); }} />
       <TermsDialog kind={kind} record={r} open={termsOpen} onOpenChange={setTermsOpen} onSaved={(x) => { apply(x); notify("Terms saved"); }} />
       <Dialog open={execOpen} onOpenChange={setExecOpen} title={`Execute ${r.number}`} description={`Records the signed ${isPrime ? "contract sum" : "commitment value"} of ${formatMoney(r.current_total, c)} and locks terms and lines.`}

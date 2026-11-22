@@ -28,6 +28,8 @@ export interface NavItem {
   href?: string;
   /** Roadmap phase for modules not yet delivered. Rendered as non-interactive labels. */
   phase?: number;
+  /** Label shown to UK organizations, where terminology differs. */
+  ukLabel?: string;
 }
 
 export const NAV: { section: string; items: NavItem[] }[] = [
@@ -54,7 +56,7 @@ export const NAV: { section: string; items: NavItem[] }[] = [
     items: [
       { label: "Contracts", icon: FileSignature, href: "/contracts" },
       { label: "Subcontracts & POs", icon: Briefcase, href: "/subcontracts" },
-      { label: "Change Orders", icon: GitPullRequestArrow, phase: 2 },
+      { label: "Change Orders", ukLabel: "Variations", icon: GitPullRequestArrow, href: "/change-orders" },
       { label: "Pay Applications", icon: Wallet, phase: 3 },
       { label: "Cost Management", icon: BarChart3, phase: 2 },
       { label: "Forecasting", icon: LineChart, phase: 2 },

@@ -32,7 +32,7 @@ cd backend && .venv/bin/python -c "import json; from app.main import create_app;
 | 401 | `not_authenticated`, `token_invalid`, `invalid_credentials`, `invalid_code`, `refresh_invalid`, `refresh_superseded`, `refresh_reused`, `mfa_token_invalid` |
 | 403 | `permission_denied`, `csrf_failed`, `tenant_required`, `tenant_forbidden`, `tenant_invalid`, `tenant_wrong_region` |
 | 404 | `not_found`, `invitation_invalid` |
-| 409 | `conflict`, `email_taken`, `duplicate_number`, `version_conflict`, `project_archived`, `version_locked`, `draft_exists`, `invalid_status`, `estimate_not_approved`, `budget_locked`, `budget_exists`, `cost_code_in_use`, `record_locked` |
+| 409 | `conflict`, `email_taken`, `duplicate_number`, `version_conflict`, `project_archived`, `version_locked`, `draft_exists`, `invalid_status`, `estimate_not_approved`, `budget_locked`, `budget_exists`, `cost_code_in_use`, `record_locked`, `change_locked`, `target_not_executed` |
 | 413 | `payload_too_large` |
 | 422 | `validation_failed`, `invalid_password`, `reset_token_invalid`, `file_type_not_allowed`, `file_content_mismatch`, `file_content_rejected`, `file_empty` |
 | 429 | `rate_limited` |
@@ -74,6 +74,20 @@ cd backend && .venv/bin/python -c "import json; from app.main import create_app;
 | budgets | `POST` | `/api/v1/projects/{project_id}/budgets` | Create Budget |
 | budgets | `POST` | `/api/v1/projects/{project_id}/budgets/from-estimate` | Create From Estimate |
 | budgets | `PUT` | `/api/v1/budgets/{budget_id}/lines/{line_id}` | Update Line |
+| change orders | `DELETE` | `/api/v1/change-orders/{co_id}` | Delete |
+| change orders | `DELETE` | `/api/v1/change-orders/{co_id}/lines/{line_id}` | Delete Line |
+| change orders | `GET` | `/api/v1/change-orders` | List Change Orders |
+| change orders | `GET` | `/api/v1/change-orders/reference` | Reference |
+| change orders | `GET` | `/api/v1/change-orders/{co_id}` | Get |
+| change orders | `PATCH` | `/api/v1/change-orders/{co_id}` | Update |
+| change orders | `POST` | `/api/v1/change-orders` | Create |
+| change orders | `POST` | `/api/v1/change-orders/{co_id}/approve` | Change Order Approve |
+| change orders | `POST` | `/api/v1/change-orders/{co_id}/lines` | Add Line |
+| change orders | `POST` | `/api/v1/change-orders/{co_id}/reject` | Change Order Reject |
+| change orders | `POST` | `/api/v1/change-orders/{co_id}/return-to-draft` | Change Order Return To Draft |
+| change orders | `POST` | `/api/v1/change-orders/{co_id}/submit` | Change Order Submit |
+| change orders | `POST` | `/api/v1/change-orders/{co_id}/withdraw` | Change Order Withdraw |
+| change orders | `PUT` | `/api/v1/change-orders/{co_id}/lines/{line_id}` | Update Line |
 | contracts | `DELETE` | `/api/v1/commitments/{record_id}` | Delete Commitments |
 | contracts | `DELETE` | `/api/v1/commitments/{record_id}/lines/{line_id}` | Delete Line Commitments |
 | contracts | `DELETE` | `/api/v1/contracts/{record_id}` | Delete Contracts |

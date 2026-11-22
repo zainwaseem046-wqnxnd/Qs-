@@ -6,6 +6,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState, type ReactNode } from "react";
 import { useAuth } from "@/lib/auth";
+import { region } from "@/lib/region";
 import { cn } from "@/lib/cn";
 import { NAV } from "./nav";
 import { ThemeToggle } from "./theme";
@@ -44,6 +45,7 @@ function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
                   );
                 }
                 const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
+                const text = region() === "GB" && item.ukLabel ? item.ukLabel : item.label;
                 return (
                   <li key={item.label}>
                     <Link
@@ -56,7 +58,7 @@ function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
                       )}
                     >
                       <Icon className="size-4 shrink-0" aria-hidden />
-                      <span className="truncate">{item.label}</span>
+                      <span className="truncate">{text}</span>
                     </Link>
                   </li>
                 );

@@ -1,6 +1,6 @@
 # Database Schema
 
-PostgreSQL 16. Migrations: `backend/alembic/versions`. Current head: **0004** (prime contracts and commitments).
+PostgreSQL 16. Migrations: `backend/alembic/versions`. Current head: **0005** (change orders / variations / compensation events).
 
 ## 1. Conventions
 
@@ -86,6 +86,8 @@ erDiagram
 | `contract_lines` | Contract sum analysis / schedule of values by cost code | tenant isolation; changes only while parent is draft |
 | `commitments` | Subcontracts and purchase orders: vendor, form, retention, terms, scope, exclusions, original value | tenant isolation; same freeze trigger |
 | `commitment_lines` | Lump sum or measured (quantity 19,4 × unit rate 19,6 → amount 19,2, server-calculated) | tenant isolation; changes only while parent is draft |
+| `change_orders` | Change against exactly one executed contract or commitment (CHECK); number, reason, reference, schedule impact, notified/response-due dates, decision, approved amount snapshot (rev. 0005) | tenant isolation; **trigger freezes content once submitted and everything once decided** |
+| `change_order_lines` | Signed amounts (additions/omissions), optional measured qty × rate, `budget_amount` for client-side changes | tenant isolation; changes only while parent is draft |
 | `audit_events` | Append-only audit log | read: current tenant; insert: current tenant or tenant-less security events; trigger blocks UPDATE/DELETE/TRUNCATE for every role |
 
 ### Database roles
@@ -117,6 +119,7 @@ tests that own it (ADR-008). Money columns follow the conventions above. All are
 | 2 | `assemblies`, `budget_transfers` | Reusable priced assemblies; budget revisions after approval |
 | 2 | `contract_clauses`, `contract_documents` | Clause/obligation register for customer-provided documents (AI-assisted in Phase 4) |
 | 2 | `change_orders`, `change_order_lines` | Lifecycle states: potential → pricing → submitted → approved/rejected; approved COs post to contract, budget and forecast |
+| 2 | `budget_transfers` | Moves between cost codes within the revised budget |
 | 2 | `cost_transactions` | **Immutable ledger** (actual/committed/accrual types) with reversal entries — never updated in place |
 | 2 | `forecasts`, `forecast_lines` | Snapshot per period; FFC = actual + cost to complete; no double counting rules documented with the engine |
 | 3 | `bid_packages`, `bid_invitations`, `bid_submissions`, `bid_submission_lines`, `bid_comparisons`, `purchase_orders` | Leveling normalises scope/exclusions per line |
@@ -132,4 +135,4 @@ tests that own it (ADR-008). Money columns follow the conventions above. All are
 * Security SQL for a revision lives in `alembic_helpers/<revision>_*.py` and is frozen once shipped.
 * Seed data (permissions, system roles) is frozen inside the migration that introduced it; a test asserts the
   database catalog equals `app/domains/tenancy/permissions.py`.
-* Revisions 0001–0004 are frozen once pushed; further changes require new revisions.
+* Revisions 0001–0005 are frozen once pushed; further changes require new revisions.

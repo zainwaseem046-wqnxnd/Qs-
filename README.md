@@ -9,8 +9,8 @@ recommends, while authorised people approve.
 
 > **Markets:** United States and United Kingdom (USD/GBP, imperial/metric, in-region hosting).
 >
-> **Status: Phase 1 complete; Phase 2 milestones 2.1 (cost codes, estimating, budgets) and 2.2 (contracts,
-> subcontracts, purchase orders) complete.** Identity, multi-tenancy with database-enforced isolation, RBAC,
+> **Status: Phase 1 complete; Phase 2 milestones 2.1 (cost codes, estimating, budgets), 2.2 (contracts,
+> subcontracts, purchase orders) and 2.3 (change orders / variations / compensation events) complete.** Identity, multi-tenancy with database-enforced isolation, RBAC,
 > MFA, projects, company directory, document management, audit trail, design system and the first executive
 > dashboard are built and tested. Commercial modules (estimating, budgets, commitments, change orders,
 > forecasting…) follow in Phase 2. See [`docs/PROGRESS.md`](docs/PROGRESS.md).
@@ -68,9 +68,9 @@ docker compose -f infra/docker-compose.yml up --build
 ## Tests
 
 ```bash
-cd backend  && .venv/bin/pytest -p no:warnings          # 130 tests: auth, RLS, RBAC, money, estimating, budgets, contracts…
+cd backend  && .venv/bin/pytest -p no:warnings          # 137 tests: auth, RLS, RBAC, money, estimating, budgets, contracts, changes…
 cd frontend && npm run typecheck && npm test              # 23 unit/component tests
-cd frontend && npx playwright test                        # 8 e2e tests (needs API on :8000 and web on :3000)
+cd frontend && npx playwright test                        # 9 e2e tests (needs API on :8000 and web on :3000)
 ```
 
 ## Documentation

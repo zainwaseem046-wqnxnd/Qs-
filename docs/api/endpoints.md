@@ -25,6 +25,20 @@
 | budgets | `POST` | `/api/v1/projects/{project_id}/budgets` | Create Budget |
 | budgets | `POST` | `/api/v1/projects/{project_id}/budgets/from-estimate` | Create From Estimate |
 | budgets | `PUT` | `/api/v1/budgets/{budget_id}/lines/{line_id}` | Update Line |
+| change orders | `DELETE` | `/api/v1/change-orders/{co_id}` | Delete |
+| change orders | `DELETE` | `/api/v1/change-orders/{co_id}/lines/{line_id}` | Delete Line |
+| change orders | `GET` | `/api/v1/change-orders` | List Change Orders |
+| change orders | `GET` | `/api/v1/change-orders/reference` | Reference |
+| change orders | `GET` | `/api/v1/change-orders/{co_id}` | Get |
+| change orders | `PATCH` | `/api/v1/change-orders/{co_id}` | Update |
+| change orders | `POST` | `/api/v1/change-orders` | Create |
+| change orders | `POST` | `/api/v1/change-orders/{co_id}/approve` | Change Order Approve |
+| change orders | `POST` | `/api/v1/change-orders/{co_id}/lines` | Add Line |
+| change orders | `POST` | `/api/v1/change-orders/{co_id}/reject` | Change Order Reject |
+| change orders | `POST` | `/api/v1/change-orders/{co_id}/return-to-draft` | Change Order Return To Draft |
+| change orders | `POST` | `/api/v1/change-orders/{co_id}/submit` | Change Order Submit |
+| change orders | `POST` | `/api/v1/change-orders/{co_id}/withdraw` | Change Order Withdraw |
+| change orders | `PUT` | `/api/v1/change-orders/{co_id}/lines/{line_id}` | Update Line |
 | contracts | `DELETE` | `/api/v1/commitments/{record_id}` | Delete Commitments |
 | contracts | `DELETE` | `/api/v1/commitments/{record_id}/lines/{line_id}` | Delete Line Commitments |
 | contracts | `DELETE` | `/api/v1/contracts/{record_id}` | Delete Contracts |
