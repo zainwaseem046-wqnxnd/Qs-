@@ -28,7 +28,7 @@ def test_dashboard_sums_are_exact_and_grouped_by_currency(owner) -> None:  # typ
     assert dash["pursuit_value"][0]["amount"] == "777.00"
     assert dash["total_projects"] == 9
     assert dash["by_status"]["active"] == 6
-    assert "Forecast gross margin" in dash["unavailable_metrics"]
+    assert "Cash flow" in dash["unavailable_metrics"]  # forecast figures are available since milestone 2.4
 
 
 def test_dashboard_respects_visibility_and_archive(owner) -> None:  # type: ignore[no-untyped-def]

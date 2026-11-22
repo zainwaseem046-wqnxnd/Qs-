@@ -484,7 +484,7 @@ def commercial_summary(db: Session, ctx: TenantContext, project: Project) -> dic
     if not (ctx.has(P.BUDGETS_VIEW) or ctx.has(P.COMMITMENTS_VIEW)):
         ctx.require(P.COMMITMENTS_VIEW)
     warnings: list[str] = []
-    columns = ("budget", "budget_changes", "committed", "pending", "contract_value")
+    columns = ("budget", "budget_changes", "committed", "pending", "contract_value", "cost_to_date")
     rows: dict[uuid.UUID | None, dict[str, Decimal]] = {}
 
     def add(code_id: uuid.UUID | None, column: str, amount: Decimal) -> None:
@@ -529,6 +529,12 @@ def commercial_summary(db: Session, ctx: TenantContext, project: Project) -> dic
                 add(code_id, "contract_value", amount)
             if budget_amount is not None and ctx.has(P.BUDGETS_VIEW):
                 add(code_id, "budget_changes", budget_amount)
+
+    if ctx.has(P.COSTS_VIEW):
+        from app.domains.cost_management.service import cost_to_date_by_code  # local import avoids a cycle
+
+        for code_id, amount in cost_to_date_by_code(db, project.id).items():
+            add(code_id, "cost_to_date", amount)
 
     codes = {c.id: c for c in db.scalars(select(CostCode).where(CostCode.id.in_([k for k in rows if k])))}
     out = []

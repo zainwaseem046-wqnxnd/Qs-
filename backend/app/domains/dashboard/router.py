@@ -1,11 +1,12 @@
 from __future__ import annotations
 
+from datetime import date
 from typing import Annotated
 
 from fastapi import APIRouter, Depends
 
 from app.api.deps import DB, TenantContext, require
-from app.core.money import MoneyAmount
+from app.core.money import DecimalOut, MoneyAmount
 from app.core.schemas import ApiModel
 from app.domains.audit.schemas import AuditEventOut, to_out
 from app.domains.dashboard import service
@@ -30,6 +31,18 @@ class PendingChangesOut(ApiModel):
     overdue_count: int
 
 
+class ForecastTotalsOut(ApiModel):
+    currency: str
+    revenue: MoneyAmount
+    cost_to_date: MoneyAmount
+    final_cost: MoneyAmount
+    gross_profit: MoneyAmount
+    margin_percent: DecimalOut | None
+    projects_forecast: int
+    projects_without_forecast: int
+    latest_period: date | None
+
+
 class DashboardOut(ApiModel):
     total_projects: int
     by_status: dict[str, int]
@@ -39,6 +52,7 @@ class DashboardOut(ApiModel):
     original_budget: list[CurrencyTotalOut] | None
     committed_cost: list[CurrencyTotalOut] | None
     pending_changes: list[PendingChangesOut] | None
+    forecast: list[ForecastTotalsOut] | None
     upcoming_completions: list[ProjectListItem]
     recent_projects: list[ProjectListItem]
     recent_activity: list[AuditEventOut]
@@ -62,6 +76,9 @@ def summary(db: DB, ctx: Annotated[TenantContext, Depends(require(P.DASHBOARD_VI
         pursuit_value=totals(data.pursuit_value),
         original_budget=totals(data.original_budget),
         committed_cost=totals(data.committed_cost),
+        forecast=None
+        if data.forecast is None
+        else [ForecastTotalsOut.model_validate(f.__dict__) for f in data.forecast],
         pending_changes=None
         if data.pending_changes is None
         else [PendingChangesOut.model_validate(p.__dict__) for p in data.pending_changes],
@@ -71,7 +88,7 @@ def summary(db: DB, ctx: Annotated[TenantContext, Depends(require(P.DASHBOARD_VI
         financials_visible=data.financials_visible,
         unavailable_metrics=data.unavailable_metrics,
         unavailable_reason=(
-            "These metrics are calculated from cost transactions and payment applications, which are delivered "
-            "in later milestones. They are not estimated."
+            "These metrics are calculated from payment applications, which are delivered in the next milestone. "
+            "They are not estimated."
         ),
     )

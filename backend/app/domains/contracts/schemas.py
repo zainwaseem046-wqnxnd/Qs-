@@ -208,6 +208,7 @@ class SummaryRow(ApiModel):
     pending: DecimalOut
     uncommitted: DecimalOut
     contract_value: DecimalOut
+    cost_to_date: DecimalOut
 
 
 class CommercialSummary(ApiModel):

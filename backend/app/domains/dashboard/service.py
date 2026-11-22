@@ -18,10 +18,12 @@ from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
 from app.api.deps import TenantContext
+from app.core.money import margin_percent
 from app.domains.audit.models import AuditEvent
 from app.domains.budgets.models import Budget
 from app.domains.change_orders.models import ChangeOrder, ChangeOrderLine
 from app.domains.contracts.models import Commitment, CommitmentLine, Contract
+from app.domains.cost_management.models import Forecast
 from app.domains.projects.constants import LIVE_STATUSES
 from app.domains.projects.models import Project
 from app.domains.projects.service import visible_project_ids
@@ -46,6 +48,7 @@ class DashboardData:
     original_budget: list[CurrencyTotal] | None
     committed_cost: list[CurrencyTotal] | None
     pending_changes: list[PendingChanges] | None
+    forecast: list[ForecastTotals] | None
     upcoming_completions: list[Project]
     recent_projects: list[Project]
     recent_events: list[AuditEvent]
@@ -61,10 +64,20 @@ class PendingChanges:
     overdue_count: int
 
 
-UNAVAILABLE_PHASE_2 = [ "Actual cost", "Forecast final cost",
-    "Forecast revenue", "Forecast gross profit", "Forecast gross margin",
-    "Outstanding payments", "Cash flow",
-]
+@dataclass
+class ForecastTotals:
+    currency: str
+    revenue: Decimal
+    cost_to_date: Decimal
+    final_cost: Decimal
+    gross_profit: Decimal
+    margin_percent: Decimal | None
+    projects_forecast: int
+    projects_without_forecast: int
+    latest_period: date | None
+
+
+UNAVAILABLE_PHASE_2 = ["Outstanding payments", "Cash flow"]
 
 
 def _scope(ctx: TenantContext):  # type: ignore[no-untyped-def]
@@ -164,6 +177,40 @@ def _pending_changes(db: Session, ctx: TenantContext) -> list[PendingChanges]:
     return [PendingChanges(c, Decimal(a), int(n), int(o)) for c, a, n, o in rows]
 
 
+def _forecast_totals(db: Session, ctx: TenantContext) -> list[ForecastTotals]:
+    """Latest APPROVED forecast of each live, visible project, by currency. Never estimated from drafts."""
+    latest = (
+        select(Forecast)
+        .where(Forecast.status == "approved")
+        .order_by(Forecast.project_id, Forecast.period.desc())
+        .distinct(Forecast.project_id)
+        .subquery()
+    )
+    rows = db.execute(
+        select(
+            Project.currency,
+            func.coalesce(func.sum(latest.c.revenue), 0),
+            func.coalesce(func.sum(latest.c.cost_to_date), 0),
+            func.coalesce(func.sum(latest.c.final_cost), 0),
+            func.coalesce(func.sum(latest.c.gross_profit), 0),
+            func.count(latest.c.id),
+            func.count().filter(latest.c.id.is_(None)),
+            func.max(latest.c.period),
+        )
+        .select_from(Project)
+        .outerjoin(latest, latest.c.project_id == Project.id)
+        .where(*_scope(ctx), Project.status.in_(LIVE_STATUSES))
+        .group_by(Project.currency)
+        .order_by(Project.currency)
+    ).all()
+    out = []
+    for c, rev, ctd, ffc, gp, n, missing, period in rows:
+        rev, gp = Decimal(rev), Decimal(gp)
+        out.append(ForecastTotals(c, rev, Decimal(ctd), Decimal(ffc), gp, margin_percent(gp, rev) if n else None,
+                                  int(n), int(missing), period))
+    return out
+
+
 def build(db: Session, ctx: TenantContext) -> DashboardData:
     scope = _scope(ctx)
     by_status = dict(db.execute(select(Project.status, func.count()).where(*scope).group_by(Project.status)).all())
@@ -196,6 +243,7 @@ def build(db: Session, ctx: TenantContext) -> DashboardData:
         original_budget=_budget_totals(db, ctx) if ctx.has(P.BUDGETS_VIEW) else None,
         committed_cost=_committed_totals(db, ctx) if ctx.has(P.COMMITMENTS_VIEW) else None,
         pending_changes=_pending_changes(db, ctx) if ctx.has(P.CHANGES_VIEW) and ctx.has(P.CONTRACTS_VIEW) else None,
+        forecast=_forecast_totals(db, ctx) if ctx.has(P.FORECASTS_VIEW) and financials else None,
         upcoming_completions=list(upcoming),
         recent_projects=list(recent),
         recent_events=list(events),

@@ -6,6 +6,7 @@ from app.domains.change_orders.models import ChangeOrder, ChangeOrderLine
 from app.domains.companies.models import Address, Company, Contact
 from app.domains.contracts.models import Commitment, CommitmentLine, Contract, ContractLine
 from app.domains.cost_codes.models import CostCode, CostCodeSet
+from app.domains.cost_management.models import CostImportBatch, CostTransaction, Forecast, ForecastLine
 from app.domains.documents.models import Document, DocumentVersion
 from app.domains.estimating.models import Estimate, EstimateLine, EstimateMarkup, EstimateVersion
 from app.domains.identity.models import AuthSession, PasswordResetToken, User
@@ -28,12 +29,16 @@ __all__ = [
     "ContractLine",
     "CostCode",
     "CostCodeSet",
+    "CostImportBatch",
+    "CostTransaction",
     "Document",
     "DocumentVersion",
     "Estimate",
     "EstimateLine",
     "EstimateMarkup",
     "EstimateVersion",
+    "Forecast",
+    "ForecastLine",
     "Invitation",
     "PasswordResetToken",
     "Permission",
