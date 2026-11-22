@@ -470,19 +470,25 @@ COMMITTED_STATUSES = ("executed", "closed")
 def commercial_summary(db: Session, ctx: TenantContext, project: Project) -> dict[str, Any]:
     """Budget vs committed cost by cost code (project currency).
 
-    budget      = approved original budget lines
-    committed   = lines of executed/closed commitments
-    pending     = lines of draft commitments (not yet committed)
-    uncommitted = budget - committed (negative = over-committed)
-    contract_value = lines of executed/closed prime contracts (revenue side, for reference)
+    budget          = approved original budget lines
+    budget_changes  = budget_amount on lines of APPROVED client-side change orders
+    revised_budget  = budget + budget_changes
+    committed       = lines of executed/closed commitments + APPROVED commitment change orders
+    pending         = lines of draft commitments + DRAFT/SUBMITTED commitment change orders
+    uncommitted     = revised_budget - committed (negative = over-committed)
+    contract_value  = executed/closed prime contract lines + APPROVED client-side change orders (revenue)
+    Rejected and withdrawn change orders are ignored.
     """
+    from app.domains.change_orders.service import approved_lines_by_code  # local import avoids a cycle
+
     if not (ctx.has(P.BUDGETS_VIEW) or ctx.has(P.COMMITMENTS_VIEW)):
         ctx.require(P.COMMITMENTS_VIEW)
     warnings: list[str] = []
+    columns = ("budget", "budget_changes", "committed", "pending", "contract_value")
     rows: dict[uuid.UUID | None, dict[str, Decimal]] = {}
 
     def add(code_id: uuid.UUID | None, column: str, amount: Decimal) -> None:
-        row = rows.setdefault(code_id, dict.fromkeys(("budget", "committed", "pending", "contract_value"), ZERO))
+        row = rows.setdefault(code_id, dict.fromkeys(columns, ZERO))
         row[column] += amount
 
     budget = db.scalar(select(Budget).where(Budget.project_id == project.id, Budget.status == "approved"))
@@ -504,6 +510,9 @@ def commercial_summary(db: Session, ctx: TenantContext, project: Project) -> dic
         )
         for status, code_id, amount in db.execute(stmt):
             add(code_id, "committed" if status in COMMITTED_STATUSES else "pending", amount)
+        if ctx.has(P.CHANGES_VIEW):
+            for code_id, amount, _b, status in approved_lines_by_code(db, project.id, "commitment"):
+                add(code_id, "committed" if status == "approved" else "pending", amount)
     if ctx.has(P.CONTRACTS_VIEW):
         stmt = (
             select(ContractLine.cost_code_id, ContractLine.amount)
@@ -512,25 +521,33 @@ def commercial_summary(db: Session, ctx: TenantContext, project: Project) -> dic
         )
         for code_id, amount in db.execute(stmt):
             add(code_id, "contract_value", amount)
+    if ctx.has(P.CHANGES_VIEW):
+        for code_id, amount, budget_amount, status in approved_lines_by_code(db, project.id, "contract"):
+            if status != "approved":
+                continue
+            if ctx.has(P.CONTRACTS_VIEW):
+                add(code_id, "contract_value", amount)
+            if budget_amount is not None and ctx.has(P.BUDGETS_VIEW):
+                add(code_id, "budget_changes", budget_amount)
 
     codes = {c.id: c for c in db.scalars(select(CostCode).where(CostCode.id.in_([k for k in rows if k])))}
     out = []
     for code_id, r in rows.items():
         code = codes.get(code_id) if code_id else None
+        revised = r["budget"] + r["budget_changes"]
         out.append(
             {
                 "cost_code_id": code_id,
                 "code": code.code if code else None,
                 "title": code.title if code else "Unassigned (no cost code)",
                 **r,
-                "uncommitted": r["budget"] - r["committed"],
+                "revised_budget": revised,
+                "uncommitted": revised - r["committed"],
             }
         )
     out.sort(key=lambda r: (r["code"] is None, r["code"] or ""))
-    totals = {
-        k: sum((r[k] for r in out), ZERO) for k in ("budget", "committed", "pending", "contract_value", "uncommitted")
-    }
-    over = [r["code"] or r["title"] for r in out if r["budget"] > 0 and r["uncommitted"] < 0]
+    totals = {k: sum((r[k] for r in out), ZERO) for k in (*columns, "revised_budget", "uncommitted")}
+    over = [r["code"] or r["title"] for r in out if r["revised_budget"] > 0 and r["uncommitted"] < 0]
     if over:
         warnings.append(f"Over-committed against budget: {', '.join(over)}")
     return {

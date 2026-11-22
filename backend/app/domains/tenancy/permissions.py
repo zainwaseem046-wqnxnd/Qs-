@@ -40,6 +40,9 @@ class P(StrEnum):
     COMMITMENTS_VIEW = "commitments.view"
     COMMITMENTS_EDIT = "commitments.edit"
     COMMITMENTS_EXECUTE = "commitments.execute"
+    CHANGES_VIEW = "change_orders.view"
+    CHANGES_EDIT = "change_orders.edit"
+    CHANGES_APPROVE = "change_orders.approve"
 
 
 PERMISSION_CATALOG: dict[str, tuple[str, str]] = {
@@ -73,6 +76,9 @@ PERMISSION_CATALOG: dict[str, tuple[str, str]] = {
     P.COMMITMENTS_VIEW: ("Contracts", "View subcontracts and purchase orders"),
     P.COMMITMENTS_EDIT: ("Contracts", "Create and edit draft subcontracts and purchase orders"),
     P.COMMITMENTS_EXECUTE: ("Contracts", "Execute, close and void subcontracts and purchase orders"),
+    P.CHANGES_VIEW: ("Change orders", "View change orders / variations"),
+    P.CHANGES_EDIT: ("Change orders", "Create, price and submit change orders / variations"),
+    P.CHANGES_APPROVE: ("Change orders", "Approve or reject change orders / variations"),
 }
 
 ALL = set(PERMISSION_CATALOG)
@@ -94,7 +100,7 @@ SYSTEM_ROLES: dict[str, dict[str, object]] = {
         "permissions": {
             P.DASHBOARD_VIEW, P.PROJECTS_VIEW_ALL, P.PROJECTS_FINANCIALS_VIEW, P.COMPANIES_VIEW,
             P.DOCUMENTS_VIEW, P.MEMBERS_VIEW, P.AUDIT_VIEW, P.ESTIMATES_VIEW, P.BUDGETS_VIEW,
-            P.CONTRACTS_VIEW, P.COMMITMENTS_VIEW,
+            P.CONTRACTS_VIEW, P.COMMITMENTS_VIEW, P.CHANGES_VIEW,
         },
     },
     "commercial_manager": {
@@ -106,7 +112,7 @@ SYSTEM_ROLES: dict[str, dict[str, object]] = {
             P.DOCUMENTS_VIEW, P.DOCUMENTS_UPLOAD, P.MEMBERS_VIEW, P.COST_CODES_MANAGE, P.ESTIMATES_VIEW,
             P.ESTIMATES_EDIT, P.ESTIMATES_APPROVE, P.BUDGETS_VIEW, P.BUDGETS_EDIT, P.BUDGETS_APPROVE,
             P.CONTRACTS_VIEW, P.CONTRACTS_EDIT, P.CONTRACTS_EXECUTE, P.COMMITMENTS_VIEW, P.COMMITMENTS_EDIT,
-            P.COMMITMENTS_EXECUTE,
+            P.COMMITMENTS_EXECUTE, P.CHANGES_VIEW, P.CHANGES_EDIT, P.CHANGES_APPROVE,
         },
     },
     "project_manager": {
@@ -116,7 +122,8 @@ SYSTEM_ROLES: dict[str, dict[str, object]] = {
             P.DASHBOARD_VIEW, P.PROJECTS_CREATE, P.PROJECTS_EDIT, P.PROJECTS_FINANCIALS_VIEW,
             P.PROJECTS_MEMBERS_MANAGE, P.COMPANIES_VIEW, P.COMPANIES_MANAGE, P.DOCUMENTS_VIEW,
             P.DOCUMENTS_UPLOAD, P.MEMBERS_VIEW, P.ESTIMATES_VIEW, P.ESTIMATES_EDIT, P.BUDGETS_VIEW, P.BUDGETS_EDIT,
-            P.CONTRACTS_VIEW, P.CONTRACTS_EDIT, P.COMMITMENTS_VIEW, P.COMMITMENTS_EDIT,
+            P.CONTRACTS_VIEW, P.CONTRACTS_EDIT, P.COMMITMENTS_VIEW, P.COMMITMENTS_EDIT, P.CHANGES_VIEW,
+            P.CHANGES_EDIT,
         },
     },
     "field_engineer": {

@@ -15,6 +15,7 @@ from app.core.db import get_engine
 from app.core.errors import install_error_handlers
 from app.domains.audit.router import router as audit_router
 from app.domains.budgets.router import router as budgets_router
+from app.domains.change_orders.router import router as change_orders_router
 from app.domains.companies.router import router as companies_router
 from app.domains.contracts.router import router as contracts_router
 from app.domains.cost_codes.router import router as cost_codes_router
@@ -67,7 +68,7 @@ def create_app() -> FastAPI:
 
     for router in (auth_router, tenancy_router, projects_router, vocab_router, companies_router,
                    documents_router, audit_router, dashboard_router, cost_codes_router, estimating_router,
-                   budgets_router, contracts_router):
+                   budgets_router, contracts_router, change_orders_router):
         app.include_router(router, prefix=API_PREFIX)
 
     @app.get(f"{API_PREFIX}/health", tags=["system"])

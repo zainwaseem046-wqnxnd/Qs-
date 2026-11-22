@@ -20,7 +20,8 @@ from sqlalchemy.orm import Session
 from app.api.deps import TenantContext
 from app.domains.audit.models import AuditEvent
 from app.domains.budgets.models import Budget
-from app.domains.contracts.models import Commitment, CommitmentLine
+from app.domains.change_orders.models import ChangeOrder, ChangeOrderLine
+from app.domains.contracts.models import Commitment, CommitmentLine, Contract
 from app.domains.projects.constants import LIVE_STATUSES
 from app.domains.projects.models import Project
 from app.domains.projects.service import visible_project_ids
@@ -44,6 +45,7 @@ class DashboardData:
     pursuit_value: list[CurrencyTotal] | None
     original_budget: list[CurrencyTotal] | None
     committed_cost: list[CurrencyTotal] | None
+    pending_changes: list[PendingChanges] | None
     upcoming_completions: list[Project]
     recent_projects: list[Project]
     recent_events: list[AuditEvent]
@@ -51,9 +53,16 @@ class DashboardData:
     unavailable_metrics: list[str] = field(default_factory=list)
 
 
-UNAVAILABLE_PHASE_2 = [
-    "Revised budget", "Actual cost", "Forecast final cost",
-    "Forecast revenue", "Forecast gross profit", "Forecast gross margin", "Pending changes",
+@dataclass
+class PendingChanges:
+    currency: str
+    amount: Decimal
+    count: int
+    overdue_count: int
+
+
+UNAVAILABLE_PHASE_2 = [ "Actual cost", "Forecast final cost",
+    "Forecast revenue", "Forecast gross profit", "Forecast gross margin",
     "Outstanding payments", "Cash flow",
 ]
 
@@ -130,6 +139,31 @@ def _committed_totals(db: Session, ctx: TenantContext) -> list[CurrencyTotal]:
     return [CurrencyTotal(c, Decimal(a), int(n), int(missing)) for c, a, n, missing in rows]
 
 
+def _pending_changes(db: Session, ctx: TenantContext) -> list[PendingChanges]:
+    """Client-side change orders submitted and awaiting a decision, on visible, non-archived projects."""
+    amount = (
+        select(func.coalesce(func.sum(ChangeOrderLine.amount), 0))
+        .where(ChangeOrderLine.change_order_id == ChangeOrder.id)
+        .correlate(ChangeOrder)
+        .scalar_subquery()
+    )
+    rows = db.execute(
+        select(
+            Contract.currency,
+            func.coalesce(func.sum(amount), 0),
+            func.count(),
+            func.count().filter(ChangeOrder.response_due_date < date.today()),
+        )
+        .select_from(ChangeOrder)
+        .join(Contract, Contract.id == ChangeOrder.contract_id)
+        .join(Project, Project.id == ChangeOrder.project_id)
+        .where(*_scope(ctx), ChangeOrder.status == "submitted")
+        .group_by(Contract.currency)
+        .order_by(Contract.currency)
+    ).all()
+    return [PendingChanges(c, Decimal(a), int(n), int(o)) for c, a, n, o in rows]
+
+
 def build(db: Session, ctx: TenantContext) -> DashboardData:
     scope = _scope(ctx)
     by_status = dict(db.execute(select(Project.status, func.count()).where(*scope).group_by(Project.status)).all())
@@ -161,6 +195,7 @@ def build(db: Session, ctx: TenantContext) -> DashboardData:
         pursuit_value=_currency_totals(db, ctx, ("pursuit",)) if financials else None,
         original_budget=_budget_totals(db, ctx) if ctx.has(P.BUDGETS_VIEW) else None,
         committed_cost=_committed_totals(db, ctx) if ctx.has(P.COMMITMENTS_VIEW) else None,
+        pending_changes=_pending_changes(db, ctx) if ctx.has(P.CHANGES_VIEW) and ctx.has(P.CONTRACTS_VIEW) else None,
         upcoming_completions=list(upcoming),
         recent_projects=list(recent),
         recent_events=list(events),

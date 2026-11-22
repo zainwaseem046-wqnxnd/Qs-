@@ -147,3 +147,5 @@ MarkupPercent = Annotated[
     Decimal, BeforeValidator(_fixed(Decimal("0.0001"), "Percentage", Decimal(0), Decimal(1000))), _SERIALIZE
 ]
 DecimalOut = Annotated[Decimal, _SERIALIZE]
+SignedQuantity = Annotated[Decimal, BeforeValidator(_fixed(QUANTITY_PLACES, "Quantity", Decimal("-999999999999999"),
+                                                           Decimal("999999999999999"))), _SERIALIZE]

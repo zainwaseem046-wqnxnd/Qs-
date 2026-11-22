@@ -5,6 +5,7 @@ from typing import Any
 from fastapi import APIRouter, Response
 
 from app.api.deps import DB, Ctx, TenantContext
+from app.domains.change_orders import service as change_service
 from app.domains.companies.models import Company
 from app.domains.companies.schemas import CompanyRef
 from app.domains.contracts import service
@@ -38,7 +39,11 @@ def _company(db: Any, company_id: uuid.UUID | None) -> CompanyRef | None:
 
 
 def _out(db: Any, ctx: TenantContext, kind: service.Kind, obj: Any, project: Project) -> ContractOut | CommitmentOut:
+    ct = _change_totals(db, kind, obj)
     common = {
+        "approved_changes": ct["approved"],
+        "pending_changes": ct["pending"],
+        "revised_sum": obj.original_sum + ct["approved"] if obj.original_sum is not None else None,
         "project_number": project.number,
         "project_name": project.name,
         "current_total": service.current_total(db, kind, obj),
@@ -104,6 +109,12 @@ def _out(db: Any, ctx: TenantContext, kind: service.Kind, obj: Any, project: Pro
     )
 
 
+def _change_totals(db: Any, kind: service.Kind, obj: Any) -> dict[str, Any]:
+    if kind is service.CONTRACT:
+        return change_service.change_totals(db, contract_id=obj.id)
+    return change_service.change_totals(db, commitment_id=obj.id)
+
+
 def _item(db: Any, kind: service.Kind, obj: Any, project: Project) -> ListItem:
     party = _company(db, obj.client_company_id if kind is service.CONTRACT else obj.vendor_company_id)
     return ListItem(
@@ -119,6 +130,9 @@ def _item(db: Any, kind: service.Kind, obj: Any, project: Project) -> ListItem:
         commitment_type=getattr(obj, "commitment_type", None),
         current_total=service.current_total(db, kind, obj),
         original_sum=obj.original_sum,
+        revised_sum=(obj.original_sum + _change_totals(db, kind, obj)["approved"])
+        if obj.original_sum is not None
+        else None,
         executed_date=obj.executed_date,
         updated_at=obj.updated_at,
     )

@@ -23,6 +23,13 @@ class CurrencyTotalOut(ApiModel):
     projects_without_value: int
 
 
+class PendingChangesOut(ApiModel):
+    currency: str
+    amount: MoneyAmount
+    count: int
+    overdue_count: int
+
+
 class DashboardOut(ApiModel):
     total_projects: int
     by_status: dict[str, int]
@@ -31,6 +38,7 @@ class DashboardOut(ApiModel):
     pursuit_value: list[CurrencyTotalOut] | None
     original_budget: list[CurrencyTotalOut] | None
     committed_cost: list[CurrencyTotalOut] | None
+    pending_changes: list[PendingChangesOut] | None
     upcoming_completions: list[ProjectListItem]
     recent_projects: list[ProjectListItem]
     recent_activity: list[AuditEventOut]
@@ -54,13 +62,16 @@ def summary(db: DB, ctx: Annotated[TenantContext, Depends(require(P.DASHBOARD_VI
         pursuit_value=totals(data.pursuit_value),
         original_budget=totals(data.original_budget),
         committed_cost=totals(data.committed_cost),
+        pending_changes=None
+        if data.pending_changes is None
+        else [PendingChangesOut.model_validate(p.__dict__) for p in data.pending_changes],
         upcoming_completions=[list_item(ctx, p) for p in data.upcoming_completions],
         recent_projects=[list_item(ctx, p) for p in data.recent_projects],
         recent_activity=to_out(db, data.recent_events, redact_financials=not data.financials_visible),
         financials_visible=data.financials_visible,
         unavailable_metrics=data.unavailable_metrics,
         unavailable_reason=(
-            "These metrics are calculated from cost transactions, change orders and payment applications, "
-            "which are delivered in later Phase 2 milestones. They are not estimated."
+            "These metrics are calculated from cost transactions and payment applications, which are delivered "
+            "in later milestones. They are not estimated."
         ),
     )

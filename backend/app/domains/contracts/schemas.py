@@ -149,6 +149,9 @@ class _TermsOut(ApiModel):
     scope_summary: str | None
     original_sum: DecimalOut | None
     current_total: DecimalOut
+    approved_changes: DecimalOut
+    pending_changes: DecimalOut
+    revised_sum: DecimalOut | None
     executed_date: date | None
     executed_at: datetime | None
     closed_at: datetime | None
@@ -189,6 +192,7 @@ class ListItem(ApiModel):
     commitment_type: str | None = None
     current_total: DecimalOut
     original_sum: DecimalOut | None
+    revised_sum: DecimalOut | None
     executed_date: date | None
     updated_at: datetime
 
@@ -198,6 +202,8 @@ class SummaryRow(ApiModel):
     code: str | None
     title: str
     budget: DecimalOut
+    budget_changes: DecimalOut
+    revised_budget: DecimalOut
     committed: DecimalOut
     pending: DecimalOut
     uncommitted: DecimalOut
