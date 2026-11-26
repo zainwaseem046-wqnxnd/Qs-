@@ -48,6 +48,9 @@ class P(StrEnum):
     FORECASTS_VIEW = "forecasts.view"
     FORECASTS_EDIT = "forecasts.edit"
     FORECASTS_APPROVE = "forecasts.approve"
+    PAYMENTS_VIEW = "payments.view"
+    PAYMENTS_EDIT = "payments.edit"
+    PAYMENTS_CERTIFY = "payments.certify"
 
 
 PERMISSION_CATALOG: dict[str, tuple[str, str]] = {
@@ -89,6 +92,9 @@ PERMISSION_CATALOG: dict[str, tuple[str, str]] = {
     P.FORECASTS_VIEW: ("Cost management", "View forecasts"),
     P.FORECASTS_EDIT: ("Cost management", "Prepare draft forecasts"),
     P.FORECASTS_APPROVE: ("Cost management", "Approve forecasts"),
+    P.PAYMENTS_VIEW: ("Payments", "View payment applications / valuations"),
+    P.PAYMENTS_EDIT: ("Payments", "Prepare and submit payment applications / valuations"),
+    P.PAYMENTS_CERTIFY: ("Payments", "Record certification and payment received"),
 }
 
 ALL = set(PERMISSION_CATALOG)
@@ -111,6 +117,7 @@ SYSTEM_ROLES: dict[str, dict[str, object]] = {
             P.DASHBOARD_VIEW, P.PROJECTS_VIEW_ALL, P.PROJECTS_FINANCIALS_VIEW, P.COMPANIES_VIEW,
             P.DOCUMENTS_VIEW, P.MEMBERS_VIEW, P.AUDIT_VIEW, P.ESTIMATES_VIEW, P.BUDGETS_VIEW,
             P.CONTRACTS_VIEW, P.COMMITMENTS_VIEW, P.CHANGES_VIEW, P.COSTS_VIEW, P.FORECASTS_VIEW,
+            P.PAYMENTS_VIEW,
         },
     },
     "commercial_manager": {
@@ -123,7 +130,8 @@ SYSTEM_ROLES: dict[str, dict[str, object]] = {
             P.ESTIMATES_EDIT, P.ESTIMATES_APPROVE, P.BUDGETS_VIEW, P.BUDGETS_EDIT, P.BUDGETS_APPROVE,
             P.CONTRACTS_VIEW, P.CONTRACTS_EDIT, P.CONTRACTS_EXECUTE, P.COMMITMENTS_VIEW, P.COMMITMENTS_EDIT,
             P.COMMITMENTS_EXECUTE, P.CHANGES_VIEW, P.CHANGES_EDIT, P.CHANGES_APPROVE, P.COSTS_VIEW, P.COSTS_EDIT,
-            P.FORECASTS_VIEW, P.FORECASTS_EDIT, P.FORECASTS_APPROVE,
+            P.FORECASTS_VIEW, P.FORECASTS_EDIT, P.FORECASTS_APPROVE, P.PAYMENTS_VIEW, P.PAYMENTS_EDIT,
+            P.PAYMENTS_CERTIFY,
         },
     },
     "project_manager": {
@@ -134,7 +142,7 @@ SYSTEM_ROLES: dict[str, dict[str, object]] = {
             P.PROJECTS_MEMBERS_MANAGE, P.COMPANIES_VIEW, P.COMPANIES_MANAGE, P.DOCUMENTS_VIEW,
             P.DOCUMENTS_UPLOAD, P.MEMBERS_VIEW, P.ESTIMATES_VIEW, P.ESTIMATES_EDIT, P.BUDGETS_VIEW, P.BUDGETS_EDIT,
             P.CONTRACTS_VIEW, P.CONTRACTS_EDIT, P.COMMITMENTS_VIEW, P.COMMITMENTS_EDIT, P.CHANGES_VIEW,
-            P.CHANGES_EDIT, P.COSTS_VIEW, P.FORECASTS_VIEW, P.FORECASTS_EDIT,
+            P.CHANGES_EDIT, P.COSTS_VIEW, P.FORECASTS_VIEW, P.FORECASTS_EDIT, P.PAYMENTS_VIEW, P.PAYMENTS_EDIT,
         },
     },
     "field_engineer": {

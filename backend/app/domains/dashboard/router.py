@@ -43,6 +43,17 @@ class ForecastTotalsOut(ApiModel):
     latest_period: date | None
 
 
+class PaymentTotalsOut(ApiModel):
+    currency: str
+    outstanding: MoneyAmount
+    overdue_count: int
+    awaiting_certification: MoneyAmount
+    retention_held: MoneyAmount
+    over_billed: MoneyAmount
+    under_billed: MoneyAmount
+    projects_billed: int
+
+
 class DashboardOut(ApiModel):
     total_projects: int
     by_status: dict[str, int]
@@ -53,6 +64,7 @@ class DashboardOut(ApiModel):
     committed_cost: list[CurrencyTotalOut] | None
     pending_changes: list[PendingChangesOut] | None
     forecast: list[ForecastTotalsOut] | None
+    payments: list[PaymentTotalsOut] | None
     upcoming_completions: list[ProjectListItem]
     recent_projects: list[ProjectListItem]
     recent_activity: list[AuditEventOut]
@@ -79,6 +91,9 @@ def summary(db: DB, ctx: Annotated[TenantContext, Depends(require(P.DASHBOARD_VI
         forecast=None
         if data.forecast is None
         else [ForecastTotalsOut.model_validate(f.__dict__) for f in data.forecast],
+        payments=None
+        if data.payments is None
+        else [PaymentTotalsOut.model_validate(p.__dict__) for p in data.payments],
         pending_changes=None
         if data.pending_changes is None
         else [PendingChangesOut.model_validate(p.__dict__) for p in data.pending_changes],
@@ -88,7 +103,7 @@ def summary(db: DB, ctx: Annotated[TenantContext, Depends(require(P.DASHBOARD_VI
         financials_visible=data.financials_visible,
         unavailable_metrics=data.unavailable_metrics,
         unavailable_reason=(
-            "These metrics are calculated from payment applications, which are delivered in the next milestone. "
-            "They are not estimated."
+            "Cash-flow projection needs scheduled payment forecasts, which are delivered in a later milestone. "
+            "It is not estimated."
         ),
     )

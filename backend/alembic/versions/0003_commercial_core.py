@@ -10,9 +10,9 @@ Create Date: 2026-11-20 17:12:17.463958
 from collections.abc import Sequence
 
 import sqlalchemy as sa
-from alembic import op
 from sqlalchemy.dialects import postgresql
 
+from alembic import op
 from alembic_helpers.r0003_commercial_core import downgrade_security, upgrade_security
 
 revision: str = '0003'

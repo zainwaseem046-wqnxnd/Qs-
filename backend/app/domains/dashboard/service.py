@@ -3,9 +3,8 @@
 All sums are computed by PostgreSQL over NUMERIC columns and returned as Decimal. Amounts are grouped by
 currency and never summed across currencies. Only projects visible to the caller are included.
 
-Phase 1 scope: portfolio composition and contract values recorded on project records. Budget, cost,
-commitment, forecast and cash-flow metrics require Phase 2 data and are reported as unavailable rather
-than estimated.
+Metrics whose source data does not exist yet (cash-flow projection) are reported as unavailable rather than
+estimated.
 """
 
 from __future__ import annotations
@@ -49,6 +48,7 @@ class DashboardData:
     committed_cost: list[CurrencyTotal] | None
     pending_changes: list[PendingChanges] | None
     forecast: list[ForecastTotals] | None
+    payments: list[PaymentTotals] | None
     upcoming_completions: list[Project]
     recent_projects: list[Project]
     recent_events: list[AuditEvent]
@@ -77,7 +77,19 @@ class ForecastTotals:
     latest_period: date | None
 
 
-UNAVAILABLE_PHASE_2 = ["Outstanding payments", "Cash flow"]
+@dataclass
+class PaymentTotals:
+    currency: str
+    outstanding: Decimal  # certified, not yet (fully) paid
+    overdue_count: int
+    awaiting_certification: Decimal  # submitted, not yet certified
+    retention_held: Decimal
+    over_billed: Decimal
+    under_billed: Decimal
+    projects_billed: int  # live projects with a submitted application and an approved forecast
+
+
+UNAVAILABLE_PHASE_2 = ["Cash flow"]
 
 
 def _scope(ctx: TenantContext):  # type: ignore[no-untyped-def]
@@ -211,6 +223,70 @@ def _forecast_totals(db: Session, ctx: TenantContext) -> list[ForecastTotals]:
     return out
 
 
+def _payment_totals(db: Session, ctx: TenantContext) -> list[PaymentTotals]:
+    """Receivables from payment applications, and over/under billing against the latest approved forecast's earned
+    revenue, per currency. Projects without both a submitted application and an approved forecast are not counted
+    in billing position (never estimated)."""
+    from app.domains.payments import calc as pay_calc
+    from app.domains.payments import service as pay
+    from app.domains.payments.models import PaymentApplication
+
+    projects = {
+        pid: cur
+        for pid, cur in db.execute(
+            select(Project.id, Project.currency).where(*_scope(ctx), Project.status.in_(LIVE_STATUSES))
+        ).all()
+    }
+    if not projects:
+        return []
+    apps = list(
+        db.scalars(
+            select(PaymentApplication)
+            .where(PaymentApplication.project_id.in_(projects), PaymentApplication.status != "draft")
+            .order_by(PaymentApplication.contract_id, PaymentApplication.number.desc())
+        )
+    )
+    forecasts = {
+        f.project_id: f
+        for f in db.scalars(
+            select(Forecast)
+            .where(Forecast.project_id.in_(projects), Forecast.status == "approved")
+            .order_by(Forecast.project_id, Forecast.period.desc())
+            .distinct(Forecast.project_id)
+        )
+    }
+    zero = Decimal("0.00")
+    acc: dict[str, dict[str, Decimal | int]] = {}
+    billed: dict[object, Decimal] = {}
+    seen: set[object] = set()
+    for a in apps:
+        t = acc.setdefault(projects[a.project_id], {"outstanding": zero, "overdue": 0, "awaiting": zero,
+                                                    "retention": zero, "over": zero, "under": zero, "n": 0})
+        t["outstanding"] += pay.outstanding(a)
+        t["overdue"] += 1 if pay.is_overdue(a) else 0
+        if a.status == "submitted":
+            t["awaiting"] += a.amount_due or zero
+        if a.contract_id not in seen:  # latest application of each contract
+            seen.add(a.contract_id)
+            t["retention"] += a.retention_to_date or zero
+            billed[a.project_id] = billed.get(a.project_id, zero) + (a.work_to_date or zero) + (
+                a.materials_stored or zero)
+    for pid, amount in billed.items():
+        earned = pay.earned_revenue(forecasts[pid]) if pid in forecasts else None
+        if earned is None:
+            continue
+        over, under = pay_calc.billing_position(amount, earned)
+        t = acc[projects[pid]]
+        t["over"] += over
+        t["under"] += under
+        t["n"] += 1
+    return [
+        PaymentTotals(c, t["outstanding"], int(t["overdue"]), t["awaiting"], t["retention"], t["over"], t["under"],
+                      int(t["n"]))  # type: ignore[arg-type]
+        for c, t in sorted(acc.items())
+    ]
+
+
 def build(db: Session, ctx: TenantContext) -> DashboardData:
     scope = _scope(ctx)
     by_status = dict(db.execute(select(Project.status, func.count()).where(*scope).group_by(Project.status)).all())
@@ -244,6 +320,7 @@ def build(db: Session, ctx: TenantContext) -> DashboardData:
         committed_cost=_committed_totals(db, ctx) if ctx.has(P.COMMITMENTS_VIEW) else None,
         pending_changes=_pending_changes(db, ctx) if ctx.has(P.CHANGES_VIEW) and ctx.has(P.CONTRACTS_VIEW) else None,
         forecast=_forecast_totals(db, ctx) if ctx.has(P.FORECASTS_VIEW) and financials else None,
+        payments=_payment_totals(db, ctx) if ctx.has(P.PAYMENTS_VIEW) and financials else None,
         upcoming_completions=list(upcoming),
         recent_projects=list(recent),
         recent_events=list(events),

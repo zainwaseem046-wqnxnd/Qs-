@@ -10,10 +10,9 @@ Create Date: 2026-11-22 00:12:45.692089
 from collections.abc import Sequence
 
 import sqlalchemy as sa
+
 from alembic import op
-
 from alembic_helpers.r0004_contracts import downgrade_security, upgrade_security
-
 
 revision: str = '0004'
 down_revision: str | None = '0003'
