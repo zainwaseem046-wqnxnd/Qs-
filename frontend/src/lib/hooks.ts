@@ -89,6 +89,9 @@ export const P = {
   FORECASTS_VIEW: "forecasts.view",
   FORECASTS_EDIT: "forecasts.edit",
   FORECASTS_APPROVE: "forecasts.approve",
+  PAYMENTS_VIEW: "payments.view",
+  PAYMENTS_EDIT: "payments.edit",
+  PAYMENTS_CERTIFY: "payments.certify",
 } as const;
 
 /** Format a non-money decimal string (quantity, rate) without float conversion: trims trailing zeros. */

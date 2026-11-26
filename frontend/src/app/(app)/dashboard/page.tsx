@@ -133,6 +133,20 @@ export default function DashboardPage() {
                 sub={(() => { const n = d.pending_changes.reduce((a, p) => a + p.count, 0); const o = d.pending_changes.reduce((a, p) => a + p.overdue_count, 0); return `${n} submitted${o ? ` · ${o} overdue` : ""}`; })()}
               />
             )}
+            {d.payments && (
+              <Stat
+                label="Outstanding payments"
+                value={d.payments.length ? <span className="flex flex-col">{d.payments.map((p) => <span key={p.currency} className={p.overdue_count ? "text-danger" : undefined} title={formatMoney(p.outstanding, p.currency)}>{formatMoneyCompact(p.outstanding, p.currency)}</span>)}</span> : formatMoneyCompact("0", "USD")}
+                sub={d.payments.length ? (() => { const o = d.payments.reduce((a, p) => a + p.overdue_count, 0); return `Certified, not yet paid${o ? ` · ${o} overdue` : ""} · awaiting certification ${d.payments.map((p) => formatMoneyCompact(p.awaiting_certification, p.currency)).join(" · ")}`; })() : `No ${region() === "GB" ? "valuations" : "pay applications"} submitted yet`}
+              />
+            )}
+            {d.payments && d.payments.some((p) => p.projects_billed > 0) && (
+              <Stat
+                label="Over / under billing"
+                value={<span className="flex flex-col">{d.payments.filter((p) => p.projects_billed > 0).map((p) => <span key={p.currency}>{p.over_billed !== "0.00" ? <span className="text-warning">{formatMoneyCompact(p.over_billed, p.currency)} over</span> : null}{p.over_billed !== "0.00" && p.under_billed !== "0.00" ? " · " : null}{p.under_billed !== "0.00" || p.over_billed === "0.00" ? <span>{formatMoneyCompact(p.under_billed, p.currency)} under</span> : null}</span>)}</span>}
+                sub={`Billed to date vs earned revenue (approved forecasts) · ${d.payments.reduce((a, p) => a + p.projects_billed, 0)} project${d.payments.reduce((a, p) => a + p.projects_billed, 0) === 1 ? "" : "s"}`}
+              />
+            )}
             {d.committed_cost && (
               <Stat label="Committed cost" value={<MoneyTotals totals={d.committed_cost} />} sub="Executed subcontracts and purchase orders" />
             )}

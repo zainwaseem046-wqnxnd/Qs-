@@ -28,9 +28,11 @@
 | 2.3 | Change orders / variations / compensation events; derived revised sums; overdue tracking | ✅ Done | `test_change_orders.py`, e2e `change-orders.spec.ts` |
 | 2.4 | Immutable cost ledger, accounting CSV import, reversals | ✅ Done | `test_cost_management.py`, e2e `costs-forecast.spec.ts` |
 | 2.4 | Monthly forecasts (CTC methods, FFC, GP, margin), approval freeze, dashboard forecast tiles | ✅ Done | `test_forecast_calc.py` (golden values), `test_cost_management.py` |
-| 2 | Remaining Phase 2: payment applications / valuations, WIP & over/under billing, reporting & exports | ⏳ Next | see BACKLOG.md |
+| 3.1 | Pay applications / UK valuations: SOV, retention, submit → certify → paid, DB lock | ✅ Done | `test_payments_calc.py` (golden values), `test_payments.py`, e2e `payments.spec.ts` |
+| 3.1 | Over/under billing, outstanding payments, retention held; dashboard tiles | ✅ Done | `test_payments.py` |
+| — | Next: exportable reports (CSV/XLSX/PDF), subcontractor pay apps, cash flow | ⏳ Next | see BACKLOG.md |
 
-## Latest test results (milestone 2.4)
-* Backend: 150 passed (pytest, PostgreSQL 16, runtime role `qs_app` with RLS).
+## Latest test results (milestone 3.1)
+* Backend: 164 passed (pytest, PostgreSQL 16, runtime role `qs_app` with RLS).
 * Frontend: TypeScript strict — no errors; Vitest 23 passed; production build succeeded.
-* E2E: 10 passed (Chromium desktop + Pixel 7 emulation), stable across consecutive runs.
+* E2E: 11 passed (Chromium desktop + Pixel 7 emulation), stable across consecutive runs.

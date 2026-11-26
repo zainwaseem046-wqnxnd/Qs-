@@ -167,6 +167,18 @@ summarised in §6.
 | FC-3 | Approval | forecasts.approve required; approved figures snapshotted and frozen (DB trigger); drafts deletable | ✅ tested |
 | DB-4 | Dashboard | Forecast revenue, final cost and gross profit from latest *approved* forecasts only | ✅ tested (API + e2e) |
 
+## 5f. Phase 3.1 requirements (Payment applications / interim valuations) — delivered
+
+| ID | Requirement | Acceptance criteria | Status |
+|---|---|---|---|
+| PA-1 | Schedule of values | From executed contract lines + approved changes; previous work and stored materials carry forward; late-approved changes added before submission | ✅ tested |
+| PA-2 | Claiming | By amount or percent to date; negative corrections; never beyond scheduled value; omissions valued between their value and zero | ✅ tested (golden values) |
+| PA-3 | Summary | G702-compatible lines 1–9; retention per line, rounded once; previous certificates = amounts actually certified | ✅ tested |
+| PA-4 | Workflow | Draft ⇄ submitted → certified → paid; one open per contract; locked by DB triggers; certifier cuts need a reason; short payments stay outstanding | ✅ tested incl. SQL-level freeze |
+| PA-5 | UK valuations | Valuation date, due date, final date for payment and pay-less notice date defaults, editable; "Valuation n" labelling | ✅ tested |
+| PA-6 | Billing position | Certified, paid, outstanding, overdue, retention held, over/under billing vs approved forecast | ✅ tested (API + e2e) |
+| DB-5 | Dashboard | Outstanding payments (with overdue and awaiting certification) and over/under billing tiles | ✅ tested |
+
 ## 6. Later phases (summary)
 
 * **Phase 2 — Commercial core:** cost codes (customer-licensed classifications), estimating with full line

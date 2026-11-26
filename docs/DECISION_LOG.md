@@ -181,6 +181,26 @@ Drafts recompute live; **approval snapshots every figure and database triggers f
 only the latest approved forecast per live project, never drafts. Cash flow and outstanding payments remain
 unavailable until payment applications exist.
 
+### ADR-028 Payment applications and interim valuations
+**Decision:** one engine serves US pay applications and UK interim valuations against an executed prime contract.
+The schedule of values is built from the contract lines plus approved change orders (added automatically, also
+when a change is approved while a draft is open: submission is refused until the user has seen the new line).
+Columns follow the familiar G703 layout (scheduled value, previous work, this period, materials presently stored,
+completed and stored, %, balance, retention) and the summary follows the G702 lines 1–9; **no AIA form or text is
+reproduced**. Work can be claimed by amount or by percent complete to date; negative amounts correct earlier
+over-claims; nothing can exceed its scheduled value (extra work needs a change). Retention is computed per line and
+rounded once, so the lines add up to the total. **"Less previous certificates" uses the amounts actually
+certified**, so any amount the certifier cut is re-claimed automatically and nothing is double counted.
+Lifecycle draft ⇄ submitted → certified → paid; one open application per contract (partial unique index);
+database triggers freeze the claim and its snapshot once submitted, the certificate once certified, and everything
+once paid. A certified amount below the claim needs a reason; above it is refused. Short payments remain as
+outstanding. **UK dates** default to due = valuation date + 7 days, final date for payment = due + contract payment
+period (14 days if not stated), pay-less notice = 5 days before the final date (JCT default); all editable because
+contracts differ. US due date = application date + payment terms (30 days if not stated).
+**Over/under billing** = gross billed to date (latest submitted application per contract, before retention) minus
+earned revenue from the latest *approved* forecast; shown only when both exist. Recording the certificate and payment
+needs `payments.certify`, which project managers do not have by default.
+
 ### ADR-016 Dashboard never estimates unavailable metrics
 **Decision:** commercial metrics needing Phase 2 data are listed as unavailable with the reason, instead of
 being approximated from contract values.

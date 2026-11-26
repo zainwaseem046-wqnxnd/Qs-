@@ -57,7 +57,7 @@ export const NAV: { section: string; items: NavItem[] }[] = [
       { label: "Contracts", icon: FileSignature, href: "/contracts" },
       { label: "Subcontracts & POs", icon: Briefcase, href: "/subcontracts" },
       { label: "Change Orders", ukLabel: "Variations", icon: GitPullRequestArrow, href: "/change-orders" },
-      { label: "Pay Applications", icon: Wallet, phase: 3 },
+      { label: "Pay Applications", ukLabel: "Valuations", icon: Wallet, href: "/payment-applications" },
       { label: "Cost Management", icon: BarChart3, href: "/cost-management" },
       { label: "Forecasting", icon: LineChart, href: "/forecasting" },
     ],

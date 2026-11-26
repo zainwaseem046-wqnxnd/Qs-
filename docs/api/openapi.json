@@ -9628,6 +9628,726 @@
     }
    }
   },
+  "/api/v1/projects/{project_id}/payment-applications": {
+   "get": {
+    "tags": [
+     "payments"
+    ],
+    "summary": "List Applications",
+    "operationId": "list_applications_api_v1_projects__project_id__payment_applications_get",
+    "parameters": [
+     {
+      "name": "project_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Project Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "array",
+         "items": {
+          "$ref": "#/components/schemas/ApplicationSummary"
+         },
+         "title": "Response List Applications Api V1 Projects  Project Id  Payment Applications Get"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   },
+   "post": {
+    "tags": [
+     "payments"
+    ],
+    "summary": "Create Application",
+    "operationId": "create_application_api_v1_projects__project_id__payment_applications_post",
+    "parameters": [
+     {
+      "name": "project_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Project Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/ApplicationCreate"
+       }
+      }
+     }
+    },
+    "responses": {
+     "201": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ApplicationOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/projects/{project_id}/billing-summary": {
+   "get": {
+    "tags": [
+     "payments"
+    ],
+    "summary": "Billing Summary",
+    "operationId": "billing_summary_api_v1_projects__project_id__billing_summary_get",
+    "parameters": [
+     {
+      "name": "project_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Project Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/BillingSummaryOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/payment-applications/{app_id}": {
+   "get": {
+    "tags": [
+     "payments"
+    ],
+    "summary": "Get Application",
+    "operationId": "get_application_api_v1_payment_applications__app_id__get",
+    "parameters": [
+     {
+      "name": "app_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "App Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ApplicationOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   },
+   "patch": {
+    "tags": [
+     "payments"
+    ],
+    "summary": "Update Application",
+    "operationId": "update_application_api_v1_payment_applications__app_id__patch",
+    "parameters": [
+     {
+      "name": "app_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "App Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/ApplicationUpdate"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ApplicationOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   },
+   "delete": {
+    "tags": [
+     "payments"
+    ],
+    "summary": "Delete Application",
+    "operationId": "delete_application_api_v1_payment_applications__app_id__delete",
+    "parameters": [
+     {
+      "name": "app_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "App Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "responses": {
+     "204": {
+      "description": "Successful Response"
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/payment-applications/{app_id}/lines/{line_id}": {
+   "put": {
+    "tags": [
+     "payments"
+    ],
+    "summary": "Update Line",
+    "operationId": "update_line_api_v1_payment_applications__app_id__lines__line_id__put",
+    "parameters": [
+     {
+      "name": "app_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "App Id"
+      }
+     },
+     {
+      "name": "line_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Line Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/LineUpdate"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ApplicationOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/payment-applications/{app_id}/submit": {
+   "post": {
+    "tags": [
+     "payments"
+    ],
+    "summary": "Submit",
+    "operationId": "submit_api_v1_payment_applications__app_id__submit_post",
+    "parameters": [
+     {
+      "name": "app_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "App Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/VersionIn"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ApplicationOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/payment-applications/{app_id}/return-to-draft": {
+   "post": {
+    "tags": [
+     "payments"
+    ],
+    "summary": "Return To Draft",
+    "operationId": "return_to_draft_api_v1_payment_applications__app_id__return_to_draft_post",
+    "parameters": [
+     {
+      "name": "app_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "App Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/VersionIn"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ApplicationOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/payment-applications/{app_id}/certify": {
+   "post": {
+    "tags": [
+     "payments"
+    ],
+    "summary": "Certify",
+    "operationId": "certify_api_v1_payment_applications__app_id__certify_post",
+    "parameters": [
+     {
+      "name": "app_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "App Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/CertifyIn"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ApplicationOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/payment-applications/{app_id}/payment": {
+   "post": {
+    "tags": [
+     "payments"
+    ],
+    "summary": "Record Payment",
+    "operationId": "record_payment_api_v1_payment_applications__app_id__payment_post",
+    "parameters": [
+     {
+      "name": "app_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "App Id"
+      }
+     },
+     {
+      "name": "x-tenant-id",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/PaymentIn"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ApplicationOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
   "/api/v1/health": {
    "get": {
     "tags": [
@@ -9886,6 +10606,553 @@
     ],
     "title": "AlternateOut"
    },
+   "ApplicationCreate": {
+    "properties": {
+     "contract_id": {
+      "type": "string",
+      "format": "uuid",
+      "title": "Contract Id"
+     },
+     "period_to": {
+      "type": "string",
+      "format": "date",
+      "title": "Period To"
+     },
+     "application_date": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "date"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Application Date"
+     }
+    },
+    "additionalProperties": false,
+    "type": "object",
+    "required": [
+     "contract_id",
+     "period_to"
+    ],
+    "title": "ApplicationCreate"
+   },
+   "ApplicationOut": {
+    "properties": {
+     "id": {
+      "type": "string",
+      "format": "uuid",
+      "title": "Id"
+     },
+     "project_id": {
+      "type": "string",
+      "format": "uuid",
+      "title": "Project Id"
+     },
+     "contract_id": {
+      "type": "string",
+      "format": "uuid",
+      "title": "Contract Id"
+     },
+     "contract_number": {
+      "type": "string",
+      "title": "Contract Number"
+     },
+     "contract_title": {
+      "type": "string",
+      "title": "Contract Title"
+     },
+     "number": {
+      "type": "integer",
+      "title": "Number"
+     },
+     "label": {
+      "type": "string",
+      "title": "Label"
+     },
+     "status": {
+      "type": "string",
+      "title": "Status"
+     },
+     "currency": {
+      "type": "string",
+      "title": "Currency"
+     },
+     "period_to": {
+      "type": "string",
+      "format": "date",
+      "title": "Period To"
+     },
+     "application_date": {
+      "type": "string",
+      "format": "date",
+      "title": "Application Date"
+     },
+     "due_date": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "date"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Due Date"
+     },
+     "final_payment_date": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "date"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Final Payment Date"
+     },
+     "pay_less_notice_date": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "date"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Pay Less Notice Date"
+     },
+     "amount_due": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Amount Due"
+     },
+     "certified_amount": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Certified Amount"
+     },
+     "paid_amount": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Paid Amount"
+     },
+     "outstanding": {
+      "type": "string",
+      "title": "Outstanding"
+     },
+     "is_overdue": {
+      "type": "boolean",
+      "title": "Is Overdue"
+     },
+     "retention_percent": {
+      "type": "string",
+      "title": "Retention Percent"
+     },
+     "notes": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Notes"
+     },
+     "submitted_at": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "date-time"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Submitted At"
+     },
+     "certified_date": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "date"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Certified Date"
+     },
+     "certification_note": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Certification Note"
+     },
+     "paid_date": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "date"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Paid Date"
+     },
+     "payment_reference": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Payment Reference"
+     },
+     "version": {
+      "type": "integer",
+      "title": "Version"
+     },
+     "is_editable": {
+      "type": "boolean",
+      "title": "Is Editable"
+     },
+     "can_certify": {
+      "type": "boolean",
+      "title": "Can Certify"
+     },
+     "totals": {
+      "$ref": "#/components/schemas/app__domains__payments__schemas__TotalsOut"
+     },
+     "lines": {
+      "items": {
+       "$ref": "#/components/schemas/app__domains__payments__schemas__LineOut"
+      },
+      "type": "array",
+      "title": "Lines"
+     }
+    },
+    "type": "object",
+    "required": [
+     "id",
+     "project_id",
+     "contract_id",
+     "contract_number",
+     "contract_title",
+     "number",
+     "label",
+     "status",
+     "currency",
+     "period_to",
+     "application_date",
+     "due_date",
+     "final_payment_date",
+     "pay_less_notice_date",
+     "amount_due",
+     "certified_amount",
+     "paid_amount",
+     "outstanding",
+     "is_overdue",
+     "retention_percent",
+     "notes",
+     "submitted_at",
+     "certified_date",
+     "certification_note",
+     "paid_date",
+     "payment_reference",
+     "version",
+     "is_editable",
+     "can_certify",
+     "totals",
+     "lines"
+    ],
+    "title": "ApplicationOut"
+   },
+   "ApplicationSummary": {
+    "properties": {
+     "id": {
+      "type": "string",
+      "format": "uuid",
+      "title": "Id"
+     },
+     "project_id": {
+      "type": "string",
+      "format": "uuid",
+      "title": "Project Id"
+     },
+     "contract_id": {
+      "type": "string",
+      "format": "uuid",
+      "title": "Contract Id"
+     },
+     "contract_number": {
+      "type": "string",
+      "title": "Contract Number"
+     },
+     "contract_title": {
+      "type": "string",
+      "title": "Contract Title"
+     },
+     "number": {
+      "type": "integer",
+      "title": "Number"
+     },
+     "label": {
+      "type": "string",
+      "title": "Label"
+     },
+     "status": {
+      "type": "string",
+      "title": "Status"
+     },
+     "currency": {
+      "type": "string",
+      "title": "Currency"
+     },
+     "period_to": {
+      "type": "string",
+      "format": "date",
+      "title": "Period To"
+     },
+     "application_date": {
+      "type": "string",
+      "format": "date",
+      "title": "Application Date"
+     },
+     "due_date": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "date"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Due Date"
+     },
+     "final_payment_date": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "date"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Final Payment Date"
+     },
+     "pay_less_notice_date": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "date"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Pay Less Notice Date"
+     },
+     "amount_due": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Amount Due"
+     },
+     "certified_amount": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Certified Amount"
+     },
+     "paid_amount": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Paid Amount"
+     },
+     "outstanding": {
+      "type": "string",
+      "title": "Outstanding"
+     },
+     "is_overdue": {
+      "type": "boolean",
+      "title": "Is Overdue"
+     }
+    },
+    "type": "object",
+    "required": [
+     "id",
+     "project_id",
+     "contract_id",
+     "contract_number",
+     "contract_title",
+     "number",
+     "label",
+     "status",
+     "currency",
+     "period_to",
+     "application_date",
+     "due_date",
+     "final_payment_date",
+     "pay_less_notice_date",
+     "amount_due",
+     "certified_amount",
+     "paid_amount",
+     "outstanding",
+     "is_overdue"
+    ],
+    "title": "ApplicationSummary"
+   },
+   "ApplicationUpdate": {
+    "properties": {
+     "version": {
+      "type": "integer",
+      "minimum": 1.0,
+      "title": "Version"
+     },
+     "period_to": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "date"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Period To"
+     },
+     "application_date": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "date"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Application Date"
+     },
+     "due_date": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "date"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Due Date"
+     },
+     "final_payment_date": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "date"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Final Payment Date"
+     },
+     "pay_less_notice_date": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "date"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Pay Less Notice Date"
+     },
+     "retention_percent": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Retention Percent"
+     },
+     "notes": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 5000
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Notes"
+     }
+    },
+    "additionalProperties": false,
+    "type": "object",
+    "required": [
+     "version"
+    ],
+    "title": "ApplicationUpdate"
+   },
    "AuditEventOut": {
     "properties": {
      "id": {
@@ -9984,6 +11251,110 @@
      "occurred_at"
     ],
     "title": "AuditEventOut"
+   },
+   "BillingSummaryOut": {
+    "properties": {
+     "currency": {
+      "type": "string",
+      "title": "Currency"
+     },
+     "billed_to_date": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Billed To Date"
+     },
+     "earned_revenue": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Earned Revenue"
+     },
+     "forecast_period": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "date"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Forecast Period"
+     },
+     "over_billed": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Over Billed"
+     },
+     "under_billed": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Under Billed"
+     },
+     "certified_to_date": {
+      "type": "string",
+      "title": "Certified To Date"
+     },
+     "paid_to_date": {
+      "type": "string",
+      "title": "Paid To Date"
+     },
+     "outstanding": {
+      "type": "string",
+      "title": "Outstanding"
+     },
+     "awaiting_certification": {
+      "type": "string",
+      "title": "Awaiting Certification"
+     },
+     "retention_held": {
+      "type": "string",
+      "title": "Retention Held"
+     },
+     "overdue_count": {
+      "type": "integer",
+      "title": "Overdue Count"
+     }
+    },
+    "type": "object",
+    "required": [
+     "currency",
+     "billed_to_date",
+     "earned_revenue",
+     "forecast_period",
+     "over_billed",
+     "under_billed",
+     "certified_to_date",
+     "paid_to_date",
+     "outstanding",
+     "awaiting_certification",
+     "retention_held",
+     "overdue_count"
+    ],
+    "title": "BillingSummaryOut"
    },
    "Body_import_codes_api_v1_cost_code_sets__set_id__import_post": {
     "properties": {
@@ -10413,6 +11784,59 @@
      "lines"
     ],
     "title": "BudgetOut"
+   },
+   "CertifyIn": {
+    "properties": {
+     "version": {
+      "type": "integer",
+      "minimum": 1.0,
+      "title": "Version"
+     },
+     "certified_amount": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Certified Amount"
+     },
+     "certified_date": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "date"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Certified Date"
+     },
+     "certification_note": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 2000
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Certification Note"
+     }
+    },
+    "additionalProperties": false,
+    "type": "object",
+    "required": [
+     "version"
+    ],
+    "title": "CertifyIn"
    },
    "ChangeOrderCreate": {
     "properties": {
@@ -13628,6 +15052,20 @@
       ],
       "title": "Forecast"
      },
+     "payments": {
+      "anyOf": [
+       {
+        "items": {
+         "$ref": "#/components/schemas/PaymentTotalsOut"
+        },
+        "type": "array"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Payments"
+     },
      "upcoming_completions": {
       "items": {
        "$ref": "#/components/schemas/ProjectListItem"
@@ -13676,6 +15114,7 @@
      "committed_cost",
      "pending_changes",
      "forecast",
+     "payments",
      "upcoming_completions",
      "recent_projects",
      "recent_activity",
@@ -15265,6 +16704,56 @@
     ],
     "title": "LineFields"
    },
+   "LineUpdate": {
+    "properties": {
+     "this_period": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "This Period"
+     },
+     "percent_to_date": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Percent To Date"
+     },
+     "materials_stored": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Materials Stored"
+     }
+    },
+    "additionalProperties": false,
+    "type": "object",
+    "title": "LineUpdate",
+    "description": "Give either the work done this period or the percent complete to date (incl. stored materials)."
+   },
    "ListItem": {
     "properties": {
      "id": {
@@ -15921,6 +17410,107 @@
      "password"
     ],
     "title": "PasswordConfirmRequest"
+   },
+   "PaymentIn": {
+    "properties": {
+     "version": {
+      "type": "integer",
+      "minimum": 1.0,
+      "title": "Version"
+     },
+     "paid_amount": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Paid Amount"
+     },
+     "paid_date": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "date"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Paid Date"
+     },
+     "payment_reference": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 80
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Payment Reference"
+     }
+    },
+    "additionalProperties": false,
+    "type": "object",
+    "required": [
+     "version"
+    ],
+    "title": "PaymentIn"
+   },
+   "PaymentTotalsOut": {
+    "properties": {
+     "currency": {
+      "type": "string",
+      "title": "Currency"
+     },
+     "outstanding": {
+      "type": "string",
+      "title": "Outstanding"
+     },
+     "overdue_count": {
+      "type": "integer",
+      "title": "Overdue Count"
+     },
+     "awaiting_certification": {
+      "type": "string",
+      "title": "Awaiting Certification"
+     },
+     "retention_held": {
+      "type": "string",
+      "title": "Retention Held"
+     },
+     "over_billed": {
+      "type": "string",
+      "title": "Over Billed"
+     },
+     "under_billed": {
+      "type": "string",
+      "title": "Under Billed"
+     },
+     "projects_billed": {
+      "type": "integer",
+      "title": "Projects Billed"
+     }
+    },
+    "type": "object",
+    "required": [
+     "currency",
+     "outstanding",
+     "overdue_count",
+     "awaiting_certification",
+     "retention_held",
+     "over_billed",
+     "under_billed",
+     "projects_billed"
+    ],
+    "title": "PaymentTotalsOut"
    },
    "PendingChangesOut": {
     "properties": {
@@ -17607,55 +19197,6 @@
     "type": "object",
     "title": "TenantUpdate"
    },
-   "TotalsOut": {
-    "properties": {
-     "direct_cost": {
-      "type": "string",
-      "title": "Direct Cost"
-     },
-     "markup_total": {
-      "type": "string",
-      "title": "Markup Total"
-     },
-     "total": {
-      "type": "string",
-      "title": "Total"
-     },
-     "alternates": {
-      "items": {
-       "$ref": "#/components/schemas/AlternateOut"
-      },
-      "type": "array",
-      "title": "Alternates"
-     },
-     "excluded_total": {
-      "type": "string",
-      "title": "Excluded Total"
-     },
-     "labour_hours": {
-      "type": "string",
-      "title": "Labour Hours"
-     },
-     "components": {
-      "additionalProperties": {
-       "type": "string"
-      },
-      "type": "object",
-      "title": "Components"
-     }
-    },
-    "type": "object",
-    "required": [
-     "direct_cost",
-     "markup_total",
-     "total",
-     "alternates",
-     "excluded_total",
-     "labour_hours",
-     "components"
-    ],
-    "title": "TotalsOut"
-   },
    "TransactionIn": {
     "properties": {
      "transaction_type": {
@@ -18114,7 +19655,7 @@
       "title": "Markups"
      },
      "totals": {
-      "$ref": "#/components/schemas/TotalsOut"
+      "$ref": "#/components/schemas/app__domains__estimating__schemas__TotalsOut"
      }
     },
     "type": "object",
@@ -18938,6 +20479,206 @@
      "calc"
     ],
     "title": "LineOut"
+   },
+   "app__domains__estimating__schemas__TotalsOut": {
+    "properties": {
+     "direct_cost": {
+      "type": "string",
+      "title": "Direct Cost"
+     },
+     "markup_total": {
+      "type": "string",
+      "title": "Markup Total"
+     },
+     "total": {
+      "type": "string",
+      "title": "Total"
+     },
+     "alternates": {
+      "items": {
+       "$ref": "#/components/schemas/AlternateOut"
+      },
+      "type": "array",
+      "title": "Alternates"
+     },
+     "excluded_total": {
+      "type": "string",
+      "title": "Excluded Total"
+     },
+     "labour_hours": {
+      "type": "string",
+      "title": "Labour Hours"
+     },
+     "components": {
+      "additionalProperties": {
+       "type": "string"
+      },
+      "type": "object",
+      "title": "Components"
+     }
+    },
+    "type": "object",
+    "required": [
+     "direct_cost",
+     "markup_total",
+     "total",
+     "alternates",
+     "excluded_total",
+     "labour_hours",
+     "components"
+    ],
+    "title": "TotalsOut"
+   },
+   "app__domains__payments__schemas__LineOut": {
+    "properties": {
+     "id": {
+      "type": "string",
+      "format": "uuid",
+      "title": "Id"
+     },
+     "item": {
+      "type": "string",
+      "title": "Item"
+     },
+     "description": {
+      "type": "string",
+      "title": "Description"
+     },
+     "source": {
+      "type": "string",
+      "title": "Source"
+     },
+     "scheduled_value": {
+      "type": "string",
+      "title": "Scheduled Value"
+     },
+     "previous_work": {
+      "type": "string",
+      "title": "Previous Work"
+     },
+     "this_period": {
+      "type": "string",
+      "title": "This Period"
+     },
+     "materials_stored": {
+      "type": "string",
+      "title": "Materials Stored"
+     },
+     "completed_to_date": {
+      "type": "string",
+      "title": "Completed To Date"
+     },
+     "percent_complete": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Percent Complete"
+     },
+     "balance_to_finish": {
+      "type": "string",
+      "title": "Balance To Finish"
+     },
+     "retention": {
+      "type": "string",
+      "title": "Retention"
+     }
+    },
+    "type": "object",
+    "required": [
+     "id",
+     "item",
+     "description",
+     "source",
+     "scheduled_value",
+     "previous_work",
+     "this_period",
+     "materials_stored",
+     "completed_to_date",
+     "percent_complete",
+     "balance_to_finish",
+     "retention"
+    ],
+    "title": "LineOut"
+   },
+   "app__domains__payments__schemas__TotalsOut": {
+    "properties": {
+     "original_sum": {
+      "type": "string",
+      "title": "Original Sum"
+     },
+     "net_changes": {
+      "type": "string",
+      "title": "Net Changes"
+     },
+     "contract_sum_to_date": {
+      "type": "string",
+      "title": "Contract Sum To Date"
+     },
+     "work_to_date": {
+      "type": "string",
+      "title": "Work To Date"
+     },
+     "materials_stored": {
+      "type": "string",
+      "title": "Materials Stored"
+     },
+     "completed_to_date": {
+      "type": "string",
+      "title": "Completed To Date"
+     },
+     "retention": {
+      "type": "string",
+      "title": "Retention"
+     },
+     "earned_less_retention": {
+      "type": "string",
+      "title": "Earned Less Retention"
+     },
+     "previous_certified": {
+      "type": "string",
+      "title": "Previous Certified"
+     },
+     "amount_due": {
+      "type": "string",
+      "title": "Amount Due"
+     },
+     "balance_to_finish": {
+      "type": "string",
+      "title": "Balance To Finish"
+     },
+     "percent_complete": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Percent Complete"
+     }
+    },
+    "type": "object",
+    "required": [
+     "original_sum",
+     "net_changes",
+     "contract_sum_to_date",
+     "work_to_date",
+     "materials_stored",
+     "completed_to_date",
+     "retention",
+     "earned_less_retention",
+     "previous_certified",
+     "amount_due",
+     "balance_to_finish",
+     "percent_complete"
+    ],
+    "title": "TotalsOut"
    }
   }
  }

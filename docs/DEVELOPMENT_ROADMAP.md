@@ -38,6 +38,10 @@ Milestones, each shippable:
 9. **Commercial reporting & dashboard v2:** cost reports, configurable widgets, exports (CSV/XLSX/PDF).
 
 ## Phase 3 — Procurement & payments
+✅ **Owner pay applications / UK interim valuations** (milestone 3.1): schedule of values, retention, G702/G703-
+compatible figures, certification and payment, over/under billing. Remaining below: subcontractor pay apps, lien
+waivers, procurement.
+
 Bid packages, invitations, bidder portal (limited external access), leveling with scope/exclusions,
 award → commitment, schedule of values, owner and subcontractor pay apps (G702/G703-compatible data),
 retainage records, lien-waiver tracking hooks.

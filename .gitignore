@@ -24,3 +24,6 @@ next-env.d.ts
 .DS_Store
 .idea/
 .vscode/
+
+# Local Redis snapshot (never commit)
+dump.rdb

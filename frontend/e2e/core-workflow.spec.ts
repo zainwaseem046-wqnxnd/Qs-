@@ -67,7 +67,7 @@ test("register, create a project, upload a drawing, see it on the dashboard, sig
   await expect(page.getByRole("link", { name: /Riverside Medical Office Building/ })).toBeVisible();
 
   // Unbuilt modules are labelled, not clickable
-  await expect(page.locator('[aria-disabled="true"]', { hasText: "Pay Applications" })).toContainText("Phase 3");
+  await expect(page.locator('[aria-disabled="true"]', { hasText: "Procurement" })).toContainText("Phase 3");
 
   // Sign out and back in
   await page.getByRole("button", { name: "Account menu" }).click();

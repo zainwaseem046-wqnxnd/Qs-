@@ -129,6 +129,17 @@
 | organization | `PATCH` | `/api/v1/tenant/roles/{role_id}` | Update Role |
 | organization | `POST` | `/api/v1/tenant/invitations` | Create Invitation |
 | organization | `POST` | `/api/v1/tenant/roles` | Create Role |
+| payments | `DELETE` | `/api/v1/payment-applications/{app_id}` | Delete Application |
+| payments | `GET` | `/api/v1/payment-applications/{app_id}` | Get Application |
+| payments | `GET` | `/api/v1/projects/{project_id}/billing-summary` | Billing Summary |
+| payments | `GET` | `/api/v1/projects/{project_id}/payment-applications` | List Applications |
+| payments | `PATCH` | `/api/v1/payment-applications/{app_id}` | Update Application |
+| payments | `POST` | `/api/v1/payment-applications/{app_id}/certify` | Certify |
+| payments | `POST` | `/api/v1/payment-applications/{app_id}/payment` | Record Payment |
+| payments | `POST` | `/api/v1/payment-applications/{app_id}/return-to-draft` | Return To Draft |
+| payments | `POST` | `/api/v1/payment-applications/{app_id}/submit` | Submit |
+| payments | `POST` | `/api/v1/projects/{project_id}/payment-applications` | Create Application |
+| payments | `PUT` | `/api/v1/payment-applications/{app_id}/lines/{line_id}` | Update Line |
 | projects | `DELETE` | `/api/v1/projects/{project_id}/members/{member_id}` | Remove Member |
 | projects | `DELETE` | `/api/v1/projects/{project_id}/parties/{party_id}` | Remove Party |
 | projects | `DELETE` | `/api/v1/projects/{project_id}/phases/{phase_id}` | Delete Phase |

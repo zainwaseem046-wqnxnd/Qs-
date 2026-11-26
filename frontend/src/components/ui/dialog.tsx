@@ -73,7 +73,7 @@ export function ConfirmButton({
   confirmLabel?: string;
   onConfirm: () => Promise<unknown> | void;
   variant?: "danger" | "primary";
-  buttonVariant?: "secondary" | "ghost" | "danger";
+  buttonVariant?: "primary" | "secondary" | "ghost" | "danger";
   size?: "sm" | "md";
   disabled?: boolean;
 }) {

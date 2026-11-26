@@ -240,6 +240,7 @@ export interface DashboardSummary {
   committed_cost: CurrencyTotal[] | null;
   pending_changes: { currency: string; amount: string; count: number; overdue_count: number }[] | null;
   forecast: DashboardForecast[] | null;
+  payments: DashboardPayments[] | null;
   upcoming_completions: ProjectListItem[];
   recent_projects: ProjectListItem[];
   recent_activity: AuditEvent[];
@@ -733,4 +734,98 @@ export interface DashboardForecast {
   projects_forecast: number;
   projects_without_forecast: number;
   latest_period: string | null;
+}
+
+// --- Phase 3.1: payment applications (US) / interim valuations (UK) ------------------------------------------------
+export interface PaymentApplicationSummary {
+  id: string;
+  project_id: string;
+  contract_id: string;
+  contract_number: string;
+  contract_title: string;
+  number: number;
+  label: string;
+  status: "draft" | "submitted" | "certified" | "paid";
+  currency: string;
+  period_to: string;
+  application_date: string;
+  due_date: string | null;
+  final_payment_date: string | null;
+  pay_less_notice_date: string | null;
+  amount_due: string | null;
+  certified_amount: string | null;
+  paid_amount: string | null;
+  outstanding: string;
+  is_overdue: boolean;
+}
+
+export interface PaymentLine {
+  id: string;
+  item: string;
+  description: string;
+  source: "contract" | "change_order";
+  scheduled_value: string;
+  previous_work: string;
+  this_period: string;
+  materials_stored: string;
+  completed_to_date: string;
+  percent_complete: string | null;
+  balance_to_finish: string;
+  retention: string;
+}
+
+export interface PaymentTotals {
+  original_sum: string;
+  net_changes: string;
+  contract_sum_to_date: string;
+  work_to_date: string;
+  materials_stored: string;
+  completed_to_date: string;
+  retention: string;
+  earned_less_retention: string;
+  previous_certified: string;
+  amount_due: string;
+  balance_to_finish: string;
+  percent_complete: string | null;
+}
+
+export interface PaymentApplicationDetail extends PaymentApplicationSummary {
+  retention_percent: string;
+  notes: string | null;
+  submitted_at: string | null;
+  certified_date: string | null;
+  certification_note: string | null;
+  paid_date: string | null;
+  payment_reference: string | null;
+  version: number;
+  is_editable: boolean;
+  can_certify: boolean;
+  totals: PaymentTotals;
+  lines: PaymentLine[];
+}
+
+export interface BillingSummary {
+  currency: string;
+  billed_to_date: string | null;
+  earned_revenue: string | null;
+  forecast_period: string | null;
+  over_billed: string | null;
+  under_billed: string | null;
+  certified_to_date: string;
+  paid_to_date: string;
+  outstanding: string;
+  awaiting_certification: string;
+  retention_held: string;
+  overdue_count: number;
+}
+
+export interface DashboardPayments {
+  currency: string;
+  outstanding: string;
+  overdue_count: number;
+  awaiting_certification: string;
+  retention_held: string;
+  over_billed: string;
+  under_billed: string;
+  projects_billed: number;
 }

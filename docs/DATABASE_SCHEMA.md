@@ -1,6 +1,6 @@
 # Database Schema
 
-PostgreSQL 16. Migrations: `backend/alembic/versions`. Current head: **0006** (cost ledger and forecasts).
+PostgreSQL 16. Migrations: `backend/alembic/versions`. Current head: **0007** (payment applications / valuations).
 
 ## 1. Conventions
 
@@ -92,6 +92,8 @@ erDiagram
 | `cost_transactions` | Ledger entry: date, cost code, type (actual/accrual), amount (signed 19,2), reference, vendor, commitment link, import batch, `reverses_id` (unique partial index) | tenant isolation; **append-only: SELECT/INSERT grants only and trigger blocks UPDATE/DELETE** |
 | `forecasts` | Monthly forecast per project (unique project + first-of-month period, CHECK); status draft/approved; revenue adjustment + reason; snapshot of all totals at approval | tenant isolation; **trigger freezes approved forecasts** |
 | `forecast_lines` | Per cost code (NULLS NOT DISTINCT unique): CTC method, manual CTC + note, snapshot of RB/CM/CTD/CTC/FFC/variance | tenant isolation; changes only while parent is draft |
+| `payment_applications` | Pay application / valuation per executed contract: number (unique per contract), period, dates (due, final payment, pay-less notice), retention %, snapshot at submission (original sum, net changes, work, stored, retention, previous certified, amount due), certificate and payment (rev. 0007) | tenant isolation; **trigger freezes the claim once submitted, the certificate once certified, everything once paid**; partial unique index: one draft/submitted per contract |
+| `payment_application_lines` | Schedule-of-values line from a contract line or an approved change order (CHECK one source): scheduled value, previous work, this period, materials stored | tenant isolation; changes only while parent is draft |
 | `audit_events` | Append-only audit log | read: current tenant; insert: current tenant or tenant-less security events; trigger blocks UPDATE/DELETE/TRUNCATE for every role |
 
 ### Database roles
@@ -139,4 +141,4 @@ tests that own it (ADR-008). Money columns follow the conventions above. All are
 * Security SQL for a revision lives in `alembic_helpers/<revision>_*.py` and is frozen once shipped.
 * Seed data (permissions, system roles) is frozen inside the migration that introduced it; a test asserts the
   database catalog equals `app/domains/tenancy/permissions.py`.
-* Revisions 0001–0006 are frozen once pushed; further changes require new revisions.
+* Revisions 0001–0007 are frozen once pushed; further changes require new revisions.
